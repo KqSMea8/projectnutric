@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {signup, login } = require("../handlers/expertAuth");
-const {createPatient, getPatient} = require("../handlers/patients");
+const {createPatient, getPatient, editPatient, deletePatient} = require("../handlers/patients");
 
 const database = require('../models');
 
@@ -23,7 +23,13 @@ router.get("/", async function(req, res, next){
     }
 })
 
-router.get("/:expert_id/patients", loginRequired, getPatient);
-router.post("/:expert_id/patients/create",loginRequired, createPatient);
+router
+  .get("/:expert_id/patients", loginRequired, getPatient)
+  .post("/:expert_id/patients",loginRequired, createPatient)
+  // .put("/:expert_id/patients/:patient_id",loginRequired, ensureCorrectUser, editPatient)
+  // .delete("/:expert_id/patients/:patient_id", loginRequired, ensureCorrectUser, deletePatient);
+
+
+
 
 module.exports=router;

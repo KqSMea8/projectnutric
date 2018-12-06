@@ -32,11 +32,11 @@ exports.getPatient = async function(req,res,next){
     }
 };
 
-exports.deleteMessage = async function(req,res,next){
+exports.deletePatient = async function(req,res,next){
     try{
-        let foundMessage = await database.Message.findById(req.params.message_id);
-        await foundMessage.remove();
-        return res.status(200).json(foundMessage);
+        let foundPatient = await database.Patient.findById(req.params.patient_id);
+        await foundPatient.remove();
+        return res.status(200).json(foundPatient);
     } catch(e){
         return next(e)
     }

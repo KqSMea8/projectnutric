@@ -1,0 +1,28 @@
+9 schemas:
+billingPlan
+    expert
+        healthPlan
+        patient
+            scheduleAppointment
+            appointment
+                mealPlan
+                    meal
+                        food
+                    recipe
+                measurement
+        stat
+
+- Los nutricionistas (expert) necesitan registrarse en Nutric (landing) para poder utilizar el software.
+- Los nutricionistas (expert) son los únicos que pueden registrar pacientes (patient). 
+- Un nutricionista (expert) tiene un array de pacientes (patient).
+- Un paciente (patient) solo puede estar asociado a un nutricionista (expert)
+
+- El nutricionista (expert) a través de consultas (appointment) donde:
+    * registra las medidas (measurement) de cada paciente (patient).
+    * planes alimenticios (mealPlan) de cada paciente (patient).
+        + compuesta por comidas (meal), alimentos (food) y recetas (recipe)
+    * se registra/asigna el paquete nutricional (healthPlan) al paciente (patient)
+
+- El nutricionista (expert) puede dejar pendiente la asignación del plan alimenticio (mealPlan) para el paciente (patient).
+- Un paciente (patient) tiene un array de consultas (appointment)
+

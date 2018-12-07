@@ -21,6 +21,6 @@ module.exports.MealPlan = require("./mealPlan");
 module.exports.Measurement = require("./measurement");
 module.exports.Patient = require("./patient");
 module.exports.Recipe = require("./recipe");
-module.exports.ScheduleAppointment = require("./scheduleAppointment");
+module.exports.ScheduledAppointment = require("./scheduledAppointment");
 module.exports.Stat = require("./stat");
 

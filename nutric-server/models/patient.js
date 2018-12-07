@@ -7,7 +7,11 @@ const patientSchema = new mongoose.Schema(
             firstName: {
                 type: String,
                 required: true,
-            }, 
+            },
+            mail: {
+                type: String,
+                required: true,
+            },
             lastName: {
                 type: String,
                 required: false,
@@ -18,11 +22,7 @@ const patientSchema = new mongoose.Schema(
             phone: {
                 type: String,
                 required: false,
-            }, 
-            mail: {
-                type: String,
-                required: true,
-            }, 
+            },
             country: {
                 type: String,
                 required: false,
@@ -51,14 +51,17 @@ const patientSchema = new mongoose.Schema(
             }
         },
         preference: {
-            like: [{
+            favorites: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Meal"
             }],
-            unlike: [{
+            dislike: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Meal"
             }],
+            allergies: {
+              
+            },
             messages: {
                 type: Boolean
             },
@@ -87,11 +90,11 @@ const patientSchema = new mongoose.Schema(
         }],
         appointment:[{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Measurement"
+            ref: "Appointment"
         }],
-        scheduleAppointment:[{
+        scheduledAppointment:[{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Measurement"
+            ref: "ScheduledAppointment"
         }],
     }, 
     {

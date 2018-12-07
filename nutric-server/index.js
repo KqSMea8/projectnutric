@@ -1,18 +1,13 @@
 require("dotenv").config();
-const   express         = require("express"),
-        mongoose        = require('mongoose'),
-        app             = express(),
-        bodyParser      = require('body-parser'),
-        cors            = require('cors'),
-        database        = require('./models'),
-        errorHandler    = require("./handlers/error"),
-        expertAuthRoutes= require("./routes/expertAuth"),
-        patientRoute    = require("./routes/patients");
-
-
-const {loginRequired, ensureCorrectUser} = require("./middleware/auth")
-        
-        
+const   express                       = require("express"),
+        mongoose                      = require('mongoose'),
+        app                           = express(),
+        bodyParser                    = require('body-parser'),
+        cors                          = require('cors'),
+        errorHandler                  = require("./handlers/error"),
+        expertAuthRoutes              = require("./routes/expertAuth"),
+        patientRoutes                 = require("./routes/patients"),
+        scheduledAppointmentsRoutes   = require("./routes/scheduledAppointments");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -23,15 +18,11 @@ app.get("/", function(req,res,next){
     res.send("Hello World");
  });
 
-app.use("/api/experts/", expertAuthRoutes)
+app.use("/api/experts/",                        expertAuthRoutes)
+// app.use("/api/experts/:expert_id/appointments", appointmentsRoutes)
+app.use("/api/experts/:expert_id/scheduledappointments", scheduledAppointmentsRoutes)
+app.use("/api/experts/:expert_id/patients",     patientRoutes)
 
-// app.use("/api/", 
-//     // loginRequired,
-//     // ensureCorrectUser,
-//     patientRoute
-//     );
- 
- 
 //ERROR HANDLER
 app.use(errorHandler);
 

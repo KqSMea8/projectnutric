@@ -1,23 +1,27 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const scheduleAppointmentSchema = new mongoose.Schema(
+const scheduledAppointmentSchema = new mongoose.Schema(
     {
-        start: {
+        starts: {
             type: Date,
             required: true,
         }, 
+        duration: {
+            type: Number,
+            required: false,
+        },
         status: {
             type: Boolean,
-            required: true,
+            required: false,
         }, 
         notes: {
             type: String,
-            required: true,
+            required: false,
         }, 
         workplace: {
             type: String,
-            required: true,
+            required: false,
         }, 
         patient: {
             type: mongoose.Schema.Types.ObjectId,
@@ -33,6 +37,6 @@ const scheduleAppointmentSchema = new mongoose.Schema(
     }
 );
 
-const ScheduleAppointment = mongoose.model("ScheduleAppointment", scheduleAppointmentSchema);
+const ScheduledAppointment = mongoose.model("scheduledAppointment", scheduledAppointmentSchema);
 
-module.exports = ScheduleAppointment;
+module.exports = ScheduledAppointment;

@@ -23,10 +23,10 @@ exports.ensureCorrectUser = function(req, res, next) {
       if (decoded && decoded.id === req.params.expert_id) {
         return next();
       } else {
-        return next({ status: 401, message: "Unauthorized" });
+        return next({ status: 401, message: "You don't have permission to do this" });
       }
     });
   } catch (e) {
-    return next({ status: 401, message: "Unauthorized" });
+    return next({ status: 401, message: "You don't have permission to do this" });
   }
 };

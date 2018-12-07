@@ -3,7 +3,7 @@ billingPlan
     expert
         healthPlan
         patient
-            scheduleAppointment
+            scheduledAppointment
             appointment
                 mealPlan
                     meal

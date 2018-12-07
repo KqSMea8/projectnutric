@@ -19,7 +19,8 @@ exports.login = async function(req,res,next){
                 id,
                 firstName,
                 mail,
-                token
+                token,
+                message: "You are logged in as "+firstName+"!"
             })
         } else {
             return next({

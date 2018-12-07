@@ -46,6 +46,14 @@ const expertSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Patient"
         }],
+        scheduledAppointment: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "scheduledAppointment"
+        }],
+        appointment: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Appointment"
+        }],
         mealPlan: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "MealPlan"
@@ -54,22 +62,25 @@ const expertSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "HealthPlan"
         }]
-    }, 
+    },
     {
         timestamps: true
     }
 );
 
 expertSchema.pre("save", async function(next){
+    
     try {
-        if(!this.isModified("password")){
-            return next();
-        }
-        let hashedPassword = await bcrypt.hash(this.password, 10);
-        this.password=hashedPassword
+      if(!this.isModified("password")){
         return next();
-    } catch(err) {
-        return next(err);
+    }
+    let hashedPassword = await bcrypt.hash(this.password, 10);
+    this.password = hashedPassword
+    return next();
+    } 
+    
+    catch(err) {
+      return next(err);
     }
 });
 
@@ -80,7 +91,7 @@ expertSchema.methods.comparePassword = async function(candidatePassword, next){
     } catch(err){
         return next(err);
     }
-}
+};
 
 
 

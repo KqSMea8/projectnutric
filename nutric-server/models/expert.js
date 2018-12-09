@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
+// cambiar todos los arrays a plural
 const expertSchema = new mongoose.Schema(
     {
         firstName: {
@@ -46,7 +47,7 @@ const expertSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Patient"
         }],
-        scheduledAppointment: [{
+        scheduledAppointment: [{ 
             type: mongoose.Schema.Types.ObjectId,
             ref: "scheduledAppointment"
         }],

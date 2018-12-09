@@ -1,27 +1,29 @@
 const database = require("../models");
 
-exports.ScheduleNewAppointment = async function(req,res,next){
+exports.createScheduledAppointment = async function(req,res,next){
     try{
-        let newAppointment = await database.ScheduledAppointment.create({
-          starts :req.body.starts,
-          duration:req.body.duration,
-          expert:req.params.expert_id,
-          patient:req.body.patient_id //RECORDAR: Cuando lleguemos al front, mandarlo como un hidden input. Colocar el nombre del paciente y actualizar
+        let newScheduledAppointment = await database.ScheduledAppointment.create({
+          starts: req.body.starts,
+          duration: req.body.duration,
+          expert: req.params.expert_id,
+          patient: req.body.patient_id //RECORDAR: Cuando lleguemos al front, mandarlo como un hidden input. Colocar el nombre del paciente y actualizar
         });
         //Hacer referencia del scheduledAppointment en la BD del experto
         let foundExpert = await database.Expert.findById(req.params.expert_id);
-        foundExpert.scheduledAppointment.push(newAppointment._id);
+        // console.log(foundExpert);
+        foundExpert.scheduledAppointment.push(newScheduledAppointment._id);
         await foundExpert.save();
          //Hacer referencia del scheduledAppointment en la BD del paciente
         let foundPatient = await database.Patient.findById(req.body.patient_id);
-        foundPatient.scheduledAppointment.push(newAppointment._id);
+        console.log(foundPatient);
+        
+        foundPatient.scheduledAppointment.push(newScheduledAppointment._id);
         await foundPatient.save();
         
-        let foundAppointment= await database.ScheduledAppointment.findById(newAppointment._id).populate("Expert", {
+        let foundScheduledAppointment= await database.ScheduledAppointment.findById(newScheduledAppointment._id).populate("Expert", {
             firstName: true,
-          
         });
-        return res.status(200).json(foundAppointment);
+        return res.status(200).json(foundScheduledAppointment);
     } catch(e){
         return next(e);
     }
@@ -29,8 +31,8 @@ exports.ScheduleNewAppointment = async function(req,res,next){
 
 exports.getScheduledAppointments = async function(req,res,next){
     try {
-        let appointments = await database.ScheduledAppointment.find({expert:req.params.expert_id});
-        return res.status(200).json(appointments);
+        let scheduledAppointments = await database.ScheduledAppointment.find({expert:req.params.expert_id},'duration');
+        return res.status(200).json(scheduledAppointments);
     } catch(error){
         return next(error);
     }

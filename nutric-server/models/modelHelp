@@ -7,8 +7,8 @@ billingPlan
             appointment
                 mealPlan
                     meal
-                        food
-                    recipe
+                        recipe(compound+basic)
+                            food (basic food)
                 measurement
         stat
 
@@ -26,3 +26,18 @@ billingPlan
 - El nutricionista (expert) puede dejar pendiente la asignación del plan alimenticio (mealPlan) para el paciente (patient).
 - Un paciente (patient) tiene un array de consultas (appointment)
 
+=============================
+Hay 4 schemas relacionados a la nutricion (de mas pequeño a más grande)
+
+1. Food (Alimento): Cosas comestibles que pueden ser comidas en el mismo estado que en el que se compran.
+    Ej: Queso, leche, huevo, fresa, aceite, jamón, mantequilla, pan fresco
+    
+2. Recipe (Plato): Cosas comestibles que son el resultado de la transformación de Foods (Alimentos), a través de una serie de instrucciones.
+    Ej: Lomo saltado, causa de atún, fideos al pesto, alitas bbq
+    
+3. Meal (Comida): Conjunto de Recipes (Platos) que se consumen a la misma hora del día.
+    Ej: Desayuno, brunch, snack de media mañana, almuerzo, lonche, "comida 3", cena
+    
+4. Meal Plan (Plan alimenticio): "La dieta". Conjunto de Meals (comidas) que se extiende por un período determinado por el nutricionista,
+                                 con el fin de que el paciente llegue a su objetivo.
+                                 

@@ -34,6 +34,8 @@ exports.getPatients = async function(req,res,next){
     }
 };
 
+// borrar appointments del paciente de la bd de appointments. 
+// Hacer ese proceso para todas los schemas relacionados a pacientes.
 exports.deletePatient = async function(req,res,next){
     try{
         let foundPatient = await database.Patient.findByIdAndRemove(req.params.patient_id); //findByIdAndRemove dicen que trae errores
@@ -46,6 +48,7 @@ exports.deletePatient = async function(req,res,next){
     }
 }
 
+// por ahora este edit esta estructurado para tener un solo form en el front (solo hay 1 req.body)
 exports.editPatient = async function(req,res,next){
     try{
         // ojo al req que sea info.firstName, deberiamos cambiarlo

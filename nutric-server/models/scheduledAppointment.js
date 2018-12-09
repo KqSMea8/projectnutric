@@ -9,11 +9,11 @@ const scheduledAppointmentSchema = new mongoose.Schema(
         }, 
         duration: {
             type: Number,
-            required: false,
+            required: true,
         },
-        status: {
+        hasStarted: {
             type: Boolean,
-            required: false,
+            default: false,
         }, 
         notes: {
             type: String,
@@ -26,6 +26,7 @@ const scheduledAppointmentSchema = new mongoose.Schema(
         patient: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Patient"
+            // required: true
         },
         expert: {
             type: mongoose.Schema.Types.ObjectId,

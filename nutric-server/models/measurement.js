@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const measurementSchema = new mongoose.Schema(
     {
-        anthropometric: {
+    anthropometric: {
 			weight: {
 				type: Number
 			},
@@ -58,9 +58,6 @@ const measurementSchema = new mongoose.Schema(
 				armRelaxed:{
 					type: Number
 				},
-				armRelaxed:{
-					type: Number
-				},
 				calf:{
 					type: Number
 				},
@@ -106,7 +103,6 @@ const measurementSchema = new mongoose.Schema(
 					type: Number
 				}
 			}
-
 		},
 		analytical:{
 			bloodPressure:{

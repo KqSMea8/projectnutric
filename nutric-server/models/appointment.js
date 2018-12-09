@@ -1,57 +1,38 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// se crea en el momento que se pone el boton de consulta del sidebar, o "Empezar consulta" en la agenda
 const appointmentSchema = new mongoose.Schema(
     {
-      starts: {
-          type: Date,
-          required: true,
-      }, 
-      duration: {
-          type: Number,
-          required: true,
-      }, 
-      status: {
+      startTime: Date,
+      duration: Number,
+      // en caso no tengamos el model de scheduledAppointment
+      scheduledInfo: {
+        wasScheduled: {
           type: Boolean,
-      }, 
-      patientHistory:{
-          personal:{
-              sleepQuality: {
-                  type: String,
-              }, 
-              physicalActivity: {
-                  type: String,
-              }, 
-              smoker: {
-                  type: Boolean,
-              }, 
-              alcoholConsumption: {
-                  type: Boolean,
-              }, 
-          },
-          goal:{
-              goalType:{
-                  type: String
-              },
-              goalDescription:{
-                  type: String
-              }
-          },
-          preferences: {
-              like: [{
-                  type: mongoose.Schema.Types.ObjectId,
-                  ref: "Meal"
-              }],
-              unlike: [{
-                  type: mongoose.Schema.Types.ObjectId,
-                  ref: "Meal"
-              }],
-          },
-          measurement: {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: "Measurement"
-          }
+          default: false
+        },
+        scheduledTime: Date,
+        scheduledDuration: Number,
+        notes: String
       },
+      patientInfo:{
+        sleepQuality: String, 
+        physicalActivity: String, 
+        goal:{
+          goalType: String,
+          goalDescription: String
+        },
+        measurement: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Measurement"
+        },
+        mealPlan: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "MealPlan"
+        }
+      },
+      // en caso si tengamos schema de scheduledAppointment
       scheduledAppointment: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "scheduledAppointment"

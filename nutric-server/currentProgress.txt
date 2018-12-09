@@ -1,0 +1,32 @@
+File para ver que tenemos hecho hasta ahora en el backend.
+
+=====================   HECHO   ========================
+Nutri puede: 
+  [Auth]
+- Registrarse
+- Iniciar sesion
+
+  [Pacientes]
+  - Crear un paciente
+  - Ver todos sus pacientes (solo los suyos)
+  - Ver el perfil de un paciente (solo si es suyo)
+  - Editar un paciente (solo si es suyo)
+  - Eliminar un paciente (solo si es suyo)
+  
+  [Consultas Agendadas]
+  - Ver todas sus consultas agendadas
+  - Agendar una consulta 
+  - Editar una consulta agendada
+  - Eliminar una consulta agendada
+  
+  [Consultas Realizadas]
+  - Ver todas sus consultas realizadas
+  - Empezar una consulta 
+  - Editar una consulta realizada
+  - Eliminar una consulta realizada
+
+=====================   POR HACER   ========================
+
+  [Planes alimenticios]
+  - Crear plan alimenticio
+  - Asignarselo a un paciente

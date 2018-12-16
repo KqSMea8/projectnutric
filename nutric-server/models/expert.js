@@ -25,7 +25,8 @@ const expertSchema = new mongoose.Schema(
         mail: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            lowercase: true
         }, 
         country: {
             type: String,
@@ -43,23 +44,19 @@ const expertSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "BillingPlan"
         }, 
-        patient: [{
+        patients: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Patient"
         }],
-        scheduledAppointment: [{ 
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "scheduledAppointment"
-        }],
-        appointment: [{
+        appointments: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Appointment"
         }],
-        mealPlan: [{
+        mealPlans: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "MealPlan"
         }],
-        healthPlan: [{
+        healthPlans: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "HealthPlan"
         }]

@@ -4,12 +4,17 @@ const Schema = mongoose.Schema;
 const mealPlanSchema = new mongoose.Schema(
     {
       mealPlanName: String,
+      caloricGoal: Number,
+      currentWeight: Number,
+      currentBodyFat: Number,
+      objective: String,
+      endDate: Date, //para determinar paciente activo
       days:[{
         dayName: String,
-        totalCalories: Number,
-        totalProtein: Number,
-        totalCarbs: Number,
-        totalFat: Number,
+        dailyCalories: Number,
+        dailyProtein: Number,
+        dailyCarbs: Number,
+        dailyFat: Number,
         requiredWater: Number,
         meals:[{
           mealName: String,
@@ -26,7 +31,8 @@ const mealPlanSchema = new mongoose.Schema(
       },
       patient:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: "Patient"
+        ref: "Patient",
+        required: true
       },
       appointment:{
         type:mongoose.Schema.Types.ObjectId,

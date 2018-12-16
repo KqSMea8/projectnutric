@@ -7,24 +7,29 @@ const patientSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    lastName: String, 
+    lastName: {
+      type: String,
+      required: false,
+    },
     mail: {
       type: String,
       required: true,
     },
     gender: {
       type: String,
-      required: true,
+      required: false,
     }, 
     password: String, 
     phone: String,
     country: String, 
     birthDate: Date,
+    age: Number, //calculado automaticamente en el front cuando da su fecha de nacimiento
     idType: String,
     idNumber: String,
     address: String,
     zipCode: String, 
     avatarUrl: String,
+    isActive: Boolean, //en caso tenga un meal plan en este momento, isActive es true
     favoriteFoods: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Food"
@@ -52,21 +57,17 @@ const patientSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "HealthPlan"
     },
-    mealPlan:[{
+    mealPlans:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "MealPlan"
     }],
-    measurement:[{
+    measurements:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Measurement"
     }],
-    appointment:[{
+    appointments:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Appointment"
-    }],
-    scheduledAppointment:[{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ScheduledAppointment"
     }],
   }, 
   {

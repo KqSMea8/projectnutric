@@ -6,6 +6,7 @@ const {createScheduledAppointment, getScheduledAppointments, getOneScheduledAppo
 const {loginRequired, ensureCorrectUser} = require("../middleware/auth")
 
 // prefix: /api/experts/:expert_id/scheduledappointments'
+
 router
   .get("/", loginRequired, ensureCorrectUser, getScheduledAppointments) //mostrar todas las consultas agendadas de un nutri
   .post("/", loginRequired, ensureCorrectUser, createScheduledAppointment)

@@ -1,0 +1,12 @@
+export const ADD_ERROR = 'ADD_ERROR';
+export const REMOVE_ERROR = 'REMOVE_ERROR';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
+// PATIENTS
+export const LOAD_PATIENTS = 'LOAD_PATIENTS';
+
+//APPOINTMENTS
+export const LOAD_APPOINTMENTS= 'LOAD_APPOINTMENTS'
+
+// FOODS
+export const LOAD_FOODS = 'LOAD_FOODS';

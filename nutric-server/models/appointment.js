@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // se crea en el momento que se pone el boton de consulta del sidebar, o "Empezar consulta" en la agenda
 const appointmentSchema = new mongoose.Schema(
     {
-      startTime: Date,
+      startTime: String,
       duration: Number,
       // en caso no tengamos el model de scheduledAppointment
       scheduledInfo: {
@@ -12,8 +12,18 @@ const appointmentSchema = new mongoose.Schema(
           type: Boolean,
           default: false
         },
-        scheduledTime: Date,
-        scheduledDuration: Number,
+        scheduledTimeStart: { 
+          type: Date,
+          required:true
+        },
+        scheduledTimeEnd: { 
+          type: Date,
+          required:true
+        },
+        scheduledTimeDuration: { 
+          type: Number,
+          required:true
+        },
         notes: String
       },
       patientInfo:{
@@ -24,18 +34,62 @@ const appointmentSchema = new mongoose.Schema(
           goalDescription: String
         },
         measurement: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Measurement"
+          anthropometric: {
+      		  weight: Number,
+      			height: Number, 
+      			skinFold:{
+      				abdominal: Number,
+      				bicep: Number,
+      				chest: Number,
+      				frontThigh: Number,
+      				iliacCrest: Number,
+      				medialCalf: Number,
+      				midaxillary: Number,
+      				subscapular: Number,
+      				suprailiac: Number,
+      				supraspinale: Number,
+      				tricep: Number
+      			},
+      			circumference:{
+      				abdominal: Number,
+      				ankle: Number,
+      				armFlexed: Number,
+      				armRelaxed: Number,
+      				calf: Number,
+      				chest: Number,
+      				forearm: Number,
+      				hip: Number,
+      				midThigh: Number,
+      				neck: Number,
+      				shoulder: Number,
+      				thigh: Number,
+      				waist: Number,
+      				wrist: Number
+      			},
+      			breadth:{
+      				ankle:Number,
+      				elbow: Number,
+      				femur: Number,
+      				wrist: Number
+      			}
+      		},
+      		analytical:{
+      			bloodPressure: Number,
+      			cholesterol: Number
+      		},
+      		bodyComposition:{
+      			bodyFat: Number,
+      			fatMass: Number,
+      			muscleMass: Number,
+      			muscleMassPercentage: Number,
+      			boneMass: Number,
+      			bodyWater: Number,
+		      }
         },
         mealPlan: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "MealPlan"
         }
-      },
-      // en caso si tengamos schema de scheduledAppointment
-      scheduledAppointment: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "scheduledAppointment"
       },
       patient: {
           type: mongoose.Schema.Types.ObjectId,

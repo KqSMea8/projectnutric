@@ -40,4 +40,3 @@ Hay 4 schemas relacionados a la nutricion (de mas pequeño a más grande)
     
 4. Meal Plan (Plan alimenticio): "La dieta". Conjunto de Meals (comidas) que se extiende por un período determinado por el nutricionista,
                                  con el fin de que el paciente llegue a su objetivo.
-                                 

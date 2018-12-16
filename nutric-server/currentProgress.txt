@@ -27,6 +27,13 @@ Nutri puede:
 
 =====================   POR HACER   ========================
 
+
+
   [Planes alimenticios]
   - Crear plan alimenticio
+    - Buscar alimento (Food) o plato (Recipe) en la creacion del plan alimenticio
+  - Editar el nombre del plan alimenticio
+  - Editar el nombre de las comidas (Desayuno, comida 2, ...)
+  
   - Asignarselo a un paciente
+  

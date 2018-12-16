@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.activeLink>div {
+  background-color: #e2e2e2;
+}
+
+#root {
+  height:100%;
+}

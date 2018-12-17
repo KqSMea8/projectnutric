@@ -130,33 +130,33 @@ class MealPlanCreate extends Component{
         <Link to='/dietas'>Click para ir a /dietas </Link>  
         {
             this.state.mealPlan.days.map((day,dayIndex) => 
-                <div>
-                    <h4 key={dayIndex}>{day.dayName}</h4>
+                <div key={dayIndex}>
+                    <h4>{day.dayName}</h4>
                     <ul>
                     { 
                         day.meals.map((meal, mealIndex) =>
-                          <div>
-                            <li key={mealIndex}>
+                          <div key={dayIndex+"-"+mealIndex}>
+                            <li>
                               <Input defaultValue={meal.mealName}/>
                               <TimePicker use12Hours defaultValue={moment(meal.mealTime)} format={"h:mm a"} minuteStep={5} allowEmpty={false}/>
                             </li>
                             <ol>
                             {meal.recipes.length==0 && (
-                                  <li key={"input"}>
+                                  <li key={dayIndex+"-"+mealIndex+"input"}>
                                     <SearchBar tableId={dayIndex+"-"+mealIndex+"-"} addNewRecipeButton={this.addNewRecipeButton}/>
                                   </li>
                               )}
                             {
                               meal.recipes.map((alimento, alimentoIndex) => 
-                              <div>
-                                <li key={alimento}>
+                              <div key={dayIndex+"-"+mealIndex+"-"+alimentoIndex}>
+                                <li>
                                   <Input defaultValue={alimento.type}/>
                                   <IconButton aria-label="Delete">
                                     <DeleteIcon fontSize="small" />
                                   </IconButton>
                                 </li>
                                 {(meal.recipes.length==alimentoIndex+1)  && 
-                                  <li key={"input"+alimentoIndex}>
+                                  <li key={dayIndex+"-"+mealIndex+"input"}>
                                     <SearchBar tableId={dayIndex+"-"+mealIndex+"-"+alimentoIndex} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
                                   </li>
                                 }
@@ -176,39 +176,7 @@ class MealPlanCreate extends Component{
         <Button variant="contained" color="primary" onClick={this.addNewMealButton}>
           Agregar comida (para el martes)
         </Button>
-
-   
         
-      {/*Sorry sven, voy a tener que borrar lo siguiente:*?}
-      
-          {/*foods.map((food, key) => {
-            return (
-              <div key={key}>
-                <table style={tableStyle}>
-                  <tr style={headingsStyle}>
-                    <th>Nombre</th>
-                    <th>Calorias</th>
-                    <th>Proteinas</th>
-                    <th>Carbohidratos</th>
-                    <th>Grasas</th>
-                    <th>Agregar alimento </th>
-                  </tr>
-                  <tr>
-                    <td style={dataStyle} >{food.foodName}</td>
-                    <td style={dataStyle} >{food.calories_kcal}</td>
-                    <td style={dataStyle} >{food.protein_g}</td>
-                    <td style={dataStyle} >{food.carbs_g}</td>
-                    <td style={dataStyle} >{food.fat_g}</td>
-                    <td style={dataStyle} >
-                      <Fab size="small"  color="secondary" aria-label="Add">
-                        <AddIcon />
-                      </Fab>
-                    </td>
-                  </tr>
-                </table>
-             </div>
-            );
-          })*/}
       </div>
     );
   }}

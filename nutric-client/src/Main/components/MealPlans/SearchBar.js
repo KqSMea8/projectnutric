@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {fetchFoods} from '../../store/actions/foods';
 import {connect} from 'react-redux';
+import TableResult from '../../components/MealPlans/TableResult'
 
 const styles = theme => ({
   container: {
@@ -25,15 +26,20 @@ const styles = theme => ({
 });
 
 class SearchBar extends React.Component {
-  state = {
-    searchedFood: "",
-  };
+  constructor(props){
+    super(props);
+      this.state={
+        searchedFood:"",
+        tableHide:true,
+        text:""
+      }
+  }
 
-  onChange = e => {
+  onSearchingFood = event => {
     this.setState({
-        searchedFood: e.target.value
+        searchedFood: event.target.value
     }, function(){
-      const { currentUserId, foods } = this.props;
+      const { currentUserId } = this.props;
       // arreglar el query: si pongo camo (para camote), aparece tequeños con guaCAMOle
       if(this.state.searchedFood.length>=3){
         this.props.fetchFoods(currentUserId,this.state.searchedFood);
@@ -42,28 +48,29 @@ class SearchBar extends React.Component {
       }
     })
   }
-  
-  
-  onFormSubmit = event => {
-    event.preventDefault();
+
+  showsTable = (e) => {
+    this.setState({ text: e.target.value, tableHide:true });
+    if(e.target.value.length>=3){
+      this.setState({tableHide:false})
+    }
   };
 
+  
   render() {
-    console.log(this.state.searchedFood);
-    const { classes } = this.props;
+    const { classes, tableId, selectedFood } = this.props;
 
     return (
-      <form className={classes.container} noValidate autoComplete="off" onSubmit={this.onFormSubmit}>
+      <div>
         <TextField
           id="standard-name"
-          label=" + Alimento"
-          placeholder="Agrega un alimento"
+          value={this.state.text}
+          placeholder="Agregar alimento..."
           className={classes.textField}
-          value={this.state.value}
-          onChange={this.onChange}
+          onChange={(e)=> { this.showsTable(e); this.onSearchingFood(e);}}
           margin="normal"
         />
-      </form>
+        {!this.state.tableHide ? <TableResult selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      </div>
     );
   }
 }

@@ -17,7 +17,7 @@ class PatientsMain extends Component {
     this.state = {};
   }
   
-  componentDidMount(){
+  componentWillMount(){
     const { currentUserId } = this.props;
     this.props.fetchPatients(currentUserId, console.log('was fetched'));
   }
@@ -25,8 +25,7 @@ class PatientsMain extends Component {
 
   render(){
     const numRows = 7 //num de filas q sera el default en la tabla
-    const {patients} = this.props;
-    console.log(patients);
+    const { patients } = this.props;
     let patientsList = patients.map(patient => {
       // ahorita solo tenemos el birthDate del paciente, age se calcularia aqui, o tb podria venir desde el back
       // falta hacer que cuando tenga menos de 7 pacientes, aparezcan las 7 - n filas en blanco
@@ -46,12 +45,28 @@ class PatientsMain extends Component {
     // }
     
     // es activo si tiene mealPlan. Sortear endDate de mealPlans pacientes activos y poner top 3
-    let activePatients = patients.filter(patient => patient.mealPlans.length > 0);
-    console.log(activePatients);
+
+  //     setTimeout(() => {
+  //   var x =activePatients[0];
+  // }, 500);
+   
+  // setTimeout(() => {
+  //   console.log(activePatients[0].createdAt);
+  // }, 1000);
+
+    
+    // var x = JSON.parse(JSON.stringify(activePatients))
+    // console.log(x)
+    // console.log(x["0"][0])
+    
+    
+
+   
+    // var x =(Object.keys(activePatients[0]));
+    // console.log(x.allergies)
     // no se pq no puedo acceder a activePatients[0].mealPlans
     // ahi se hace el sort a traves de endDate y ya
-    
-    
+    const activePatients=patients.filter(patient=> patient.mealPlans.length >0)
     return (
       <Grid container>
         
@@ -65,9 +80,9 @@ class PatientsMain extends Component {
             {/*<SnackbarContent message={'Pacientes por vencer'} style={{width: '80%', margin: '-15px auto 0', alignSelf: 'center', backgroundColor: '#3f51b5'}} />*/}
             <Grid container direction={'column'} justify={'center'} style={{height: '80%'}}>
               <Grid item>
-                  <Grid item style={{flex: 1}}>hola</Grid>
-                  <Grid item style={{flex: 1}}>chau</Grid>
-                  <Grid item style={{flex: 1}}>tres</Grid>
+                {activePatients.map((patient,key) => 
+                    <Grid key={key} item style={{flex: 1}}>{patient.mealPlans[0]._id.toString()}</Grid>
+                )}
               </Grid>
             </Grid>
             

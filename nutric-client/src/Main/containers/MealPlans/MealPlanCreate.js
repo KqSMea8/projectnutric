@@ -5,31 +5,35 @@ import {fetchFoods} from '../../store/actions/foods'
 import SearchBar from '../../components/MealPlans/SearchBar'
 
 class MealPlanCreate extends Component{
-  state= { 
-    lunes:[
-      ['hola']],
-    
-    
+  constructor(props){
+    super(props);
+    this.state = { 
+      lunes:[
+          ['leche','huevo','pan con soque'],
+          ['  aji de gallina', 'lomo saltado', 'inca mierda']
+        ]
+    }
   };
       
-  handleClickPlus = (e) => {
-    this.setState( { lunes:[
-      [...this.state.lunes[0], (e.target).parentElement.parentElement.cells[0].innerText]
+      
+    handleClickPlus = (e) => {
+    const actualMeal = this.state.lunes.length-1;
+    this.setState({ lunes:
+      [...this.state.lunes, 
+       [this.state.lunes[actualMeal].push((e.target).parentElement.parentElement.cells[0].innerText)]
+      ]
+    })
+  };
+
+ 
+    AddNewMeal = (e) => {
+      this.setState( { lunes:[
+        ...this.state.lunes,[]
       ]})
   };
- 
- AddNewMeal = (e) => {
-   this.setState( { lunes:[
-      ...this.state.lunes,[]
-      ]})
-   
- }
  
   
   render(){
-    
-     console.log(this.state) 
-     
     const {foods}=this.props
     //styles
     const tableStyle = {
@@ -47,24 +51,23 @@ class MealPlanCreate extends Component{
     }
 
     
-    console.log(this.props);
-    return(
+    return (
       <div>
         <Link to='/dietas'>Click para ir a /dietas </Link>  
-        
-     
-        
-        
-        {this.state.lunes.map(comidas =>comidas.map((comidas,key)=>{
-        return(
-        <div>
-          <h4> Comida 1 </h4>
-           <p> {key}) {comidas}</p>
-        </div>
-         )
-       }) 
-                           )
+        {
+            this.state.lunes.map((comida,index) => 
+                <div>
+                    <h4 key={index}>Comida {index+1}</h4>
+                    <ol>
+                    { 
+                        comida.map((alimento, subindex) =>
+                            <li key={subindex}>{alimento}</li>)
+                    }
+                    </ol>
+                </div>
+            )
         }
+ 
         <button onClick={this.AddNewMeal}> Agregar Comida </button>
         
         <SearchBar/>
@@ -94,7 +97,7 @@ class MealPlanCreate extends Component{
             );
           })}
       </div>
-      );
+    );
   }}
   
   
@@ -107,4 +110,3 @@ function mapStateToProps(state){
 
   
 export default connect(mapStateToProps, {fetchFoods})(MealPlanCreate);
-

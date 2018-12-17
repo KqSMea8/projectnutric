@@ -165,7 +165,7 @@ class LookUpPatients extends React.Component {
     const { classes, theme } = this.props;
     const {patients}=this.props;
     const patientList = patients.map(function(patient){
-      return {value: patient._id, label: patient.firstName+" [Apellido]"}
+      return {value: patient._id, label: patient.firstName+" "+patient.lastName}
     })
     const selectStyles = {
       input: base => ({

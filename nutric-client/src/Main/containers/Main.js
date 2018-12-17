@@ -29,7 +29,6 @@ class Main extends Component{
         {!currentUser.isAuthenticated &&  <Redirect to="/login"/> }
           
             <Sidebar open={this.state.open} />
-            {/*<Header open={this.state.open} handleDrawerToggle={this.handleDrawerToggle} />*/}
             <Dashboard open={this.state.open} handleDrawerToggle={this.handleDrawerToggle}/> 
         
   

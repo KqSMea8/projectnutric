@@ -19,6 +19,10 @@ import Event from "@material-ui/icons/Event";
 import InsertChart from "@material-ui/icons/InsertChart";
 import Restaurant from "@material-ui/icons/Restaurant";
 
+import Grid from "@material-ui/core/Grid";
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
+
 import logoXL from '../images/logoXL.svg';
 import logoXS from '../images/logoXS.svg';
 
@@ -109,70 +113,84 @@ class Sidebar extends Component {
           </div>
           <Divider />
           <List>
-            <NavLink to="/inicio" activeClassName="activeLink">
-              <ListItem button key="dashboard">
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Inicio" />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/pacientes" activeClassName="activeLink">
-              <ListItem button key="patients">
-                <ListItemIcon>
-                  <Person style={{ color: "#007bff" }}/>
-                </ListItemIcon>
-                <ListItemText primary="Pacientes" />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/agenda" activeClassName="activeLink" >
-              <ListItem button key="schedule">
-                <ListItemIcon>
-                  <CalendarToday style={{ color: "red" }}/>
-                </ListItemIcon>
-                <ListItemText primary="Agenda" />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/dietas" activeClassName="activeLink">
-              <ListItem button key="mealplan">
-                <ListItemIcon>
-                  <Restaurant style={{ color: "#f1c55c" }} />
-                </ListItemIcon>
-                <ListItemText primary="Planes Alimenticios" />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/recetas" activeClassName="activeLink">
-              <ListItem button key="templates">
-                <ListItemIcon>
-                  <InboxIcon style={{ color: "#447e67" }}/>
-                </ListItemIcon>
-                <ListItemText primary="Recetas" />
-              </ListItem>
-            </NavLink>
-            <NavLink to="/estadisticas" activeClassName="activeLink">
-              <ListItem button key="stats">
-                <ListItemIcon>
-                  <InsertChart style={{ color: "green" }} />
-                </ListItemIcon>
-                <ListItemText primary="Estadísticas" />
-              </ListItem>
-            </NavLink>
+            <Tooltip TransitionComponent={Zoom} title={!this.props.open ?"Inicio":""} placement="right">
+              <NavLink to="/inicio" activeClassName="activeLink">
+                <ListItem button key="dashboard">
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Inicio" />
+                </ListItem>
+              </NavLink>
+            </Tooltip>
+            <Tooltip TransitionComponent={Zoom} title={!this.props.open ?"Pacientes":""} placement="right">
+              <NavLink to="/pacientes" activeClassName="activeLink">
+                <ListItem button key="patients">
+                  <ListItemIcon>
+                    <Person style={{ color: "#007bff" }}/>
+                  </ListItemIcon>
+                  <ListItemText primary="Pacientes" />
+                </ListItem>
+              </NavLink>
+            </Tooltip>
+            <Tooltip TransitionComponent={Zoom} title={!this.props.open ?"Agenda":""} placement="right">
+              <NavLink to="/agenda" activeClassName="activeLink" >
+                <ListItem button key="schedule">
+                  <ListItemIcon>
+                    <CalendarToday style={{ color: "red" }}/>
+                  </ListItemIcon>
+                  <ListItemText primary="Agenda" />
+                </ListItem>
+              </NavLink>
+            </Tooltip>
+            <Tooltip TransitionComponent={Zoom} title={!this.props.open ?"Planes Alimenticios":""} placement="right">
+              <NavLink to="/dietas" activeClassName="activeLink">
+                <ListItem button key="mealplan">
+                  <ListItemIcon>
+                    <Restaurant style={{ color: "#f1c55c" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Planes Alimenticios" />
+                </ListItem>
+              </NavLink>
+            </Tooltip>
+            <Tooltip TransitionComponent={Zoom} title={!this.props.open ?"Recetas":""} placement="right">
+              <NavLink to="/recetas" activeClassName="activeLink">
+                <ListItem button key="templates">
+                  <ListItemIcon>
+                    <InboxIcon style={{ color: "#447e67" }}/>
+                  </ListItemIcon>
+                  <ListItemText primary="Recetas" />
+                </ListItem>
+              </NavLink>
+            </Tooltip>
+            <Tooltip TransitionComponent={Zoom} title={!this.props.open ?"Estadísticas":""} placement="right">
+              <NavLink to="/estadisticas" activeClassName="activeLink">
+                <ListItem button key="stats">
+                  <ListItemIcon>
+                    <InsertChart style={{ color: "green" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Estadísticas" />
+                </ListItem>
+              </NavLink>
+            </Tooltip>
           </List>
           <Divider />
-          <List style={{ bottom: "0px", position: "absolute" }}>
-            <ListItem button key="start_appointment">
-              <ListItemIcon>
-                <InsertChart style={{ color: "orange" }} />
-              </ListItemIcon>
-              <ListItemText primary="Iniciar Consulta" />
-            </ListItem>
-            <ListItem button key="schedule_appointment">
-              <ListItemIcon>
-                <Event style={{ color: "blue" }} />
-              </ListItemIcon>
-              <ListItemText primary="Agendar Consulta" />
-            </ListItem>
-          </List>
+         {/* <Grid container direction={'column'} justify={'flex-end'} style={{height: '100%'}}> */}
+            <List style={{ bottom: "0px", position: "relative" }}>
+                <ListItem button key="start_appointment">
+                  <ListItemIcon>
+                    <InsertChart style={{ color: "orange" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Iniciar Consulta" />
+                </ListItem>
+               <ListItem button key="schedule_appointment">
+                  <ListItemIcon>
+                    <Event style={{ color: "blue" }} />
+                  </ListItemIcon>
+                  <ListItemText primary="Agendar Consulta" />
+                </ListItem>
+            </List>
+        {/*  </Grid> */}
         </Drawer>
       </div>
     );

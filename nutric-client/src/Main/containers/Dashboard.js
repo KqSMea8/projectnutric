@@ -14,6 +14,7 @@ import HomeMain from './Home/HomeMain';
 import PatientsMain from "./Patients/PatientsMain";
 import ScheduleMain from "./Schedule/ScheduleMain";
 import MealPlanMain from "./MealPlans/MealPlanMain";
+import MealPlanMain2 from "./MealPlans2/MealPlanMain2";
 import MealPlanCreate from "./MealPlans/MealPlanCreate";
 import NoMatch from '../components/NoMatch';
 
@@ -25,7 +26,7 @@ const styles = theme => {
     {
       toolbar: {
         flexGrow: 1, //pa q contenido de dashboard ocupe height y width disponible. No ocupa toodo el height
-        margin: '90px 30px 0 30px',
+        margin: '25px',
         height:"100%"
       }
   })
@@ -33,11 +34,11 @@ const styles = theme => {
 
 const Dashboard = props => {
   const { classes, theme } = props;
-  const { errors, removeError, currentUser } = props;
+  const { errors, removeError, currentUser } = props; //no se usa
   
   return (
     <div style={{width:"100%"}}>
-      <Header open={props.open} handleDrawerToggle={props.handleDrawerToggle}/>
+      <Header open={props.open} handleDrawerToggle={props.handleDrawerToggle} />
       <div className={classes.toolbar}>
         <Switch>
           <Route 
@@ -101,7 +102,7 @@ const Dashboard = props => {
             path="/recetas" 
             render={props => {
               return(
-                <div>Recetas</div>
+                <MealPlanMain2 {...props} />
               );
             }}
           />

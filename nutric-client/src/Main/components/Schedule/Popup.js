@@ -116,8 +116,10 @@ class Popup extends Component {
 
   getDisabledHours = () => {
     var hours = [];
-    for (var i = 0; i < moment().hour(); i++) {
-      hours.push(i);
+    if(this.state.date.day()===moment().day()){
+      for (var i = 0; i < moment().hour(); i++) {
+        hours.push(i);
+      }
     }
     return hours;
   };
@@ -132,7 +134,7 @@ class Popup extends Component {
 
   getDisabledMinutes = selectedHour => {
     var minutes = [];
-    if (selectedHour === moment().hour()) {
+    if (selectedHour === moment().hour() && this.state.date.day()===moment().day()) {
       for (var i = 0; i < moment().minute(); i++) {
         minutes.push(i);
       }

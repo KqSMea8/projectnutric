@@ -2,14 +2,63 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import { Alert } from 'antd';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import Favorite from '@material-ui/icons/Favorite';
+
+const styles = theme => ({
+  main: {
+    width: 'auto',
+    display: 'block', // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    }
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3,
+  },
+});
 
 class AuthForm extends Component {
   constructor(props){
     super(props);
     this.state={
       firstName:"",
+      lastName:"",
       mail:"",
-      password:""
+      password:"",
+      remember:false
     };
   }
   
@@ -18,6 +67,10 @@ class AuthForm extends Component {
       [e.target.name]:e.target.value
     })
   }
+  
+  handleChangeCheckbox = event => {
+    this.setState({ remember: event.target.checked });
+  };
   
   handleSubmit=(e) => {
     e.preventDefault();
@@ -34,89 +87,112 @@ class AuthForm extends Component {
   }
   
   render(){
-    const {firstName, mail, password}=this.state;
+    const {firstName, lastName, mail, password}=this.state;
     const {heading, buttonText, signUp, errors, history, removeError}=this.props;
     history.listen(()=>{
       removeError();
     })
+    const { classes } = this.props;
+
     return (
-      <div>
-        <Grid container justify="center"alignItems="center">
-          <Grid item  md={4} xs={12}>
-          <div className='row'>
-           {errors.message && <div>
-              <Alert
-                message="Error"
-                description={errors.message}
-                type="error"
-                showIcon
-              />
-            </div>}
-          </div>  
-          </Grid>
-        </Grid>
-        <Grid container justify="center"alignItems="center">
-          <Grid item md={6} xs={12}>
-            <div className="row justify-content-md-center text-center">
-              <div className="col-md6">
-                <form onSubmit={this.handleSubmit}>
-                  <h2>{heading}</h2>
-                  {/*=====SIGN UP=======*/}
-                  {signUp && (
-                    <div>
-                      <label htmlFor="password">Nombre:</label>
-                      <input 
-                          className="form-control"
-                          id="firstName"
-                          name="firstName"
-                          onChange={this.handleChange}
-                          type="text"
-                      />
-                    </div>
-                  )}
-                  <label htmlFor="mail">Correo electrónico:</label>
-                  <input 
-                    className="form-control"
-                    id="mail"
-                    name="mail"
-                    onChange={this.handleChange}
-                    value={mail}
-                    type="text"
-                  />
-                  <label htmlFor="password">Contraseña:</label>
-                  <input 
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    onChange={this.handleChange}
-                    type="password"
-                  />
-                  <button className="btn btn-primary btn-block btn-lg">
-                    {buttonText}
-                  </button>
-                  
-                  {!signUp && (
-                      <Link to='/signup'>
-                        <button className="btn btn-info btn-block btn-lg">
-                          Quiero crearme una cuenta
-                         </button>
-                      </Link>
-                  )}
-                  {signUp && (
-                      <Link to='/login'>
-                        <button className="btn btn-info btn-block btn-lg">
-                          Ya tengo una cuenta  
-                        </button>
-                      </Link>
-                  )}
-                </form>
+      <main className={classes.main}>
+        <CssBaseline />
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              {heading}
+            </Typography>
+            <Grid container>
+             {errors.message && 
+              <Grid item xs={12}>
+                <Alert
+                  message="Error"
+                  description={errors.message}
+                  type="error"
+                  showIcon
+                />
+              </Grid>}
+            </Grid>  
+            <form className={classes.form} onSubmit={this.handleSubmit}>
+            {signUp && (
+              <div>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="firstName">Nombre</InputLabel>
+                  <Input onChange={this.handleChange} id="firstName" name="firstName" autoComplete="firstName" autoFocus />
+                </FormControl>
+                <FormControl margin="normal" required fullWidth>
+                  <InputLabel htmlFor="lastName">Apellidos</InputLabel>
+                  <Input onChange={this.handleChange} id="lastName" name="lastName" autoComplete="lastName"  />
+                </FormControl>
               </div>
-            </div>
-          </Grid>
-        </Grid>
-      </div>
+            )}
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="mail">Correo electrónico</InputLabel>
+                <Input onChange={this.handleChange} id="mail" name="mail" autoComplete="mail" autoFocus />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Contraseña</InputLabel>
+                <Input onChange={this.handleChange} name="password" type="password" id="password" autoComplete="current-password" />
+              </FormControl>
+              {!signUp &&
+              <FormControlLabel
+                control={
+                  <Checkbox onChange={this.handleChangeCheckbox} icon={<FavoriteBorder />} checkedIcon={<Favorite />} value="checkedH" />
+                }
+                label="Recuérdame siempre"
+              />
+              }
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                {buttonText}
+              </Button>
+            </form>
+            {signUp ? (
+            <Grid container>
+              <Grid item xs={12}>
+                <Link to='/login'>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    color="default"
+                    className={classes.submit}
+                  >
+                    ¡Ya tengo una cuenta!
+                  </Button>
+                </Link>
+              </Grid>
+            </Grid>
+            ) : 
+            <Grid container>
+              <Grid item xs={12}>
+                <Link to='/signup'>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    color="default"
+                    className={classes.submit}
+                  >
+                    Quiero crearme una cuenta
+                  </Button>
+                </Link>
+              </Grid>
+            </Grid>
+            }
+          </Paper>
+      </main>
     )
   }
 }
 
-export default AuthForm;
+AuthForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(AuthForm);

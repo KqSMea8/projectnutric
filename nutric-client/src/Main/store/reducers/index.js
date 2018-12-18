@@ -5,6 +5,7 @@ import patients from './patientsReducer';
 import appointments from './appointmentsReducer';
 import foods from './foodsReducer';
 import recipes from './recipesReducer';
+import mealPlanTemplates from './mealPlanTemplatesReducer';
 
 const rootReducer = combineReducers({
   currentUser,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   patients,
   appointments,
   foods,
-  recipes
+  recipes,
+  mealPlanTemplates
 });
 
 export default rootReducer;

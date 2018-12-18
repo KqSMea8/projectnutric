@@ -5,8 +5,6 @@ const mealPlanSchema = new mongoose.Schema(
     {
       mealPlanName: String,
       caloricGoal: Number,
-      currentWeight: Number,
-      currentBodyFat: Number,
       objective: String,
       endDate: Date, //para determinar paciente activo
       days:[{
@@ -25,7 +23,7 @@ const mealPlanSchema = new mongoose.Schema(
           }],
         }]
       }],
-      createdBy:{
+      expert:{
         type:mongoose.Schema.Types.ObjectId,
         ref: "Expert"
       },

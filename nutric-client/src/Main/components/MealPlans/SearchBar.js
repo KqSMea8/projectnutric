@@ -13,12 +13,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
     width: 200,
-  },
-  dense: {
-    marginTop: 19,
   },
   menu: {
     width: 200,
@@ -67,7 +62,7 @@ class SearchBar extends React.Component {
           placeholder="Agregar alimento..."
           className={classes.textField}
           onChange={(e)=> { this.showsTable(e); this.onSearchingFood(e);}}
-          margin="normal"
+          
         />
         {!this.state.tableHide ? <TableResult selectedInputIdentifier={this.props.selectedInputIdentifier} selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      
       </div>

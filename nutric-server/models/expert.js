@@ -56,6 +56,10 @@ const expertSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "MealPlan"
         }],
+        mealPlanTemplates: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "MealPlanTemplate"
+        }],
         healthPlans: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "HealthPlan"

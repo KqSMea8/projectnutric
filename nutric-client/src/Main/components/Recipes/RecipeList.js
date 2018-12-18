@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import MUIDataTable from "mui-datatables";
+import RecipeListCss from '../../../RecipeList.css'
 
 const RecipesList = ({data, numRows}) => {
   const columns = ["Nombre", "Fecha de Creacion", "Numero de Ingredientes", "Veces Usada"];
@@ -13,7 +14,9 @@ const RecipesList = ({data, numRows}) => {
     },
     filterType: 'dropdown',
     // selectableRows: false,
-    responsive: 'scroll'
+    responsive: 'scroll',
+    
+
   };  
   
   

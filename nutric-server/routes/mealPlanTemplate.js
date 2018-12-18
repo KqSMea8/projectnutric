@@ -7,9 +7,9 @@ const {loginRequired, ensureCorrectUser} = require("../middleware/auth");
 
 // prefix: /api/experts/:expert_id/mealPlanTemplate'
 router
-  .get("/", loginRequired, ensureCorrectUser, getMealPlanTemplates) //
+  .get("/", loginRequired, ensureCorrectUser, getMealPlanTemplates) 
   .post("/", loginRequired, ensureCorrectUser, createMealPlanTemplate)
-  
+
   .get("/:mealPlanTemplate_id", loginRequired, ensureCorrectUser, getOneMealPlanTemplate) //en el perfil del paciente mapear para ver progreso
   .put("/:mealPlanTemplate_id", loginRequired, ensureCorrectUser, editMealPlanTemplate)
   .delete("/:mealPlanTemplate_id", loginRequired, ensureCorrectUser, deleteMealPlanTemplate);

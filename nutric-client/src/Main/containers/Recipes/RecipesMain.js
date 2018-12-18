@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import RecipeList from '../../components/Recipes/RecipeList'
+import ButtonPopup from '../../components/Recipes/Button-Popup'
 import {fetchRecipes} from '../../store/actions/recipes';
 import {connect} from 'react-redux';
 import Paper from '@material-ui/core/Paper';
@@ -29,9 +30,12 @@ class RecipesMain extends Component {
     const numRows = 10 //num de filas q sera el default en la tabla
     const { recipes } = this.props;
     let RecipesList = recipes.map(recipe => {
-      const { recipeName, ingredients, mealPlans, timestamps } = recipe;
+      let { recipeName, ingredients, mealPlans, createdAt } = recipe;
+      let ingredientesLength = ingredients.length
+      let mealPlansLength = mealPlans.length
+      let DateOfCreation = createdAt.slice(0,10)
       return (
-        [recipeName, 'ingredients', 'mealPlans', 'timestamps']
+        [recipeName, DateOfCreation, ingredientesLength ,mealPlansLength]
       )
     });
     
@@ -52,13 +56,7 @@ class RecipesMain extends Component {
           />
         </Grid>
         <Grid item xs={12} sm={4} md={4} >
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.margin}
-          >Crear Nueva Receta
-          </Button>
+        <ButtonPopup/>
         </Grid>  
       </Grid>
       <Grid container>

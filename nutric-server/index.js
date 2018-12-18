@@ -10,7 +10,8 @@ const   expertAuthRoutes              = require("./routes/expertAuth"),
         patientRoutes                 = require("./routes/patients"),
         scheduledAppointmentsRoutes   = require("./routes/scheduledAppointments"),
         appointmentsRoutes            = require("./routes/appointments"),
-        mealPlanRoutes                 = require("./routes/mealPlan"),
+        mealPlanRoutes                = require("./routes/mealPlan"),
+        mealPlanTemplateRoutes       = require("./routes/mealPlanTemplate"),
         recipesRoutes                 = require("./routes/recipes");
  
 
@@ -38,12 +39,13 @@ app.get("/", function(req,res,next){
  });
 
 // NUTRIS - PACIENTES, SCHEDULEDAPPOINTMENTS, APPOINTMENTS
-app.use("/api/experts/", expertAuthRoutes)
-app.use("/api/experts/:expert_id/appointments", appointmentsRoutes)
-app.use("/api/experts/:expert_id/scheduledappointments", scheduledAppointmentsRoutes)
-app.use("/api/experts/:expert_id/patients", patientRoutes)
-app.use("/api/experts/:expert_id/mealplan", mealPlanRoutes)
-app.use("/api/experts/:expert_id/recipes", recipesRoutes)
+app.use("/api/experts/", expertAuthRoutes);
+app.use("/api/experts/:expert_id/appointments", appointmentsRoutes);
+app.use("/api/experts/:expert_id/scheduledappointments", scheduledAppointmentsRoutes);
+app.use("/api/experts/:expert_id/patients", patientRoutes);
+app.use("/api/experts/:expert_id/mealplan", mealPlanRoutes);
+app.use("/api/experts/:expert_id/mealPlanTemplate", mealPlanTemplateRoutes);
+app.use("/api/experts/:expert_id/recipes", recipesRoutes);
 
 
 

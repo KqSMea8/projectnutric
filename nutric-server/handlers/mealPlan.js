@@ -17,7 +17,7 @@ exports.createMealPlan = async function(req, res, next){
       // currentWeight: req.body.currentWeight,
       // currentBodyFat: req.body.currentBodyFat,
       // objective: req.body.objective,
-      // createdBy: req.params.expert_id
+      // expert: req.params.expert_id
       endDate: req.body.endDate,
       mealPlanName: req.body.mealPlanName
       
@@ -50,7 +50,8 @@ exports.findFoods = async function(req,res,next){ //te aparece el cuadrito con l
           let foundFood = await database.Food.find({
         foodName_lowercase: {
           $regex:new RegExp(req.query.foundFood.toLowerCase())
-        }
+        },
+        source: "CENAN (2017 - Perú)" //developing: limitamos los resultados
       }).limit(20);
           //aqui falta agregar el limit (4 o 5)
           return res.status(200).json(foundFood)

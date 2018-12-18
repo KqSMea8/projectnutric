@@ -8,6 +8,7 @@ import SearchBar from '../../components/MealPlans/SearchBar'
 import TableResult from '../../components/MealPlans/TableResult'
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Input from '@material-ui/core/Input'
@@ -26,7 +27,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    width: '90%',
+    width: '100%',
   },
   button: {
     marginRight: theme.spacing.unit,
@@ -56,7 +57,7 @@ class MealPlanCreate extends Component{
           dayName:"Lunes",
           meals:[{
             mealName:"Desayuno",
-            mealTime:moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime:moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[
               {type:"Manzana"},
               {type:"Huevo"},
@@ -64,7 +65,7 @@ class MealPlanCreate extends Component{
               ]
           },{
             mealName:"Pre-Entreno",
-            mealTime: moment().set({ hour: 10, minute: 45, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 10, minute: 45, second: 0, millisecond: 0 }).toDate(),
             recipes:[
               {type:"Toma"},
               {type:"Tu"},
@@ -76,7 +77,7 @@ class MealPlanCreate extends Component{
           dayName:"Martes",
           meals:[{
             mealName:"Desayuno",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[
               {type:"Eat"},
               {type:"More"},
@@ -88,7 +89,7 @@ class MealPlanCreate extends Component{
           dayName:"Miércoles",
           meals:[{
             mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[]
           },
           ]
@@ -96,7 +97,7 @@ class MealPlanCreate extends Component{
           dayName:"Jueves",
           meals:[{
             mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[]
           },
           ]
@@ -104,7 +105,7 @@ class MealPlanCreate extends Component{
           dayName:"Viernes",
           meals:[{
             mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[]
           },
           ]
@@ -112,7 +113,7 @@ class MealPlanCreate extends Component{
           dayName:"Sábado",
           meals:[{
             mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[]
           },
           ]
@@ -120,7 +121,7 @@ class MealPlanCreate extends Component{
           dayName:"Domingo",
           meals:[{
             mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
             recipes:[]
           },
           ]
@@ -162,6 +163,17 @@ class MealPlanCreate extends Component{
       mealPlan:copy
     })
   }
+  
+  deleteRecipeButton = (identifier) => {
+    const copy=this.state.mealPlan;
+    //Lo unico que necesitamos es determinar dinámicamente lastDay y lastMeal, según la ubicación del searchBar
+    const lastDay=copy.days.length;
+    const lastMeal=copy.days[identifier[0]].meals.length;
+    const updated=copy.days[identifier[0]].meals[identifier[1]].recipes.splice(identifier[2],1);
+    this.setState({
+      mealPlan:copy
+    })
+}
   
   //funciones para el stepper
   totalSteps = () => {
@@ -245,37 +257,35 @@ class MealPlanCreate extends Component{
     return (
       <div>
         <Link to='/dietas'>Click para ir a /dietas </Link>  
-
-        
         <div className={classes.root}>
-        <Stepper nonLinear activeStep={dayIndex} alternativeLabel>
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepButton
-                  onClick={this.handleStep(index)}
-                  completed={this.state.completed[index]}
-                >
-                  {label}
-                </StepButton>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <div>
-          {this.allStepsCompleted() ? (
-            <div>
-              <Typography className={classes.instructions}>
-                A ver has
-              </Typography>
-              <Button onClick={this.handleReset}>Resetear</Button>
-            </div>
-          ) : (
-            <div>
-              <div className={classes.instructions}>
-                <div key={dayIndex}>
-                  <ul>
-                    { 
+          <Stepper nonLinear activeStep={dayIndex} alternativeLabel>
+            {steps.map((label, index) => {
+              return (
+                <Step key={label}>
+                  <StepButton
+                    onClick={this.handleStep(index)}
+                    completed={this.state.completed[index]}
+                  >
+                    {label}
+                  </StepButton>
+                </Step>
+              );
+            })}
+          </Stepper>
+          <div>
+            {this.allStepsCompleted() ? (
+              <div>
+                <Typography className={classes.instructions}>
+                  A ver has
+                </Typography>
+                <Button onClick={this.handleReset}>Resetear</Button>
+              </div>
+            ) : (
+              <div>
+                <div className={classes.instructions}>
+                  <div key={dayIndex}>
+                    <ul>
+                      { 
                         this.state.mealPlan.days[dayIndex].meals.map((meal, mealIndex) =>
                           <div key={dayIndex+"-"+mealIndex}>
                           <hr/>
@@ -285,16 +295,16 @@ class MealPlanCreate extends Component{
                             </li>
                             <ol>
                             {meal.recipes.length==0 && (
-                                  <li key={dayIndex+"-"+mealIndex+"input"}>
-                                    <SearchBar selectedInputIdentifier={[dayIndex,mealIndex]} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
-                                  </li>
+                                <li key={dayIndex+"-"+mealIndex+"input"}>
+                                  <SearchBar selectedInputIdentifier={[dayIndex,mealIndex]} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
+                                </li>
                               )}
                             {
                               meal.recipes.map((alimento, alimentoIndex) => 
                               <div key={dayIndex+"-"+mealIndex+"-"+alimentoIndex}>
                                 <li>
-                                  <Input defaultValue={alimento.type}/>
-                                  <IconButton aria-label="Delete">
+                                  <Input value={alimento.type}/>
+                                  <IconButton aria-label="Delete" onClick={e=>(this.deleteRecipeButton([dayIndex,mealIndex,alimentoIndex]))}>
                                     <DeleteIcon fontSize="small" />
                                   </IconButton>
                                 </li>
@@ -309,47 +319,73 @@ class MealPlanCreate extends Component{
                             </ol>
                         
                           </div>
-                            )
-                    }
+                          )
+                      }
+                    </ul>
+                  </div>
+                </div>
+                <Grid container direction="row" justify="space-between" alignItems="center">
+                  <Grid item md={12}>
+                    <Grid container>
+                      <Grid item md={2}>
+                        <TimePicker/>
+                      </Grid>
+                      <Grid item md={3}>
+                        Alimentos
+                      </Grid>
+                      <Grid item md={1}>
+                        Nombre
+                      </Grid>
+                      <Grid item md={3}>
+                        Graph x meal
+                      </Grid>
+                      <Grid item md={3}>
+                        Graph x dia
+                      </Grid>
+                      <Grid container direction="row" justify="center" alignItems="flex-start">
+                        <Grid item md={10}>
+                          Tabla resultados
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                  <div className="animated swing">
                     <Button variant="contained" color="primary" onClick={e=>{this.addNewMealButton(dayIndex)}}>
                       Agregar comida (para el {this.state.mealPlan.days[dayIndex].dayName})
                     </Button>
-                  </ul>
+                  </div>
+                <div>
+                  <Button
+                    disabled={dayIndex === 0}
+                    onClick={this.handleBack}
+                    className={classes.button}
+                  >
+                    Atrás
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleNext}
+                    className={classes.button}
+                  >
+                    Siguiente
+                  </Button>
+                  {dayIndex !== steps.length &&
+                    (this.state.completed[this.state.dayIndex] ? (
+                      <Typography variant="caption" className={classes.completed}>
+                        {getSteps()[dayIndex]} está completado
+                      </Typography>
+                    ) : (
+                      <Button variant="contained" color="primary" onClick={this.handleComplete}>
+                        {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Día terminado'}
+                      </Button>
+                    ))}
                 </div>
               </div>
-              <div>
-                <Button
-                  disabled={dayIndex === 0}
-                  onClick={this.handleBack}
-                  className={classes.button}
-                >
-                  Atrás
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                  className={classes.button}
-                >
-                  Siguiente
-                </Button>
-                {dayIndex !== steps.length &&
-                  (this.state.completed[this.state.dayIndex] ? (
-                    <Typography variant="caption" className={classes.completed}>
-                      {getSteps()[dayIndex]} está completado
-                    </Typography>
-                  ) : (
-                    <Button variant="contained" color="primary" onClick={this.handleComplete}>
-                      {this.completedSteps() === this.totalSteps() - 1 ? 'Finalizar' : 'Día terminado'}
-                    </Button>
-                  ))}
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-        
-        
       </div>
     );
   }}

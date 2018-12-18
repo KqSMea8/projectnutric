@@ -3,7 +3,12 @@ const Schema = mongoose.Schema;
 
 const mealPlanTemplateSchema = new mongoose.Schema(
     {
-      mealPlanName: String,
+      mealPlanTemplateName: {
+       type: String,
+       required: true
+      },
+      caloricGoal: Number,
+      objective: String,
       days:[{
         dayName: String,
         totalCalories: Number,
@@ -20,7 +25,7 @@ const mealPlanTemplateSchema = new mongoose.Schema(
           }],
         }]
       }],
-      createdBy:{
+      expert:{
         type:mongoose.Schema.Types.ObjectId,
         ref: "Expert"
       },

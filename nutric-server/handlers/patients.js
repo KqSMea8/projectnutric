@@ -45,6 +45,7 @@ exports.deletePatient = async function(req,res,next){
 }
 
 // por ahora este edit esta estructurado para tener un solo form en el front (solo hay 1 req.body)
+// agregar layer de if(foundPatient.expert == req.params.patient_id)
 exports.editPatient = async function(req,res,next){
     try{
         let foundPatient = await database.Patient.findByIdAndUpdate(req.params.patient_id, req.body, { new: true }); 

@@ -45,18 +45,6 @@ function getSteps() {
   return ['Lunes', 'Martes','Miércoles', 'Jueves','Viernes','Sábado','Domingo'];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <SearchBar/>
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Complete el plan alimenticio';
-  }
-}
 
 
 class MealPlanCreate extends Component{
@@ -140,8 +128,9 @@ class MealPlanCreate extends Component{
       },
       selectedFood:"",
       selectedInputRef:"",
-      activeStep:0,
-      completed:{}
+      dayIndex:0,
+      completed:{},
+      dayIndex:0
     }
   };
   
@@ -175,43 +164,42 @@ class MealPlanCreate extends Component{
   }
   
   //funciones para el stepper
-  
   totalSteps = () => {
     return getSteps().length;
   };
 
   
   handleNext = () => {
-    let activeStep;
+    let dayIndex;
 
     if (this.isLastStep() && !this.allStepsCompleted()) {
       // It's the last step, but not all steps have been completed,
       // find the first step that has been completed
       const steps = getSteps();
-      activeStep = steps.findIndex((step, i) => !(i in this.state.completed));
+      dayIndex = steps.findIndex((step, i) => !(i in this.state.completed));
     } else {
-      activeStep = this.state.activeStep + 1;
+      dayIndex = this.state.dayIndex + 1;
     }
     this.setState({
-      activeStep,
+      dayIndex,
     });
   };
 
   handleBack = () => {
     this.setState(state => ({
-      activeStep: state.activeStep - 1,
+      dayIndex: state.dayIndex - 1,
     }));
   };
 
   handleStep = step => () => {
     this.setState({
-      activeStep: step,
+      dayIndex: step,
     });
   };
 
   handleComplete = () => {
     const { completed } = this.state;
-    completed[this.state.activeStep] = true;
+    completed[this.state.dayIndex] = true;
     this.setState({
       completed,
     });
@@ -220,7 +208,7 @@ class MealPlanCreate extends Component{
 
   handleReset = () => {
     this.setState({
-      activeStep: 0,
+      dayIndex: 0,
       completed: {},
     });
   };
@@ -230,29 +218,67 @@ class MealPlanCreate extends Component{
   }
 
   isLastStep() {
-    return this.state.activeStep === this.totalSteps() - 1;
+    return this.state.dayIndex === this.totalSteps() - 1;
   }
 
   allStepsCompleted() {
     return this.completedSteps() === this.totalSteps();
   }  
 
+
+  
   render(){
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
-    
+    const { dayIndex } = this.state;
+
+    const ColoredLine = ({ color }) => (
+        <hr
+            style={{
+                color: color,
+                backgroundColor: color,
+                height: 5
+            }}
+        />
+    );
+
     return (
       <div>
         <Link to='/dietas'>Click para ir a /dietas </Link>  
-        {
-            this.state.mealPlan.days.map((day,dayIndex) => 
+
+        
+        <div className={classes.root}>
+        <Stepper nonLinear activeStep={dayIndex} alternativeLabel>
+          {steps.map((label, index) => {
+            return (
+              <Step key={label}>
+                <StepButton
+                  onClick={this.handleStep(index)}
+                  completed={this.state.completed[index]}
+                >
+                  {label}
+                </StepButton>
+              </Step>
+            );
+          })}
+        </Stepper>
+        <div>
+          {this.allStepsCompleted() ? (
+            <div>
+              <Typography className={classes.instructions}>
+                A ver has
+              </Typography>
+              <Button onClick={this.handleReset}>Resetear</Button>
+            </div>
+          ) : (
+            <div>
+              <div className={classes.instructions}>
                 <div key={dayIndex}>
-                    <h4>{day.dayName}</h4>
-                    <ul>
+                  <ul>
                     { 
-                        day.meals.map((meal, mealIndex) =>
+                        this.state.mealPlan.days[dayIndex].meals.map((meal, mealIndex) =>
                           <div key={dayIndex+"-"+mealIndex}>
+                          <hr/>
                             <li>
                               <Input defaultValue={meal.mealName=="" ? "Comida "+(mealIndex+1) : meal.mealName}/>
                               <TimePicker use12Hours defaultValue={moment(meal.mealTime)} format={"h:mm a"} minuteStep={5} allowEmpty={false}/>
@@ -285,43 +311,15 @@ class MealPlanCreate extends Component{
                           </div>
                             )
                     }
-                      <Button variant="contained" color="primary" onClick={e=>{this.addNewMealButton(dayIndex)}}>
-                        Agregar comida (para el {day.dayName})
-                      </Button>
-                    </ul>
+                    <Button variant="contained" color="primary" onClick={e=>{this.addNewMealButton(dayIndex)}}>
+                      Agregar comida (para el {this.state.mealPlan.days[dayIndex].dayName})
+                    </Button>
+                  </ul>
                 </div>
-            )
-        }
-        
-        <div className={classes.root}>
-        <Stepper nonLinear activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepButton
-                  onClick={this.handleStep(index)}
-                  completed={this.state.completed[index]}
-                >
-                  {label}
-                </StepButton>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <div>
-          {this.allStepsCompleted() ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Button onClick={this.handleReset}>Reset</Button>
-            </div>
-          ) : (
-            <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+              </div>
               <div>
                 <Button
-                  disabled={activeStep === 0}
+                  disabled={dayIndex === 0}
                   onClick={this.handleBack}
                   className={classes.button}
                 >
@@ -335,10 +333,10 @@ class MealPlanCreate extends Component{
                 >
                   Siguiente
                 </Button>
-                {activeStep !== steps.length &&
-                  (this.state.completed[this.state.activeStep] ? (
+                {dayIndex !== steps.length &&
+                  (this.state.completed[this.state.dayIndex] ? (
                     <Typography variant="caption" className={classes.completed}>
-                      {getSteps()[activeStep]} está completado
+                      {getSteps()[dayIndex]} está completado
                     </Typography>
                   ) : (
                     <Button variant="contained" color="primary" onClick={this.handleComplete}>

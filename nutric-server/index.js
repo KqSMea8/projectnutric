@@ -10,8 +10,9 @@ const   expertAuthRoutes              = require("./routes/expertAuth"),
         patientRoutes                 = require("./routes/patients"),
         scheduledAppointmentsRoutes   = require("./routes/scheduledAppointments"),
         appointmentsRoutes            = require("./routes/appointments"),
-        //recipesRoutes              = require("./routes/recipes");
-        mealPlanRoutes                = require("./routes/mealPlan")
+        mealPlanRoutes                 = require("./routes/mealPlan"),
+        recipesRoutes                 = require("./routes/recipes");
+ 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -42,6 +43,7 @@ app.use("/api/experts/:expert_id/appointments", appointmentsRoutes)
 app.use("/api/experts/:expert_id/scheduledappointments", scheduledAppointmentsRoutes)
 app.use("/api/experts/:expert_id/patients", patientRoutes)
 app.use("/api/experts/:expert_id/mealplan", mealPlanRoutes)
+app.use("/api/experts/:expert_id/recipes", recipesRoutes)
 
 
 

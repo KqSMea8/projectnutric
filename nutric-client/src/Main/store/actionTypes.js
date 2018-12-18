@@ -10,3 +10,6 @@ export const LOAD_APPOINTMENTS= 'LOAD_APPOINTMENTS'
 
 // FOODS
 export const LOAD_FOODS = 'LOAD_FOODS';
+
+// RECIPES
+export const LOAD_RECIPES = 'LOAD_RECIPES';

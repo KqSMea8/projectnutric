@@ -20,9 +20,9 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
+function createData(patient, creationDate, objective, progress) {
   counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
+  return { id: counter, patient, creationDate, objective, progress};
 }
 
 function desc(a, b, orderBy) {
@@ -50,10 +50,10 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  { id: 'Paciente', numeric: false, disablePadding: true, label: 'Paciente' },
+  { id: 'Fecha de creación', numeric: true, disablePadding: false, label: 'Fecha de creación' },
+  { id: 'Objetivo', numeric: false, disablePadding: false, label: 'Objetivo' },
+  { id: 'Progreso', numeric: true, disablePadding: false, label: 'Progreso' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -127,7 +127,7 @@ const toolbarStyles = theme => ({
           color: theme.palette.text.primary,
           backgroundColor: theme.palette.secondary.dark,
         },
-  spacer: {
+  spacer: { //para q boton de filtro este a la derecha
     flex: '1 1 100%',
   },
   actions: {
@@ -140,7 +140,12 @@ const toolbarStyles = theme => ({
 
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
-
+  
+  // onDeleteClick = (e) => {
+  //   e.preventDefault();
+  // logica de eliminar 
+  // }
+  
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -154,7 +159,7 @@ let EnhancedTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            Nutrition
+            Planes alimenticios pendientes
           </Typography>
         )}
       </div>
@@ -163,7 +168,7 @@ let EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon />
+              <DeleteIcon /> 
             </IconButton>
           </Tooltip>
         ) : (
@@ -188,14 +193,17 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    // marginTop: theme.spacing.unit * 3,
   },
   table: {
-    minWidth: 1020,
+    // minWidth: 1020, si esta activado, se corre a la derehca y aparece scrollbar por overflowX auto.
   },
   tableWrapper: {
     overflowX: 'auto',
   },
+  narrowCell: {
+		'width': '25%',
+	}
 });
 
 class EnhancedTable extends React.Component {
@@ -298,7 +306,7 @@ class EnhancedTable extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      onClick={event => this.handleClick(event, n.id)} //cambiar event a ir a dieta
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -308,12 +316,10 @@ class EnhancedTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.name}
-                      </TableCell>
-                      <TableCell numeric>{n.calories}</TableCell>
-                      <TableCell numeric>{n.fat}</TableCell>
-                      <TableCell numeric>{n.carbs}</TableCell>
+                      <TableCell className={classes.narrowCell} component="th" scope="row" padding={0} >{n.patient}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{n.creationDate}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{n.objective}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{n.progress}</TableCell>
                     </TableRow>
                   );
                 })}

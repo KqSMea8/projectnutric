@@ -26,7 +26,8 @@
     "react-scripts": "2.1.1",
     "react-select": "^2.1.2",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "validator": "^10.9.0"
   },
   "proxy": "https://nutric-svenbm.c9users.io:8081",
   "scripts": {

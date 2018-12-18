@@ -55,19 +55,10 @@ class SearchBar extends React.Component {
       this.setState({tableHide:false})
     }
   };
-  
-  onSelectInput = (event) => {
-    const selectedInput=event.target
-    
-  }
 
   
   render() {
-    const { classes, tableId } = this.props;
-    
-    function onSelectInput(e){
-      console.log(this.ref.this.props.ref)
-    }
+    const { classes } = this.props;
     
     return (
       <div>
@@ -78,9 +69,9 @@ class SearchBar extends React.Component {
           className={classes.textField}
           onChange={(e)=> { this.showsTable(e); this.onSearchingFood(e);}}
           margin="normal"
-          onClick={onSelectInput}
         />
-        {!this.state.tableHide ? <TableResult selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      </div>
+        {!this.state.tableHide ? <TableResult selectedInputIdentifier={this.props.selectedInputIdentifier} selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      
+      </div>
     );
   }
 }

@@ -262,7 +262,6 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper id={tableId} className={classes.root}>
-      {this.state.selected}
         <div  className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -296,7 +295,7 @@ class EnhancedTable extends React.Component {
                       <TableCell numeric>{n.carbs}</TableCell>
                       <TableCell numeric>{n.protein}</TableCell>
                       <TableCell numeric>
-                        <Fab size="small"  color="secondary" aria-label="Add" onClick={e=>{this.props.addNewRecipeButton(n);alert("_id: "+n.id+"\r\nfoodName: "+n.name)}}>
+                        <Fab size="small"  color="secondary" aria-label="Add" onClick={e=>{this.props.addNewRecipeButton(n, this.props.selectedInputIdentifier);alert("_id: "+n.id+"\r\nfoodName: "+n.name)}}>
                           <AddIcon />
                         </Fab>
                       </TableCell>

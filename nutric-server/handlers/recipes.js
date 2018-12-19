@@ -13,8 +13,9 @@ exports.createRecipe = async function(req,res,next){
     try{
         let newRecipe = await database.Recipe.create({
             recipeName: req.body.recipeName,
-            description: req.body.description,
-            ingredients: req.body.ingredients,
+            portions: req.body.portions,
+            category: req.body.category,
+            duration: req.body.duration,
             expert:req.params.expert_id
              
         })

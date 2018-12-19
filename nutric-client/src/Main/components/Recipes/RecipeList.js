@@ -3,7 +3,7 @@ import MUIDataTable from "mui-datatables";
 import RecipeListCss from '../../../RecipeList.css'
 
 const RecipesList = ({data, numRows}) => {
-  const columns = ["Nombre", "Fecha de Creacion", "Numero de Ingredientes", "Veces Usada"];
+  const columns = ["Nombre", "Categoria", "Fecha de Creacion", "Número de Ingredientes"];
 
   const options = {
     filterType: 'dropdown',

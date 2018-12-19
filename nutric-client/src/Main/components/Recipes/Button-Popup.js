@@ -27,6 +27,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import tacutacu from '../../images/tacutacu.jpg'
 
+
 const styles  = theme => ({
     dialogPaper: {
         minHeight: '85vh',
@@ -49,10 +50,10 @@ const styles  = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
   textField: {
-    flexBasis: 1000,
+    flexBasis: 2000,
   },
 })
-const ranges = [
+const selectCategory= [
   {
     value: 'Postre',
     label: 'Postre',
@@ -75,10 +76,10 @@ class ButtonPopup extends Component {
   state = {
     open: false,
     multiline:"",
-    scheduledTimeDuration: 45,
-    notes:"",
+    recipeName: "",
+    duration:"",
     patient:"",
-    weightRange: '',
+    category: '',
   };
 
   handleChange = prop => event => {
@@ -89,33 +90,23 @@ class ButtonPopup extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { currentUserId } = this.props
-    // scheduledTimeStart,
-    const scheduledTimeStart=this.state.date.set({hour: this.state.startTime.hours(), minute: this.state.startTime.minutes()}).toDate()
-    // scheduledTimeEnd,
-    const scheduledTimeEnd=this.state.date.set({hour: this.state.endTime.hours(), minute: this.state.endTime.minutes()}).toDate()
-    // scheduledTimeDuration,
-    const duration=this.state.endTime.diff(this.state.startTime, "minutes")
+    const {recipeName, category, duration} = this.state;
+  
        
-    apiCall("post", `/api/experts/${currentUserId}/scheduledappointments/`,{
-      scheduledTimeStart:scheduledTimeStart,
-      scheduledTimeEnd:scheduledTimeEnd,
-      scheduledTimeDuration:duration,
-      notes:this.state.notes,
-      patient_id:this.state.patient,
+    apiCall("post", `/api/experts/${currentUserId}/recipes/`,{
+      recipeName:recipeName,
+      category:category,
+      duration:duration
     })
     .then(res => {
-      console.log(res);
-      // ¿Cómo se redirigía con history?
-      window.location.href="/agenda"
+      console.log(res)
+    let path = `/recetas`;
+    this.props.history.push(path);
     })
     .catch(err => {
       console.log(err)
     });
   }
-
-  onPatientSelected = (patientId) => {
-    this.setState({ patient: patientId.value });
-  };
   
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -132,8 +123,9 @@ class ButtonPopup extends Component {
   };
 
   render() {
-    const {currentUserId, patient}=this.props
+    const {currentUserId}=this.props
     const { classes } = this.props;
+
     
     return (
       <div>
@@ -146,22 +138,29 @@ class ButtonPopup extends Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title"></DialogTitle>
+          <DialogTitle id="form-dialog-title">Crea una nueva receta</DialogTitle>
           <DialogContent>
             <form onSubmit={this.handleSubmit}>
               <Grid container direction="row" justify="space-between" alignItems="baseline">
                 <Grid container direction="row" justify="space-between" alignItems="flex-start">
+                  
+{/* //////////////////////////// NOMBRE DE LA RECETA//////////////////////////////////////////////////////////////////////////*/}
+                 
                   <Grid item md={6} xs={12}>  
                     <Grid container justify="space-between" alignItems="center">
                       <Grid item md={3} xs={4}> Nombre: </Grid>
                       <Grid item md={7} xs={8}>
-                      
                           <Input
                           type="string"
                           placeholder="Tacu Tacu a la Norteña"
+                          value = {this.state.recipeName}
+                          onChange = {this.handleChange('recipeName')}
+                          
                         />
                         </Grid>
-                      <Grid item md={2} xs={4}></Grid>         
+                      <Grid item md={2} xs={4}></Grid>      
+                      
+{/* //////////////////////////// PORCIONES//////////////////////////////////////////////////////////////////////////*/}
                       
                       <Grid item md={3} xs={4}> Porciones: </Grid>
                       <Grid item md={4} xs={8}>
@@ -173,29 +172,44 @@ class ButtonPopup extends Component {
                         </Grid>              
                       <Grid item md={5} xs={4}></Grid>
                       
+{/* //////////////////////////// DROPDOWN SELECCIONAR CATEGORIA//////////////////////////////////////////////////////////////////////////*/}
+
                       <Grid item md={3} xs={4}> Categoria: </Grid>
                       <Grid item md={9} xs={8}>                        
                        <TextField
                           select
                           className={classNames(classes.margin, classes.textField)}
-                          value={this.state.weightRange}
-                          onChange={this.handleChange('weightRange')}
+                          value={this.state.category}
+                          onChange={this.handleChange('category')}
                           InputProps={{
                             startAdornment: <InputAdornment position="start"></InputAdornment>,
                           }}
                         >
-     
-                        
-                          {ranges.map(option => (
+                          {selectCategory.map(option => (
                             <MenuItem key={option.value} value={option.value}>
                               {option.label}
                             </MenuItem>
                           ))}
                         </TextField>  
                       </Grid>
+{/* //////////////////////////// DURACION PROMEDIO //////////////////////////////////////////////////////////////////////////*/}
+                      
+                      <Grid item md={3} xs={4}> Duracion: </Grid>
+                      <Grid item md={4} xs={8}>
+                      
+                          <Input
+                          type="string"
+                          placeholder="45 minutos"
+                          value={this.state.duration}
+                          onChange={this.handleChange('duration')}                          
+                        />
+                        </Grid>              
+                      <Grid item md={5} xs={4}></Grid>
                       
                     </Grid>
                   </Grid>  
+{/* //////////////////////////// CARD DE IMAGEN Y BOTONES //////////////////////////////////////////////////////////////////////////*/}
+
                   <Grid item md={6} xs={12} align="center">
                      <Card className={classes.card}>
                       <CardActionArea>

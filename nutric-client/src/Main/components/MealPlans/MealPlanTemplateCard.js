@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../../../App.css';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -19,46 +20,58 @@ const styles = {
   },
 };
 
+
 function MealPlanTemplateCard(props) {
-  const { classes, image, imageTitle, mealPlanTemplateName, calories, protein, carbs, fat } = props;
+  const { classes, image, imageTitle, mealPlanTemplateName, calories, protein, carbs, fat, onMouseEnter, onMouseLeave, isHovering } = props;
+  console.log(isHovering);
   return (
-<Grid item xs={4}>
-              <Card style={{margin: '0 20px', height: '100%'}}>
-                <Grid container style={{height: "100%"}}>
-                  <Grid item md={5} style={{height: "100%"}}>
-                    <CardMedia 
-                      image={image}
-                      title={imageTitle}
-                      style={{height: "100%"}}
-                    />
+      <Grid item xs={4} >
+          <Card style={{margin: '0 20px', height: '100%'}}>
+            <Grid container style={{height: "100%"}} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
+            
+{/*=============CON HOVER RENDER CARD Y DIV DE BOTONES================*/}
+            {isHovering && 
+                 <div className='cardLayerTop' >'hola'</div>
+            }
+            
+{/*=============SIN HOVER SOLO RENDER EL CARD================*/}            
+              <Grid item md={5} style={{height: "100%"}}>
+                <CardMedia 
+                  image={image}
+                  title={imageTitle}
+                  style={{height: "100%"}}
+                />
+              </Grid>
+              <Grid item md={7} style={{padding: '8px 5px 0px 5px'}}>
+                <Grid container style={{height: '100%'}}>
+                  <Grid item xs={12}>
+                    <Typography variant={'subtitle1'}>{mealPlanTemplateName}</Typography>
                   </Grid>
-                  <Grid item md={7} style={{padding: '8px 5px 0px 5px'}}>
-                    <Grid container style={{height: '100%'}}>
-                      <Grid item xs={12}>
-                        <Typography variant={'subtitle1'}>{mealPlanTemplateName}</Typography>
+                  <Grid item xs={12} >
+                    <Grid container alignContent={'center'} style={{height: '100%', textAlign: 'center', alignItems: 'center'}}>
+                      <Grid item xs={3}>
+                        <Typography style={{fontSize: 'small'}}>{calories}kcal</Typography>
                       </Grid>
-                      <Grid item xs={12} >
-                        <Grid container alignContent={'center'} style={{height: '100%', textAlign: 'center', alignItems: 'center'}}>
-                          <Grid item xs={3}>
-                            <Typography style={{fontSize: 'small'}}>{calories}kcal</Typography>
-                          </Grid>
-                          <Grid item xs={3}>
-                            <Typography style={{fontSize: 'small'}}>{protein}gr</Typography>
-                          </Grid>
-                          <Grid item xs={3}>
-                            <Typography style={{fontSize: 'small'}}>{carbs}gr</Typography>
-                          </Grid>
-                          <Grid item xs={3}>
-                            <Typography style={{fontSize: 'small'}}>{fat}gr</Typography>
-                          </Grid>
-                        </Grid>
-                        
+                      <Grid item xs={3}>
+                        <Typography style={{fontSize: 'small'}}>{protein}gr</Typography>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography style={{fontSize: 'small'}}>{carbs}gr</Typography>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography style={{fontSize: 'small'}}>{fat}gr</Typography>
                       </Grid>
                     </Grid>
+                    
                   </Grid>
                 </Grid>
-              </Card>
+              </Grid>
+              
+              
+              
             </Grid>
+          </Card>
+        </Grid>
   );
 }
 

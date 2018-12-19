@@ -1,4 +1,4 @@
-import { apiCall } from '../services/api';
+import { apiCall } from '../../services/api';
 import { addError } from './errors';
 import { LOAD_MEAL_PLAN_TEMPLATES } from '../actionTypes';
 

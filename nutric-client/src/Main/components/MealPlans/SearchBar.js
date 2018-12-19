@@ -62,7 +62,7 @@ class SearchBar extends React.Component {
           placeholder="Agregar alimento..."
           className={classes.textField}
           onChange={(e)=> { this.showsTable(e); this.onSearchingFood(e);}}
-          
+          margin="none"
         />
         {!this.state.tableHide ? <TableResult selectedInputIdentifier={this.props.selectedInputIdentifier} selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      
       </div>

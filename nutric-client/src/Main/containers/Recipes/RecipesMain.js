@@ -30,35 +30,18 @@ class RecipesMain extends Component {
     const numRows = 10 //num de filas q sera el default en la tabla
     const { recipes } = this.props;
     let RecipesList = recipes.map(recipe => {
-      let { recipeName, ingredients, mealPlans, createdAt } = recipe;
-      let ingredientesLength = ingredients.length
-      let mealPlansLength = mealPlans.length
+      let { recipeName, ingredients, category, createdAt } = recipe;
+      let ingredientesLength = ingredients.length;
       let DateOfCreation = createdAt.slice(0,10)
       return (
-        [recipeName, DateOfCreation, ingredientesLength ,mealPlansLength]
+        [recipeName, category, DateOfCreation, ingredientesLength] 
       )
     });
     
   
     return (
       <div>
-      <Grid container>
-        <Grid item xs={12} sm={8} md ={8}>
-         <TextField
-            label="Recetas"
-            style={{ margin: 15}}
-            placeholder="Busca una receta"
-            margin="normal"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4} md={4} >
         <ButtonPopup/>
-        </Grid>  
-      </Grid>
       <Grid container>
         <Grid item style={{paddingRight: '30px', flex: 2}}>
           <RecipeList data={RecipesList} numRows={numRows} />

@@ -5,7 +5,12 @@ exports.createMealPlanTemplate = async function(req,res,next){
   try {
     let newMealPlanTemplate = await database.MealPlanTemplate.create({
       mealPlanTemplateName: req.body.mealPlanTemplateName,
-      expert: req.params.expert_id
+      expert:               req.params.expert_id,
+      objective:            req.body.objective,
+      avgDailyCalories:     req.body.avgDailyCalories,
+      avgDailyProtein:      req.body.avgDailyProtein,
+      avgDailyCarbs:        req.body.avgDailyCarbs,
+      avgDailyFat:          req.body.avgDailyFat
     });
     newMealPlanTemplate.save();
       

@@ -8,7 +8,9 @@ const recipeSchema = new mongoose.Schema({
   ref: 'MealPlan'
   }],
   description: String,
-  categoria: String,
+  category: String,
+  duration: String,
+  portions: String,
   recipeName: String,
   instructions: [{
     type: String

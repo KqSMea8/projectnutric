@@ -3,12 +3,16 @@ const Schema = mongoose.Schema;
 
 const mealPlanTemplateSchema = new mongoose.Schema(
     {
-      mealPlanTemplateName: {
+      mealPlanTemplateName: { //poner en input maxValue para evitar distorciones si hay muchos caracteres
        type: String,
        required: true
       },
-      caloricGoal: Number,
+      // image: String,
       objective: String,
+      avgDailyCalories: Number,
+      avgDailyProtein: Number,
+      avgDailyCarbs: Number,
+      avgDailyFat: Number,
       days:[{
         dayName: String,
         totalCalories: Number,

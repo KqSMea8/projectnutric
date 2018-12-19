@@ -22,11 +22,12 @@ import Restaurant from "@material-ui/icons/Restaurant";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
+import Typography from '@material-ui/core/Typography';
 
 import logoXL from '../images/logoXL.svg';
 import logoXS from '../images/logoXS.svg';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const styles = theme => ({
   hide: {
@@ -68,7 +69,7 @@ const styles = theme => ({
   },
   mainLogo: {
     textAlign: "center"
-  }
+  },
 
 });
 class Sidebar extends Component {
@@ -109,7 +110,7 @@ class Sidebar extends Component {
               [classes.mainLogo]: true
             })}
           >
-            <div style={{height:"64px", width:"60px", margin:"auto"}}><img style={{height:"100%", width:"100%"}} src={logoXS}/></div>
+            <div style={{height:"64px", width:"60px", margin:"auto"}}><img style={{height:"100%", width:"100%"}} src={logoXL}/></div>
           </div>
           <Divider />
           <List>
@@ -119,7 +120,7 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <DashboardIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Inicio" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Inicio</Typography>
                 </ListItem>
               </NavLink>
             </Tooltip>
@@ -129,7 +130,7 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <Person style={{ color: "#007bff" }}/>
                   </ListItemIcon>
-                  <ListItemText primary="Pacientes" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Pacientes</Typography>
                 </ListItem>
               </NavLink>
             </Tooltip>
@@ -139,7 +140,7 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <CalendarToday style={{ color: "red" }}/>
                   </ListItemIcon>
-                  <ListItemText primary="Agenda" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Agenda</Typography>
                 </ListItem>
               </NavLink>
             </Tooltip>
@@ -149,7 +150,7 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <Restaurant style={{ color: "#f1c55c" }} />
                   </ListItemIcon>
-                  <ListItemText primary="Planes Alimenticios" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Planes Alimenticios</Typography>
                 </ListItem>
               </NavLink>
             </Tooltip>
@@ -159,7 +160,7 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <InboxIcon style={{ color: "#447e67" }}/>
                   </ListItemIcon>
-                  <ListItemText primary="Recetas" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Recetas</Typography>
                 </ListItem>
               </NavLink>
             </Tooltip>
@@ -169,7 +170,7 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <InsertChart style={{ color: "green" }} />
                   </ListItemIcon>
-                  <ListItemText primary="Estadísticas" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Estadísticas</Typography>
                 </ListItem>
               </NavLink>
             </Tooltip>
@@ -181,13 +182,13 @@ class Sidebar extends Component {
                   <ListItemIcon>
                     <InsertChart style={{ color: "orange" }} />
                   </ListItemIcon>
-                  <ListItemText primary="Iniciar Consulta" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Iniciar Consulta</Typography>
                 </ListItem>
                <ListItem button key="schedule_appointment">
                   <ListItemIcon>
                     <Event style={{ color: "blue" }} />
                   </ListItemIcon>
-                  <ListItemText primary="Agendar Consulta" />
+                  <Typography style={(this.props.open ? {padding:"0"}:{padding:"0 16px"})}>Agendar Consulta</Typography>
                 </ListItem>
             </List>
         {/*  </Grid> */}

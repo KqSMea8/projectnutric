@@ -16,6 +16,7 @@ exports.createScheduledAppointment = async function(req,res,next){
             //¡Llegue! Y no fue necesario mandarlo como hidden input (16-diciembre)
         });
         //Hacer referencia del scheduledAppointment en la BD del experto
+        // try catch doble 
         let foundExpert = await database.Expert.findById(req.params.expert_id);
         foundExpert.appointments.push(newScheduledAppointment._id);
         await foundExpert.save();

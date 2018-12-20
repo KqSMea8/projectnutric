@@ -14,13 +14,16 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
-import TablePagination from '@material-ui/core/TablePagination';
 
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 let counter = 0;
+function createData(name, calories, fat, carbs, protein) {
+  counter += 1;
+  return { id: counter, name, calories, fat, carbs, protein };
+}
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,39 +53,15 @@ function getSorting(order, orderBy) {
 
 const rows = [
   {
-    id: "foodName",
+    id: "name",
     numeric: false,
     disablePadding: true,
     label: "Alimento (100g)"
   },
   { 
-    id: "calories_kcal", 
-    numeric: false, 
-    disablePadding: true, 
-    label: "Calorías" 
-  },
-  { 
-    id: "fat_g", 
-    numeric: false, 
-    disablePadding: true, 
-    label: "Grasa (g)" 
-  },
-  {
-    id: "carbs_g",
-    numeric: false,
-    disablePadding: true,
-    label: "Carbohidratos (g)"
-  },
-  {
-    id: "protein_g",
-    numeric: false,
-    disablePadding: true,
-    label: "Proteína (g)"
-  },
-  { 
     id: "select", 
-    numeric: false, 
-    disablePadding: true, 
+    numeric: true, 
+    disablePadding: false, 
     label: "" 
   }
 ];
@@ -140,8 +119,7 @@ EnhancedTableHead.propTypes = {
 
 const toolbarStyles = theme => ({
   root: {
-    paddingRight: "0",
-    textAlign:"center"
+    paddingRight: theme.spacing.unit
   },
   highlight:
     theme.palette.type === "light"
@@ -186,15 +164,12 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    textAlign:"center"
+    marginTop: theme.spacing.unit * 3
   },
 
   tableWrapper: {
     overflowX: "auto"
   }
-  
 });
 
 class EnhancedTable extends React.Component {
@@ -202,6 +177,9 @@ class EnhancedTable extends React.Component {
     order: "asc",
     orderBy: "calories",
     selected: [],
+    data: [
+      createData("Cupcake", 305, 3.7, 67, 4.3),
+    ],
     page: 0,
     rowsPerPage: 5
   };
@@ -209,19 +187,41 @@ class EnhancedTable extends React.Component {
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = "desc";
-  
+
     if (this.state.orderBy === property && this.state.order === "desc") {
       order = "asc";
     }
-  
+
     this.setState({ order, orderBy });
+  };
+
+
+  handleClick = (event, id) => {
+    const { selected } = this.state;
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
     this.setState({ page });
   };
 
-  handleChangeRowsPerPage = (event) => {
+  handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   };
 
@@ -229,9 +229,9 @@ class EnhancedTable extends React.Component {
 
   render() {
     const { classes, tableId, selectedFood } = this.props;
-    const { order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const foodDatabase=this.props.foods.map(function(food){
-      return {id: food._id, foodName: food.foodName, calories_kcal: food.calories_kcal, fat_g: food.fat_g, carbs_g:food.carbs_g, protein_g: food.protein_g, display:false}
+      return {id: food._id, name: food.foodName, calories: food.calories_kcal, fat: food.fat_g, carbs:food.carbs_g, protein: food.protein_g}
     })
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, foodDatabase.length - page * rowsPerPage);
@@ -246,7 +246,6 @@ class EnhancedTable extends React.Component {
               orderBy={orderBy}
               onRequestSort={this.handleRequestSort}
               rowCount={foodDatabase.length}
-              style={{textAlign:"center"}}
             />
             <TableBody>
               {stableSort(foodDatabase, getSorting(order, orderBy))
@@ -256,6 +255,7 @@ class EnhancedTable extends React.Component {
                   return (
                     <TableRow
                       hover
+                      onClick={event => {this.handleClick(event, n.id)}}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -264,14 +264,10 @@ class EnhancedTable extends React.Component {
                     >
                       <TableCell padding="checkbox" />
                       <TableCell component="th" scope="row" padding="none">
-                        {n.foodName}
+                        {n.name}
                       </TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.calories_kcal}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.fat_g}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.carbs_g}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.protein_g}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>
-                        <Fab size="small" color="secondary" aria-label="Add" onClick={e=>{this.props.addNewRecipeButton(n, this.props.selectedInputIdentifier)}}>
+                      <TableCell numeric>
+                        <Fab size="small"  color="secondary" aria-label="Add" onClick={e=>{this.props.addNewRecipeButton(n, this.props.selectedInputIdentifier);alert("_id: "+n.id+"\r\nfoodName: "+n.name)}}>
                           <AddIcon />
                         </Fab>
                       </TableCell>
@@ -279,30 +275,13 @@ class EnhancedTable extends React.Component {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 55 * emptyRows }}>
+                <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5]}
-          component="div"
-          count={foodDatabase.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          labelRowsPerPage={'Alimentos por página:'}
-          labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-          backIconButtonProps={{
-            'aria-label': 'Anterior',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Siguiente',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={(e,foodDatabase)=>this.handleChangeRowsPerPage(e,foodDatabase)}
-        />
       </Paper>
     );
   }

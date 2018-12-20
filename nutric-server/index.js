@@ -11,8 +11,9 @@ const   expertAuthRoutes              = require("./routes/expertAuth"),
         scheduledAppointmentsRoutes   = require("./routes/scheduledAppointments"),
         appointmentsRoutes            = require("./routes/appointments"),
         mealPlanRoutes                = require("./routes/mealPlan"),
-        mealPlanTemplateRoutes       = require("./routes/mealPlanTemplate"),
-        recipesRoutes                 = require("./routes/recipes");
+        mealPlanTemplateRoutes        = require("./routes/mealPlanTemplate"),
+        recipesRoutes                 = require("./routes/recipes"),
+        foodsRoutes                   = require("./routes/foods");
  
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,32 +21,16 @@ app.use(bodyParser.json());
 
 
 //ROUTES
-//test: quiero probar el la busqueda de comidas mientras escribes la comida (mostrar resultados tras escribir en el search-bar)
-//documentation -> https://docs.mongodb.com/manual/reference/method/db.collection.find/
-
-    //PARA PROBAR:
-    // desde cualquier navegador a  https://nutric-svenbm.c9users.io/?lookUpFood=pollo
-      // funciona ok. ponerlo como req.body de un input
-const database = require("./models");
-app.get("/", function(req,res,next){
-    var searchedFood=req.query.lookUpFood;
-    database.Food.find({
-      foodName_lowercase: {
-        $regex:new RegExp(searchedFood.toLowerCase())
-      }
-    }, function(err,data){
-      res.json(data);
-    }).limit(5); //aca limitamos los resultados
- });
 
 // NUTRIS - PACIENTES, SCHEDULEDAPPOINTMENTS, APPOINTMENTS
 app.use("/api/experts/", expertAuthRoutes);
 app.use("/api/experts/:expert_id/appointments", appointmentsRoutes);
 app.use("/api/experts/:expert_id/scheduledappointments", scheduledAppointmentsRoutes);
 app.use("/api/experts/:expert_id/patients", patientRoutes);
-app.use("/api/experts/:expert_id/mealplan", mealPlanRoutes);
+app.use("/api/experts/:expert_id/mealPlan", mealPlanRoutes);
 app.use("/api/experts/:expert_id/mealPlanTemplate", mealPlanTemplateRoutes);
 app.use("/api/experts/:expert_id/recipes", recipesRoutes);
+app.use("/api/experts/:expert_id/foods", foodsRoutes);
 
 
 

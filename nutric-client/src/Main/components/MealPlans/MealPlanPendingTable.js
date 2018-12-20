@@ -51,7 +51,7 @@ function getSorting(order, orderBy) {
 
 const rows = [
   { id: 'Paciente', numeric: false, disablePadding: true, label: 'Paciente' },
-  { id: 'Fecha de creación', numeric: true, disablePadding: false, label: 'Fecha de creación' },
+  { id: 'Fecha de creación', numeric: false, disablePadding: false, label: 'Fecha de creación' },
   { id: 'Objetivo', numeric: false, disablePadding: false, label: 'Objetivo' },
   { id: 'Progreso', numeric: true, disablePadding: false, label: 'Progreso' },
 ];
@@ -206,29 +206,20 @@ const styles = theme => ({
 	}
 });
 
+// =============================================================================================================================
+
 class EnhancedTable extends React.Component {
-  state = {
-    order: 'asc',
-    orderBy: 'calories',
-    selected: [],
-    data: [
-      createData('Cupcake', 305, 3.7, 67),
-      createData('Donut', 452, 25.0, 51),
-      createData('Eclair', 262, 16.0, 24),
-      createData('Frozen yoghurt', 159, 6.0, 24),
-      createData('Gingerbread', 356, 16.0, 49),
-      createData('Honeycomb', 408, 3.2, 87),
-      createData('Ice cream sandwich', 237, 9.0, 37),
-      createData('Jelly Bean', 375, 0.0, 94),
-      createData('KitKat', 518, 26.0, 65),
-      createData('Lollipop', 392, 0.2, 98),
-      createData('Marshmallow', 318, 0, 81),
-      createData('Nougat', 360, 19.0, 9),
-      createData('Oreo', 437, 18.0, 63),
-    ],
-    page: 0,
-    rowsPerPage: 5,
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      order: 'asc',
+      orderBy: 'calories',
+      selected: [],
+      page: 0,
+      rowsPerPage: 5,
+    };
+  }
+
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -243,7 +234,7 @@ class EnhancedTable extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
+      this.setState(state => ({ selected: state.mealPlans.map(n => n.id) }));
       return;
     }
     this.setState({ selected: [] });
@@ -281,9 +272,10 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
-    const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const { classes, mealPlans } = this.props;
+    console.log(mealPlans);
+    const { order, orderBy, selected, rowsPerPage, page } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, mealPlans.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
@@ -296,30 +288,30 @@ class EnhancedTable extends React.Component {
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
+              rowCount={mealPlans.length}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
+              {stableSort(mealPlans, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
+                .map((mealPlan, index) => {
+                  const isSelected = this.isSelected(mealPlan.id);
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)} //cambiar event a ir a dieta
+                      onClick={event => this.handleClick(event, mealPlan.id)} //cambiar event a ir a dieta
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.id}
+                      key={mealPlan._id}
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className={classes.narrowCell} component="th" scope="row" padding={0} >{n.patient}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{n.creationDate}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{n.objective}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{n.progress}</TableCell>
+                      <TableCell className={classes.narrowCell} component="th" scope="row" >{`${mealPlan.patient.firstName} ${mealPlan.patient.lastName}`}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{mealPlan.creationDate}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{mealPlan.objective}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{mealPlan.progress}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -334,7 +326,7 @@ class EnhancedTable extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={mealPlans.length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{

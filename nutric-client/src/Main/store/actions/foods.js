@@ -9,7 +9,7 @@ export const loadFoods = (foods) => ({
 
 export const fetchFoods = (expert_id,foundFood) => {
   return (dispatch) => {
-    return apiCall("get", `/api/experts/${expert_id}/mealplan/?foundFood=${foundFood}`)
+    return apiCall("get", `/api/experts/${expert_id}/foods/?foundFood=${foundFood}`)
       .then(res => {
         dispatch(loadFoods(res));
       })

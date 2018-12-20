@@ -14,10 +14,10 @@ import HomeMain from './Home/HomeMain';
 import PatientsMain from "./Patients/PatientsMain";
 import ScheduleMain from "./Schedule/ScheduleMain";
 import MealPlanMain from "./MealPlans/MealPlanMain";
-import MealPlanMain2 from "./MealPlans2/MealPlanMain2";
 import RecipesMain from "./Recipes/RecipesMain";
 import MealPlanCreate from "./MealPlans/MealPlanCreate";
 import NoMatch from '../components/NoMatch';
+import StatsMain from '../components/Recipes/MaindeEstadisticas';
 
 import Header from './Header';
 
@@ -112,7 +112,8 @@ const Dashboard = props => {
             path="/estadisticas" 
             render={props => {
               return(
-                <div>Estadísticas</div>
+                <StatsMain/>
+                
               );
             }}
           />

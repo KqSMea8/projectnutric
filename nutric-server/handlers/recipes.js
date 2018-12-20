@@ -16,7 +16,8 @@ exports.createRecipe = async function(req,res,next){
             portions: req.body.portions,
             category: req.body.category,
             duration: req.body.duration,
-            expert:req.params.expert_id
+            expert:req.params.expert_id,
+            display: req.body.display,
              
         })
         return res.status(200).json(newRecipe);

@@ -10,7 +10,8 @@ exports.createMealPlanTemplate = async function(req,res,next){
       avgDailyCalories:     req.body.avgDailyCalories,
       avgDailyProtein:      req.body.avgDailyProtein,
       avgDailyCarbs:        req.body.avgDailyCarbs,
-      avgDailyFat:          req.body.avgDailyFat
+      avgDailyFat:          req.body.avgDailyFat,
+      // image:                req.body.image
     });
     newMealPlanTemplate.save();
       
@@ -27,8 +28,8 @@ exports.createMealPlanTemplate = async function(req,res,next){
 // ok
 exports.getMealPlanTemplates = async function(req, res, next){
   try{
-    let foundMealPlanPlanTemplates = await database.MealPlanTemplate.find({expert: req.params.expert_id});
-    return res.status(200).json(foundMealPlanPlanTemplates);
+    let foundMealPlanTemplates = await database.MealPlanTemplate.find({expert: req.params.expert_id});
+    return res.status(200).json(foundMealPlanTemplates);
     
   } catch(e){
     return next(e);

@@ -27,14 +27,14 @@ class RecipesMain extends Component {
 
   render(){
     const { classes } = this.props;
-    const numRows = 10 //num de filas q sera el default en la tabla
+    const numRows = 10;
     const { recipes } = this.props;
     let RecipesList = recipes.map(recipe => {
       let { recipeName, ingredients, category, createdAt } = recipe;
       let ingredientesLength = ingredients.length;
       let DateOfCreation = createdAt.slice(0,10)
       return (
-        [recipeName, category, DateOfCreation, ingredientesLength] 
+        ['recipeName', 'category', 'DateOfCreation', 'ingredientesLength'] 
       )
     });
     

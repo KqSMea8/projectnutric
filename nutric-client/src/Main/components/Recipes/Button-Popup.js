@@ -24,6 +24,8 @@ import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import classNames from 'classnames';
 import MenuItem from '@material-ui/core/MenuItem';
+import SearchBar from './Rec.SearchBar';
+
 
 import tacutacu from '../../images/tacutacu.jpg'
 
@@ -78,18 +80,52 @@ class ButtonPopup extends Component {
     multiline:"",
     recipeName: "",
     duration:"",
-    patient:"",
     category: '',
+    selectedFile: null,
+    ingredients: [             
+      {type:"1 vaso de bebida de soya sin azúcar", 
+      calories_kcal:Math.random() * 300,
+      protein_g:Math.random() * 25,
+      carbs_g:Math.random() * 50,
+      fat_g:Math.random() * 30
+              }]
   };
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value });
   };
 
+  fileSelectedHandler = event => {
+   this.setState ({
+     selectedFile: event.target.files[0]
+   })
+  }
+  
+  fileUploadHandler = () => {
+      let formData = new FormData();
+      let file = this.state.selectedFile
+      let { currentUserId } = this.props
+      formData.append("display", file)
+      const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }}
+      console.log(formData)
+      apiCall("post", `/api/experts/${currentUserId}/recipes/`,{
+        display: formData,
+        recipeName: 'hola'
+      },config
+      
+      )
+      .then(res => {
+        console.log(res)
+  });
+    
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { currentUserId } = this.props
+    let { currentUserId } = this.props
     const {recipeName, category, duration} = this.state;
   
        
@@ -107,6 +143,25 @@ class ButtonPopup extends Component {
       console.log(err)
     });
   }
+  
+  addNewRecipeButton = (selected,identifier) => {
+    const ingredients = this.state.ingredients
+    console.log(this.state.ingredients)
+    const updated = ingredients.push({
+        type: selected.foodName,
+        calories_kcal:selected.calories_kcal,
+        protein_g:selected.protein_g,
+        carbs_g:selected.carbs_g,
+        fat_g:selected.fat_g}
+      )
+    this.setState({
+      ingredients: ingredients
+           
+    })
+  
+    console.log(this.state.ingredients)
+  }
+      
   
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -205,9 +260,29 @@ class ButtonPopup extends Component {
                         />
                         </Grid>              
                       <Grid item md={5} xs={4}></Grid>
+                    </Grid>   
+                    
+                  
+
+{/* //////////////juanhiena////////////// DESCRIPCION //////////////////////////////////////////////////////////////////////////*/}
                       
-                    </Grid>
-                  </Grid>  
+                      <Grid item md={3} xs={6}>Descripción </Grid>
+                      <Grid item md={8} xs={6}>
+                              <TextField
+                                id="filled-multiline-flexible"
+                                multiline
+                                rowsMax="4"
+                                value={this.state.description}
+                                onChange={this.handleChange('description')}
+                                className={classes.textField}
+                                margin="normal"
+                                variant="filled"
+                              />
+                        </Grid>              
+                     
+                     </Grid>  
+                    
+                              
 {/* //////////////////////////// CARD DE IMAGEN Y BOTONES //////////////////////////////////////////////////////////////////////////*/}
 
                   <Grid item md={6} xs={12} align="center">
@@ -220,28 +295,33 @@ class ButtonPopup extends Component {
                           title="Tacu Tacu a la Norteña"
                         />
                         <CardContent>
+                        <Button variant="contained" size="small" color="primary" className={classes.margin} onClick = {this.fileUploadHandler}>
+                          Subir imagen
+                        </Button>
+                        <Button variant="contained" size="small" color="secondary" className={classes.margin}>
+                          Eliminar receta
+                        </Button>
                         </CardContent>
                       </CardActionArea>
                       <CardActions>
-                        <Button variant="contained" size="medium" color="primary" className={classes.margin}>
-                          Editar Imagen
-                        </Button>
-                        <Button variant="contained" size="medium" color="secondary" className={classes.margin}>
-                          Eliminar receta
-                        </Button>
+                        <input type="file" name="display" onChange={this.fileSelectedHandler}/>
                       </CardActions>
                     </Card>
                   
                   </Grid>
-
+{/* //////////////////////////// INGREDIENTES //////////////////////////////////////////////////////////////////////////*/}
                 </Grid>
-                <Grid container direction="row" justify="center" alignItems="baseline" spacing={40}>
-                  <Grid item md={2} xs={4}>Categoria</Grid>
-                  <Grid item md={10} xs={8}>
-
+                <Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={40}>
+                  <Grid item md={6} xs={12}>  
+                    <Grid container justify="space-between" alignItems="center">
+                       <Grid item md={4} xs={4}> Ingredientes</Grid>
+                            <SearchBar selectedInputIdentifier={[]} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
+                       <Grid item md={6} xs={8}>
+                    </Grid>
                   </Grid>
-                  <Grid item md={2} xs={4}></Grid>
-                  <Grid item md={4} xs={8}>
+                </Grid>
+                  
+              
   
                   </Grid>
                   <Grid item md={2} xs={4}></Grid>
@@ -249,21 +329,9 @@ class ButtonPopup extends Component {
 
                   </Grid>
                   <Grid item md={2} xs={4}></Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Instrucciones:"
-                      multiline
-                      rowsMax="4"
-                      value={this.state.notes}
-                      onChange={this.handleChange('notes')}
-                      margin="normal"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
+                  
                 </Grid>
-              </Grid>
+              
             </form>
           </DialogContent>
           <DialogActions>

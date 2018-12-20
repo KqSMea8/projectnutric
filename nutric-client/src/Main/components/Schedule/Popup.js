@@ -176,7 +176,7 @@ class Popup extends Component {
                     <Grid container justify="space-between" alignItems="center">
                       <Grid item md={3} xs={4}>Paciente:</Grid>
                       <Grid item md={9} xs={8}>
-                          <SearchDropdown patient={patient} onPatientSelected={this.onPatientSelected}/>
+                           <SearchDropdown patient={patient} onPatientSelected={this.onPatientSelected}/>
                       </Grid>
                     </Grid>
                   </Grid>  

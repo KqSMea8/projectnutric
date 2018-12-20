@@ -5,22 +5,26 @@ const database = require("../models");
 // 2. Editar Meal Plan. Ocurre cada vez que se agrega un Food, un meal, o un dia.
 // 3. Eliminar Meal Plan
 // 4. Buscar Food (en agregar alimento del front)
-// 5. 
+// 5. Getear Meal Plans para los pendientes
 
 exports.createMealPlan = async function(req, res, next){
   try {
       //Con el supuesto de que la creas aparte de un appointment
     let newMealPlan = await database.MealPlan.create({
-      // DATA DEL POPUP
-      // dailyCalories: req.body.dailyCalories,
-      patient: req.params.patient_id,
-      // currentWeight: req.body.currentWeight,
-      // currentBodyFat: req.body.currentBodyFat,
-      // objective: req.body.objective,
-      // expert: req.params.expert_id
-      endDate: req.body.endDate,
-      mealPlanName: req.body.mealPlanName
+      // INPUTOS
+      mealPlanName:     req.body.mealPlanName,
+      objective:        req.body.objective,
+      avgDailyCalories: req.body.avgDailyCalories,
+      avgDailyProtein:  req.body.avgDailyProtein,
+      avgDailyCarbs:    req.body.avgDailyCarbs,
+      avgDailyFat:      req.body.avgDailyFat,
+      endDate:          req.body.endDate,
+      days:             req.body.days,
       
+      // REFERENCES
+      expert:           req.params.expert_id,
+      patient:          req.params.patient_id,
+      appointment:      req.body.appointment
     });
     newMealPlan.save();
 
@@ -39,31 +43,19 @@ exports.createMealPlan = async function(req, res, next){
   }
 };
 
+exports.getMealPlans = async function(req, res, next){
+  try{
+    let foundMealPlans = await database.MealPlan.find({expert: req.params.expert_id}).populate('patient', 'firstName lastName');
+    return res.status(200).json(foundMealPlans);
+    
+  } catch(e){
+    return next(e);
+  }
+};
+
 exports.editDay = async function(req, res, next){
     
 };
-
-exports.findFoods = async function(req,res,next){ //te aparece el cuadrito con las cuatro primeras comidas que buscas
-//En index.js había puesto esto. Solo faltaría cambiar la respuesta (calories_kcal, protein_g, etc)
-    if(req.query.foundFood.length>=3){
-      try {
-          let foundFood = await database.Food.find({
-        foodName_lowercase: {
-          $regex:new RegExp(req.query.foundFood.toLowerCase())
-        },
-        source: "CENAN (2017 - Perú)" //developing: limitamos los resultados
-      }).limit(20);
-          //aqui falta agregar el limit (4 o 5)
-          return res.status(200).json(foundFood)
-          // return res.status(200).json(`Name: $dv{foundFood[0].foodName}, Calories: ${foundFood.calories_kcal}, Protein: ${foundFood.protein_g}, Fat: ${foundFood.fat_g}, Carbs: ${foundFood.carbs_g} `);
-      } catch(error){
-          return next(error);
-      }
-    } else {
-      return res.status(200).json("")
-    }
-};
-
 
 /// Sabemos que en la accion de "onClick" se pushea el food clickeado a un objeto, luego este objeto automaticamente es pusheado al modelo de 
 //  meal plan de ese mismo plan. El problema actualmente es identificar a que objeto se pushea el meal que seleccionas 

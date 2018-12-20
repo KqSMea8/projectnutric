@@ -7,10 +7,14 @@ const recipeSchema = new mongoose.Schema({
   type: mongoose.Schema.Types.ObjectId,
   ref: 'MealPlan'
   }],
-  description: String,
+  description: String, // 
   category: String,
   duration: String,
   portions: String,
+  display:{
+    data: Buffer, 
+    contentType: String },
+    
   recipeName: String,
   instructions: [{
     type: String

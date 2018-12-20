@@ -5,9 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {fetchFoods} from '../../store/actions/foods';
 import {connect} from 'react-redux';
-import TableResult from '../../components/MealPlans/TableResult'
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Search from '@material-ui/icons/Search';
+import TableResult from './Rec.TableResult'
 
 const styles = theme => ({
   container: {
@@ -41,7 +39,7 @@ class SearchBar extends React.Component {
       if(this.state.searchedFood.length>=3){
         this.props.fetchFoods(currentUserId,this.state.searchedFood);
       } else {
-        return "";
+        this.props.fetchFoods(currentUserId,"");
       }
     })
   }
@@ -53,34 +51,26 @@ class SearchBar extends React.Component {
     }
   };
 
-// juan hiena 
-
   render() {
     const { classes } = this.props;
     
     return (
       <div>
         <TextField
-          id="input-with-icon-textfield"
+          id="standard-name"
           value={this.state.text}
           placeholder="Agregar alimento..."
           className={classes.textField}
           onChange={(e)=> { this.showsTable(e); this.onSearchingFood(e);}}
           margin="none"
-          autoComplete="off"
-          InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search />
-            </InputAdornment>
-          ),
-        }}
         />
         {!this.state.tableHide ? <TableResult selectedInputIdentifier={this.props.selectedInputIdentifier} selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      
       </div>
     );
   }
 }
+
+
 
 
 

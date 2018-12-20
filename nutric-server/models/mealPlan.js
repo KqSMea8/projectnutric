@@ -3,9 +3,15 @@ const Schema = mongoose.Schema;
 
 const mealPlanSchema = new mongoose.Schema(
     {
-      mealPlanName: String,
-      caloricGoal: Number,
+      mealPlanName: {
+        type: String,
+        required: true
+      },
       objective: String,
+      avgDailyCalories: Number,
+      avgDailyProtein: Number,
+      avgDailyCarbs: Number,
+      avgDailyFat: Number,
       endDate: Date, //para determinar paciente activo
       days:[{
         dayName: String,

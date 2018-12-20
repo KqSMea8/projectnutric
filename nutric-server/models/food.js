@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const FoodSchema = new Schema({
   source: String,
   foodId: String,
-  isBasicFood: String,
+  isBasicFood: Boolean,
   category: String,
   foodName: String,
   foodName_lowercase: String,

@@ -9,6 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import InfoIcon from '@material-ui/icons/Info';
+import PopupMealPlanTemplate from './PopupMealPlanTemplate';
 
 const styles = {
   card: {
@@ -22,56 +26,59 @@ const styles = {
 
 
 function MealPlanTemplateCard(props) {
-  const { classes, image, imageTitle, mealPlanTemplateName, calories, protein, carbs, fat, onMouseEnter, onMouseLeave, isHovering } = props;
-  console.log(isHovering);
+  const { classes, image, imageTitle, mealPlanTemplateName, calories, protein, carbs, fat, popupRemove, show} = props;
   return (
-      <Grid item xs={4} >
-          <Card style={{margin: '0 20px', height: '100%'}}>
-            <Grid container style={{height: "100%"}} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}> 
-            
-{/*=============CON HOVER RENDER CARD Y DIV DE BOTONES================*/}
-            {isHovering && 
-                 <div className='cardLayerTop' >'hola'</div>
-            }
-            
-{/*=============SIN HOVER SOLO RENDER EL CARD================*/}            
-              <Grid item md={5} style={{height: "100%"}}>
-                <CardMedia 
-                  image={image}
-                  title={imageTitle}
-                  style={{height: "100%"}}
-                />
+    
+    <Grid item style={{height: '100%', minHeight: '70px'}} xs={4} >
+      <Card className='mptCard'>
+      
+      {/* ========= BOTONES DE DELETE E INFO ==========*/}
+        <Grid container className='mptCardButtons' justify='center' alignItems='center' >
+            <PopupMealPlanTemplate popupRemove={popupRemove}/>
+          <IconButton disableRipple onClick={show}> {/*redirigir a edicion de dieta o ver detalles en popup?*/}
+            <InfoIcon style={{ color: "blue" }} />
+          </IconButton>
+        </Grid>
+      {/* =============================================*/}  
+        
+        <Grid container style={{height: '100%'}} > 
+          <Grid item md={5} style={{height: "100%"}}>
+            <CardMedia 
+              image={image}
+              title={imageTitle}
+              style={{height: "100%"}}
+            />
+          </Grid>
+          <Grid item md={7} style={{padding: '8px 5px 0px 5px'}}>
+            <Grid container style={{height: '100%'}}>
+              <Grid item xs={12}>
+                <Typography variant={'subtitle1'}>{mealPlanTemplateName}</Typography>
               </Grid>
-              <Grid item md={7} style={{padding: '8px 5px 0px 5px'}}>
-                <Grid container style={{height: '100%'}}>
-                  <Grid item xs={12}>
-                    <Typography variant={'subtitle1'}>{mealPlanTemplateName}</Typography>
+              <Grid item xs={12} >
+                <Grid container alignContent={'center'} style={{height: '100%', textAlign: 'center', alignItems: 'center'}}>
+                  <Grid item xs={3}>
+                    <Typography style={{fontSize: 'small'}}>{calories}kcal</Typography>
                   </Grid>
-                  <Grid item xs={12} >
-                    <Grid container alignContent={'center'} style={{height: '100%', textAlign: 'center', alignItems: 'center'}}>
-                      <Grid item xs={3}>
-                        <Typography style={{fontSize: 'small'}}>{calories}kcal</Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography style={{fontSize: 'small'}}>{protein}gr</Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography style={{fontSize: 'small'}}>{carbs}gr</Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography style={{fontSize: 'small'}}>{fat}gr</Typography>
-                      </Grid>
-                    </Grid>
-                    
+                  <Grid item xs={3}>
+                    <Typography style={{fontSize: 'small'}}>{protein}gr</Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography style={{fontSize: 'small'}}>{carbs}gr</Typography>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography style={{fontSize: 'small'}}>{fat}gr</Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              
-              
-              
             </Grid>
-          </Card>
+          </Grid>
         </Grid>
+        
+        
+        
+        
+      </Card>
+    </Grid>
   );
 }
 

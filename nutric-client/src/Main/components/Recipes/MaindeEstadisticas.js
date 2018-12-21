@@ -50,23 +50,28 @@ class StatsMain extends Component {
     
 
     <Grid container >
-      <Grid container sm={12} >
+      <Grid container sm={7} >
         <Grid item sm={7} styles={{ marginBottom: 30}}>
       <Plot
         data={[
           {
-            x: ["Enero","Febrero","Marzo","Abril","Mayo"],
-            y: [1500, 2500, 2000, 2700, 3200, 3000],
+            x: ["Enero","Febrero","Marzo","Abril","Mayo","Junio"],
+            y: [1500, 2500, 2000, 2700, 3200, 3000,2900],
             type: 'scatter',
-            mode: 'lines+points',
-            marker: {color: 'red'},
+            mode: 'scatter+lines',
+            marker: {color: 'red',size: '10'},
+            line: { color:'blue',
+                    width:'4'
+            },
           },
         ]}
         layout={ {width: 700, height: 600, title: 'Ingresos a la fecha'} }
       />
         </Grid>
-        <Grid item sm={1}  > </Grid>
-        <Grid item sm={4}  >
+       </Grid> 
+       <Grid container sm={5} >
+        <Grid item sm={2}  > </Grid>
+        <Grid item sm={10}  >
          
           <Plot 
           data = {[
@@ -77,12 +82,40 @@ class StatsMain extends Component {
           },
           ]}
           
-          layout = { {height: 280, width: 380, title: 'Distribución de pacientes'}}
+          layout = { {height: 280, width: 380,margin: {l :'70',r:'20',b:'20',t:'40'}, title: 'Distribución de pacientes'}}
           
           />
-         
-        </Grid>
-      </Grid>  
+        </Grid> 
+        <Grid item sm={2}  > </Grid>
+        <Grid item sm={10}  >
+        <Plot
+          data = {[
+          {
+            x: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes','Lunes', 'Lunes', 'Miercoles', 'Martes', 'Jueves','Jueves', 'Lunes', 'Jueves', 'Jueves', 'Miercoles','Lunes', 'Martes', 'Martes', 'Lunes','Lunes', 'Miercoles', 'Miercoles', 'Viernes', 'Viernes'],
+            y: [11,15,16,17,16,12,12,12,16,18,18,14,11,12,11.5,10.5,10.5,10.5,19.5],
+            mode: 'markers',
+            type: 'scatter',
+            name: 'Hora de consulta',
+            textposition: 'top center',
+            marker: { size: 8 }
+          },
+          ]}
+          
+          layout = {
+            {xaxis: {range: [ 'Lunes','Viernes']},
+            yaxis: {range: [10,20]},
+            height: 280, 
+            width: 380,
+            title: 'Horas de consulta más frecuentadas',
+            margin: {l :'20',r:'10',b:'30',t:'70'}
+            }
+            
+          }
+          />
+          
+        </Grid> 
+      </Grid>
+     
         
         <Grid container sm={12} >
           <Grid container sm={12}>

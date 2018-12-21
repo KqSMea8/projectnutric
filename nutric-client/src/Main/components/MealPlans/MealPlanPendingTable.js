@@ -203,6 +203,7 @@ const styles = theme => ({
   },
   narrowCell: {
 		'width': '25%',
+		padding: 0
 	}
 });
 
@@ -234,7 +235,9 @@ class EnhancedTable extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: state.mealPlans.map(n => n.id) }));
+      console.log(this.props.mealPlans)
+      this.setState(props => ({ selected: this.props.mealPlans.map(mealPlan => mealPlan._id) }));
+      console.log(this.state.selected);
       return;
     }
     this.setState({ selected: [] });
@@ -244,6 +247,7 @@ class EnhancedTable extends React.Component {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
+    console.log(selectedIndex)
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -273,7 +277,6 @@ class EnhancedTable extends React.Component {
 
   render() {
     const { classes, mealPlans } = this.props;
-    console.log(mealPlans);
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, mealPlans.length - page * rowsPerPage);
 
@@ -295,10 +298,11 @@ class EnhancedTable extends React.Component {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((mealPlan, index) => {
                   const isSelected = this.isSelected(mealPlan.id);
+                  const {creationDate, objective, progress, patient} = mealPlan;
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, mealPlan.id)} //cambiar event a ir a dieta
+                      onClick={event => this.handleClick(event, index)} //cambiar event a ir a dieta
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -308,10 +312,10 @@ class EnhancedTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className={classes.narrowCell} component="th" scope="row" >{`${mealPlan.patient.firstName} ${mealPlan.patient.lastName}`}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{mealPlan.creationDate}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{mealPlan.objective}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{mealPlan.progress}</TableCell>
+                      <TableCell className={classes.narrowCell} component="th" scope="row" >{`${patient.firstName} ${mealPlan.patient.lastName}`}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{creationDate}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{objective}</TableCell>
+                      <TableCell className={classes.narrowCell} numeric>{progress}</TableCell>
                     </TableRow>
                   );
                 })}

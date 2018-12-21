@@ -512,57 +512,60 @@ const columns = [{
       <div>
         <Link to='/dietas'>Click para ir a /dietas </Link>  
         <div className={classes.root}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item md={5} xs={12} style={{textAlign:"center"}}>
-            <TextField inputProps={{style:{padding:"10px 20px",textAlign:"center"}}} style={{margin:"20px 20px"}} id="outlined-bare" variant="filled" value={this.state.mealPlan.mealPlanName}/>
-            <Stepper nonLinear activeStep={dayIndex} alternativeLabel style={{padding:"0"}}>
-              {steps.map((label, index) => {
-                return (
-                  <Step key={label}>
-                    <StepButton
-                      onClick={this.handleStep(index)}
-                      completed={this.state.completed[index]}
-                      icon={label.substr(0,1)}
-                    >
-                      {label.substr(0,3)}
-                    </StepButton>
-                  </Step>
-                );
-              })}
-            </Stepper>
-          </Grid>
-          <Grid item md={2} xs={12} style={{textAlign:"center"}}>
-          </Grid>
-          {!this.allStepsCompleted() && 
-          <Grid item md={5} xs={12} style={{textAlign:"right"}}>
-            <Sticky>
-              <div style={{backgroundColor:"white"}}>
-                 <Table columns={columns} dataSource={this.getSummaryTable(dayIndex)} size="small" pagination={false}/>
-              </div>
-            </Sticky>
-          </Grid>
-          }
-        </Grid>
+        {this.allStepsCompleted() ? ( 
           <div>
-            {this.allStepsCompleted() ? (
-              <div>
-                <Grid container alignItems="center">
-                  <Grid item>
-                      <Alert
-                        message="Has completado satisfactoriamente el plan alimenticio"
-                        description="O matayuca, mándale su plan alimenticio a su meil pe, kchera"
-                        type="success"
-                        showIcon
-                      />
-                    <Typography>
-                      RESUMEN DE HUEVADAS:
-                      {this.state.mealPlan.toString()}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Button variant="outlined" color="secondary" onClick={this.handleReset}>Resetear</Button>
-              </div>
-            ) : (
+            <Grid container alignItems="center">
+              <Grid item>
+                  <Alert
+                    message="Has completado satisfactoriamente el plan alimenticio"
+                    description="O matayuca, mándale su plan alimenticio a su meil pe, kchera"
+                    type="success"
+                    showIcon
+                  />
+                <Typography>
+                  RESUMEN DE HUEVADAS:
+                  {this.state.mealPlan.toString()}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Button variant="outlined" color="secondary" onClick={this.handleReset}>Resetear</Button>
+          </div>
+          ) : (
+          <Grid container alignItems="center" justify="space-between">
+            <Grid item md={5} xs={12} style={{textAlign:"center"}}>
+              <TextField inputProps={{style:{padding:"10px 20px",textAlign:"center"}}} style={{margin:"20px 20px"}} id="outlined-bare" variant="filled" value={this.state.mealPlan.mealPlanName}/>
+              <Stepper nonLinear activeStep={dayIndex} alternativeLabel style={{padding:"0"}}>
+                {steps.map((label, index) => {
+                  return (
+                    <Step key={label}>
+                      <StepButton
+                        onClick={this.handleStep(index)}
+                        completed={this.state.completed[index]}
+                        icon={label.substr(0,1)}
+                      >
+                        {label.substr(0,3)}
+                      </StepButton>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+            </Grid>
+            <Grid item md={2} xs={12} style={{textAlign:"center"}}>
+            </Grid>
+            {!this.allStepsCompleted() && 
+            <Grid item md={5} xs={12} style={{textAlign:"right"}}>
+              <Sticky>
+                <div style={{backgroundColor:"white"}}>
+                   <Table columns={columns} dataSource={this.getSummaryTable(dayIndex)} size="small" pagination={false}/>
+                </div>
+              </Sticky>
+            </Grid>
+            }
+          </Grid>
+          )
+        }
+          <div>
+            {!this.allStepsCompleted() && (
               <div>
                 <div>
                   <div key={dayIndex}>
@@ -570,12 +573,12 @@ const columns = [{
                           <div key={dayIndex+"-"+mealIndex}>
                             <hr/>
                             <Grid container direction="row" justify="space-between" alignItems="center">
-                              <Grid item md={12} style={{textAlign:"center", margin:"5px"}}>
+                              <Grid item md={12} xs={12} style={{textAlign:"center", margin:"5px"}}>
                                 <TextField inputProps={{style:{padding:"10px 5px",textAlign:"center", fontSize:"0.9rem"}}} style={{margin:"0px 20px"}} id="outlined-bare" variant="outlined" value={meal.mealName=="" ? "Comida "+(mealIndex+1) : meal.mealName}/>
                               </Grid>
-                              <Grid item md={12}>
+                              <Grid item md={12} xs={12}>
                                 <Grid container>
-                                  <Grid item md={1} style={{textAlign:"center"}}>
+                                  <Grid item md={1} xs={12} style={{textAlign:"center"}}>
                                     <Grid container direction="row" justify="space-between" alignItems="center" style={{height:"100%"}}>
                                       <Grid item xs={12}>
                                         <TimePicker className={classes.tPicker} suffixIcon use12Hours defaultValue={moment(meal.mealTime)} format={"h:mma"} minuteStep={5} allowEmpty={false}/>
@@ -587,8 +590,11 @@ const columns = [{
                                       </Grid>
                                     </Grid>
                                   </Grid>
-                                  <Grid item md={5}>
+                                  <Grid item md={5} xs={12}>
                                     <ol>
+                                    {meal.recipes.length==0 && 
+                                      <div>No tienes alimentos agregados para esta comida.</div>
+                                    }
                                     {
                                       meal.recipes.map((alimento, alimentoIndex) => 
                                       <div key={dayIndex+"-"+mealIndex+"-"+alimentoIndex}>
@@ -603,7 +609,7 @@ const columns = [{
                                     }
                                     </ol>
                                   </Grid>
-                                  <Grid item md={3}>
+                                  <Grid item md={3} xs={6}>
                                     {meal.recipes.length==0 ? null : (
                                     <div>
                                       <Pie data={this.pieData(meal)} legend={{display:false}}/>
@@ -611,10 +617,10 @@ const columns = [{
                                     </div>
                                     )}
                                   </Grid>
-                                  <Grid item md={3} style={{textAlign:"right"}}>
+                                  <Grid item md={3} xs={12} style={{textAlign:"right"}}>
                                   </Grid>
                                   <Grid container direction="row" justify="center" alignItems="flex-start">
-                                    <Grid item md={9}>
+                                    <Grid item md={9} xs={12}>
                                      <SearchBar selectedInputIdentifier={[dayIndex,mealIndex]} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
                                     </Grid>
                                   </Grid>
@@ -626,7 +632,7 @@ const columns = [{
                       }
                   </div>
                 </div>
-                <Grid container direction="row">
+                <Grid container direction="row" style={{marginTop:"20px"}}>
                   <Grid item md={5} style={{ textAlign:"center" }}>
                     <MuiThemeProvider theme={theme}>
                       <Button variant="contained" color="primary" className={classes.margin} onClick={e=>{this.addNewMealButton(dayIndex)}}>

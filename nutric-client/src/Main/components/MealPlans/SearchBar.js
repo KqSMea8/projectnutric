@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {fetchFoods} from '../../store/actions/foods';
@@ -53,8 +51,10 @@ class SearchBar extends React.Component {
     }
   };
 
-// juan hiena 
-
+  clearInput=e=>{
+    this.setState({text:"",tableHide:true})
+  }
+  
   render() {
     const { classes } = this.props;
     
@@ -66,6 +66,7 @@ class SearchBar extends React.Component {
           placeholder="Agregar alimento..."
           className={classes.textField}
           onChange={(e)=> { this.showsTable(e); this.onSearchingFood(e);}}
+          onFocus={this.clearInput}
           margin="none"
           autoComplete="off"
           InputProps={{
@@ -76,7 +77,7 @@ class SearchBar extends React.Component {
           ),
         }}
         />
-        {!this.state.tableHide ? <TableResult selectedInputIdentifier={this.props.selectedInputIdentifier} selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      
+        {!this.state.tableHide ? <TableResult clearInput={this.clearInput} selectedInputIdentifier={this.props.selectedInputIdentifier} selectedFood={this.props.selectedFood} addNewRecipeButton={this.props.addNewRecipeButton}/> : null}      
       </div>
     );
   }

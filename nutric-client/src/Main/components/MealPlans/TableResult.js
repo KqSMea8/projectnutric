@@ -193,6 +193,18 @@ const styles = theme => ({
 
   tableWrapper: {
     overflowX: "auto"
+  },
+  tableRow:{
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
+   '&:hover': {
+      textDecoration:"underline",
+        '& $button':{
+          visibility:"visible !important"
+        }
+    }, 
+
   }
   
 });
@@ -231,7 +243,7 @@ class EnhancedTable extends React.Component {
     const { classes, tableId, selectedFood } = this.props;
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const foodDatabase=this.props.foods.map(function(food){
-      return {id: food._id, foodName: food.foodName, calories_kcal: food.calories_kcal, fat_g: food.fat_g, carbs_g:food.carbs_g, protein_g: food.protein_g, display:false}
+      return {id: food._id, foodName: food.foodName, calories_kcal: food.calories_kcal, fat_g: food.fat_g, carbs_g:food.carbs_g, protein_g: food.protein_g}
     })
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, foodDatabase.length - page * rowsPerPage);
@@ -261,17 +273,18 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
+                      className={classes.tableRow}
                     >
                       <TableCell padding="checkbox" />
                       <TableCell component="th" scope="row" padding="none">
                         {n.foodName}
                       </TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.calories_kcal}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.fat_g}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.carbs_g}</TableCell>
-                      <TableCell style={{textAlign:"center"}} numeric>{n.protein_g}</TableCell>
+                      <TableCell style={{textAlign:"center"}} numeric>{Math.round(n.calories_kcal*100)/100}</TableCell>
+                      <TableCell style={{textAlign:"center"}} numeric>{Math.round(n.fat_g*100)/100}</TableCell>
+                      <TableCell style={{textAlign:"center"}} numeric>{Math.round(n.carbs_g*100)/100}</TableCell>
+                      <TableCell style={{textAlign:"center"}} numeric>{Math.round(n.protein_g*100)/100}</TableCell>
                       <TableCell style={{textAlign:"center"}} numeric>
-                        <Fab size="small" color="secondary" aria-label="Add" onClick={e=>{this.props.addNewRecipeButton(n, this.props.selectedInputIdentifier)}}>
+                        <Fab style={{visibility:"hidden"}} size="small" color="secondary" aria-label="Add" onClick={e=>{this.props.clearInput(e); this.props.addNewRecipeButton(n, this.props.selectedInputIdentifier)}}>
                           <AddIcon />
                         </Fab>
                       </TableCell>

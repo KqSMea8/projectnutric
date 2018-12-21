@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -18,6 +18,7 @@ import RecipesMain from "./Recipes/RecipesMain";
 import MealPlanCreate from "./MealPlans/MealPlanCreate";
 import NoMatch from '../components/NoMatch';
 import StatsMain from '../components/Recipes/MaindeEstadisticas';
+import ProfileMain from './Profile/ProfileMain';
 
 import Header from './Header';
 
@@ -33,96 +34,121 @@ const styles = theme => {
   })
 }  
 
-const Dashboard = props => {
-  const { classes, theme } = props;
-  const { errors, removeError, currentUser } = props; //no se usa
+class Dashboard extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      navTitle:"chuerk"
+    }
+  }
+
+  changeHeaderTitle=(title)=>{
+    this.setState({navTitle: title})
+  }
   
-  return (
-    <div style={{width:"100%"}}>
-      <Header open={props.open} handleDrawerToggle={props.handleDrawerToggle} />
-      <div className={classes.toolbar}>
-        <Switch>
-          <Route 
-            exact 
-            path="/" 
-            render={props => {
-              return (
-                <Redirect to='/inicio'/> 
-              );
-            }}
-          />
-          <Route 
-            exact 
-            path="/inicio" 
-            render={props => {
-              return (
-                <HomeMain headerTitle={"Inicio"} />
-              );
-            }}
-          />
-          <Route 
-            exact 
-            path="/pacientes" 
-            render={props => {
-              return(
-                <PatientsMain headerTitle={"Pacientes"} {...props} />
-              );
-            }}
-          />
-          <Route 
-            exact 
-            path="/agenda" 
-            render={props => {
-              return(
-                <ScheduleMain headerTitle={"Agenda"}/>
-              );
-            }}
-          />
-{/*RUTAS DE MEAL PLAN*/}
-          <Route
-            exact
-            path="/dietas" 
-            render={props => {
-              return(
-                <MealPlanMain {...props} />
-              );
-            }}
-          />
-          <Route 
-            exact
-            path="/dietas/crear" 
-            render={props => {
-              return(
-                <MealPlanCreate {...props} />
-              );
-            }}
-          />
-{/*RUTAS DE MEAL PLAN*/}
-          <Route 
-            exact 
-            path="/recetas" 
-            render={props => {
-              return(
-                <RecipesMain {...props} />
-              );
-            }}
-          />
-          <Route 
-            exact 
-            path="/estadisticas" 
-            render={props => {
-              return(
-                <StatsMain/>
-                
-              );
-            }}
-          />
-          <Route component={NoMatch} />
-        </Switch>
-      </div>
-    </div>
-    )
-}
+  
+  render(){
+    const { classes, theme } = this.props;
+    
+    return(
+      <div style={{width:"100%"}}>
+        <Header open={this.props.open} handleDrawerToggle={this.props.handleDrawerToggle} />
+        <div className={classes.toolbar}>
+          <Switch>
+            <Route 
+              exact 
+              path="/" 
+              render={props=> {
+                return (
+                  <Redirect to='/inicio'/> 
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/inicio" 
+              render={props => {
+                return (
+                  <HomeMain headerTitle={"Inicio"}/>
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/pacientes" 
+              render={props => {
+                return(
+                  <PatientsMain headerTitle={"Pacientes"} {...props} />
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/agenda" 
+              render={props => {
+                return(
+                  <ScheduleMain headerTitle={"Agenda"}/>
+                );
+              }}
+            />
+  {/*RUTAS DE MEAL PLAN*/}
+            <Route
+              exact
+              path="/dietas" 
+              render={props => {
+                return(
+                  <MealPlanMain {...props} />
+                );
+              }}
+            />
+            <Route 
+              exact
+              path="/dietas/crear" 
+              render={props => {
+                return(
+                  <MealPlanCreate {...props} />
+                );
+              }}
+            />
+  {/*RUTAS DE MEAL PLAN*/}
+            <Route 
+              exact 
+              path="/recetas" 
+              render={props => {
+                return(
+                  <RecipesMain {...props} />
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/estadisticas" 
+              render={props => {
+                return(
+                  <StatsMain/>
+                  
+                );
+              }}
+            />
+{/*RUTAS PERFIL,CONFIGURACIÓN, ETC*/}
+            <Route 
+              exact 
+              path="/perfil" 
+              render={props => {
+                return(
+                  <ProfileMain headerTitle={"Perfil"}/>
+                  
+                );
+              }}
+            />
+            <Route component={NoMatch} />
+          </Switch>
+        </div>
+      </div> 
+      )
+  }
+} 
+
 
 function mapStateToProps(state) {
   return {

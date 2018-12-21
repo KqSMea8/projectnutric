@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '../store';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import jwtDecode from "jwt-decode";
 import '../../App.css';
-import { setAuthorizationToken, setCurrentUser, authUser } from "../store/actions/auth";
+import { setAuthorizationToken, setCurrentUser } from "../store/actions/auth";
 
 import AuthPage from './AuthPage';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import Dashboard from "./Dashboard";
 import Main from './Main';
-import NoMatch from '../components/NoMatch';
 
 // hacer handler para routes no especificadas. ej /weigvuwgeuv que bote error 
 

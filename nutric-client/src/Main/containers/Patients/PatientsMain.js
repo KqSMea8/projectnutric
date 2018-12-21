@@ -6,7 +6,6 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 import '../../../App.css'
 import PatientsList from '../../components/Patients/PatientsList.js';
-import PatientsSlideShow from '../../components/Patients/PatientsSlideShow.js';
 // import Patients2SliderShow from '../../components/Patients/Patients2SliderShow.js';
 import {fetchPatients} from '../../store/actions/patients';
 
@@ -30,7 +29,7 @@ class PatientsMain extends Component {
       // ahorita solo tenemos el birthDate del paciente, age se calcularia aqui, o tb podria venir desde el back
       // falta hacer que cuando tenga menos de 7 pacientes, aparezcan las 7 - n filas en blanco
       // esto pq 7 va a ser el numero de pacientes q se vean pq calza con el height de screen - AppBar
-      const { firstName, lastName, mail, age } = patient;
+      const { firstName, lastName, mail } = patient;
       return (
         [`${firstName} ${lastName}`, mail, '3era col', '4ta col']
       )

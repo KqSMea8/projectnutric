@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect, NavLink } from "react-router-dom";
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -129,6 +129,7 @@ class Header extends Component {
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, theme } = this.props;
+    const headerTitle= "No se pudo"
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const renderMenu = (
@@ -139,12 +140,14 @@ class Header extends Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>
-          <ListItemIcon>
-            <Person />
-          </ListItemIcon>
-          Perfil
-        </MenuItem>
+        <NavLink to="/perfil">
+          <MenuItem onClick={this.handleMenuClose}>
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            Perfil
+          </MenuItem>
+        </NavLink>
         <MenuItem
           onClick={this.handleMenuClose}
           style={{ "border-top": "1px solid #8b8b8b2e" }}
@@ -209,7 +212,7 @@ class Header extends Component {
               color="inherit"
               noWrap
             >
-              [Consultorio María Matayuca]
+              {headerTitle}
             </Typography>
             <Typography
               color="inherit"

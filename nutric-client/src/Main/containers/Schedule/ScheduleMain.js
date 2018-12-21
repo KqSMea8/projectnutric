@@ -43,8 +43,8 @@ class ScheduleMain extends Component{
   
   componentDidMount(){
     const { currentUserId } = this.props;
-    this.props.fetchAppointments(currentUserId, console.log('was fetched'));
-    this.props.fetchPatients(currentUserId, console.log('was fetched'));
+    this.props.fetchAppointments(currentUserId);
+    this.props.fetchPatients(currentUserId);
   }
   
   moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
@@ -105,29 +105,30 @@ class ScheduleMain extends Component{
     const {headerTitle}=this.props
     const {appointments}=this.props
     const appointmentsList = appointments.map(function(appointment){
-      return {id: appointment._id, title: "Consulta", start: moment(appointment.scheduledInfo.scheduledTimeStart).toDate(), end: moment(appointment.scheduledInfo.scheduledTimeEnd).toDate()}
+      return {id: appointment._id, title: "Consulta con "+appointment.patient.firstName, start: moment(appointment.scheduledInfo.scheduledTimeStart).toDate(), end: moment(appointment.scheduledInfo.scheduledTimeEnd).toDate()}
     })
     return(
       <div>
-        <div>{headerTitle}</div>
         <Grid container justify="space-between" alignItems="baseline" spacing={16}>
-          <Grid item xs={6}>
-              <div>Acá va la tabla de schedule</div>
+          <Grid item xs={4}>
           </Grid>
-          <Grid item xs={6} align="right">
-              <Popup/>
+          <Grid item md={6} xs={12} align="right">
+            <Popup/>
           </Grid>
           <Grid item xs={12}>
-            <div style={{height: "700px"}}>
+            <div style={{height: "75vh"}}>
                 <DragAndDropCalendar
                   selectable
                   localizer={localizer}
+                  defaultDate={new Date()}
+                  popup
                   events={appointmentsList}
                   onEventDrop={this.moveEvent}
                   resizable
                   onEventResize={this.resizeEvent}
                   onSelectSlot={this.newEvent}
                   defaultView={BigCalendar.Views.WEEK}
+                  messages={{next:"Siguiente",previous:"Atrás",today:"Hoy", month:"Mes", week:"Semana", day: "Día", agenda:"Agenda"}}
                 />
             </div>
           </Grid>

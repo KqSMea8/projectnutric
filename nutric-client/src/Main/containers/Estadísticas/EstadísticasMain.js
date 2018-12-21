@@ -308,4 +308,3 @@ StatsMain.propTypes = {
 };
 
 export default withStyles(styles)(StatsMain);
-

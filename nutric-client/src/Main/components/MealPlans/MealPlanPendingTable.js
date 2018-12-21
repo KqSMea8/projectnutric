@@ -19,12 +19,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
-let counter = 0;
-function createData(patient, creationDate, objective, progress) {
-  counter += 1;
-  return { id: counter, patient, creationDate, objective, progress};
-}
-
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -78,7 +72,7 @@ class EnhancedTableHead extends React.Component {
             return (
               <TableCell
                 key={row.id}
-                numeric={row.numeric}
+                align={row.numeric ? 'right' : 'left'}
                 padding={row.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === row.id ? order : false}
               >
@@ -127,7 +121,7 @@ const toolbarStyles = theme => ({
           color: theme.palette.text.primary,
           backgroundColor: theme.palette.secondary.dark,
         },
-  spacer: { //para q boton de filtro este a la derecha
+  spacer: {
     flex: '1 1 100%',
   },
   actions: {
@@ -140,12 +134,7 @@ const toolbarStyles = theme => ({
 
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
-  
-  // onDeleteClick = (e) => {
-  //   e.preventDefault();
-  // logica de eliminar 
-  // }
-  
+
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -159,7 +148,7 @@ let EnhancedTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            Planes alimenticios pendientes
+            Nutrition
           </Typography>
         )}
       </div>
@@ -168,7 +157,7 @@ let EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon /> 
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
         ) : (
@@ -193,36 +182,27 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: '100%',
-    // marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
   },
   table: {
-    // minWidth: 1020, si esta activado, se corre a la derehca y aparece scrollbar por overflowX auto.
+    // minWidth: 1020,
   },
   tableWrapper: {
     overflowX: 'auto',
   },
-  narrowCell: {
-		'width': '25%',
-		padding: 0
-	}
 });
 
-// =============================================================================================================================
-
 class EnhancedTable extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      order: 'asc',
-      orderBy: 'calories',
-      selected: [],
-      page: 0,
-      rowsPerPage: 5,
-    };
-  }
-
+  state = {
+    order: 'asc',
+    orderBy: 'calories',
+    selected: [],
+    page: 0,
+    rowsPerPage: 5,
+  };
 
   handleRequestSort = (event, property) => {
+    console.log(property)
     const orderBy = property;
     let order = 'desc';
 
@@ -235,9 +215,7 @@ class EnhancedTable extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      console.log(this.props.mealPlans)
-      this.setState(props => ({ selected: this.props.mealPlans.map(mealPlan => mealPlan._id) }));
-      console.log(this.state.selected);
+      this.setState(props => ({ selected: this.props.mealPlans.map((n, index) => index) }));
       return;
     }
     this.setState({ selected: [] });
@@ -247,7 +225,6 @@ class EnhancedTable extends React.Component {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-    console.log(selectedIndex)
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -277,6 +254,7 @@ class EnhancedTable extends React.Component {
 
   render() {
     const { classes, mealPlans } = this.props;
+    console.log(mealPlans)
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, mealPlans.length - page * rowsPerPage);
 
@@ -297,12 +275,11 @@ class EnhancedTable extends React.Component {
               {stableSort(mealPlans, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((mealPlan, index) => {
-                  const isSelected = this.isSelected(mealPlan.id);
-                  const {creationDate, objective, progress, patient} = mealPlan;
+                  const isSelected = this.isSelected(index);
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, index)} //cambiar event a ir a dieta
+                      onClick={event => this.handleClick(event, index)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -312,16 +289,19 @@ class EnhancedTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className={classes.narrowCell} component="th" scope="row" >{`${patient.firstName} ${mealPlan.patient.lastName}`}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{creationDate}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{objective}</TableCell>
-                      <TableCell className={classes.narrowCell} numeric>{progress}</TableCell>
+                      <TableCell component="th" scope="row" padding="none">
+                        {mealPlan.name}
+                      </TableCell>
+                      <TableCell align="right">{mealPlan.mealPlanName}</TableCell>
+                      <TableCell align="right">{mealPlan.creationDate}</TableCell>
+                      <TableCell align="right">{mealPlan.objective}</TableCell>
+                      <TableCell align="right">{mealPlan.progress}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={2} />
+                  <TableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>

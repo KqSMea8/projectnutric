@@ -88,7 +88,8 @@ class ButtonPopup extends Component {
       protein_g:Math.random() * 25,
       carbs_g:Math.random() * 50,
       fat_g:Math.random() * 30
-              }]
+              }],
+    instructions :["hola"]        
   };
 
   handleChange = prop => event => {
@@ -144,7 +145,7 @@ class ButtonPopup extends Component {
     });
   }
   
-  addNewRecipeButton = (selected,identifier) => {
+  addNewRecipeButton = (selected,  identifier) => {
     const ingredients = this.state.ingredients
     console.log(this.state.ingredients)
     const updated = ingredients.push({
@@ -174,6 +175,11 @@ class ButtonPopup extends Component {
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
+    });
+  };
+  handleChangeArray = name => event => {
+    this.setState({
+      ...this.state.instructions,[name]: event.target.value,
     });
   };
 
@@ -309,29 +315,39 @@ class ButtonPopup extends Component {
                     </Card>
                   
                   </Grid>
-{/* //////////////////////////// INGREDIENTES //////////////////////////////////////////////////////////////////////////*/}
-                </Grid>
-                <Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={40}>
-                  <Grid item md={6} xs={12}>  
-                    <Grid container justify="space-between" alignItems="center">
-                       <Grid item md={4} xs={4}> Ingredientes</Grid>
-                            <SearchBar selectedInputIdentifier={[]} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
-                       <Grid item md={6} xs={8}>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                  
-              
-  
-                  </Grid>
-                  <Grid item md={2} xs={4}></Grid>
-                  <Grid item md={4} xs={8}>
 
+                </Grid>
+{/* //////////////////////////// ESPACITO ENTRE LA PRIMERA MTIAD Y LA SEGUNDA (no funcionaba el puto margin-top y tenia que solucionar) //////////////////////////////////////////////////////////////////////////*/}
+                <Grid container xs={12} > <br/> </Grid>
+                <Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={40} styles={{marginTop:'20'}}>
+                  <Grid item md={6} xs={12}>  
+                  
+                    
+                      Ingredientes:
+                      <SearchBar selectedInputIdentifier={[]} selectedFood={this.state.selectedFood} addNewRecipeButton={this.addNewRecipeButton}/>
+              
+                    
+                  </Grid>  
+                  <Grid item md={6} xs={12}>  
+                 
+                      <ol>Instrucciones:
+                            <li><TextField
+                              
+                              id="standard-name"
+                              className={classes.textField}
+                              value={this.state.instructions}
+                              placeholder="Primer instrucción"
+                              onChange={this.handleChangeArray('instructions')}
+                            />
+                            </li>
+                      </ol>
+                      
+                    { console.log(this.state.instructions)}
                   </Grid>
-                  <Grid item md={2} xs={4}></Grid>
+
                   
                 </Grid>
-              
+              </Grid>
             </form>
           </DialogContent>
           <DialogActions>

@@ -17,7 +17,7 @@ import MealPlanMain from "./MealPlans/MealPlanMain";
 import RecipesMain from "./Recipes/RecipesMain";
 import MealPlanCreate from "./MealPlans/MealPlanCreate";
 import NoMatch from '../components/NoMatch';
-import StatsMain from '../components/Recipes/MaindeEstadisticas';
+import StatsMain from './Estadísticas/EstadísticasMain';
 import ProfileMain from './Profile/ProfileMain';
 
 import Header from './Header';

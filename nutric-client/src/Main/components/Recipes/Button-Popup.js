@@ -1,4 +1,4 @@
-   import React, {Component} from 'react';
+  import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import { NavLink } from "react-router-dom";
@@ -25,6 +25,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import classNames from 'classnames';
 import MenuItem from '@material-ui/core/MenuItem';
 import SearchBar from './Rec.SearchBar';
+import Dropzone from 'react-dropzone'
 
 
 import tacutacu from '../../images/tacutacu.jpg'
@@ -81,7 +82,9 @@ class ButtonPopup extends Component {
     recipeName: "",
     duration:"",
     category: '',
-    selectedFile: null,
+    portions:'',
+    decription:'',
+    displayimg: null,
     ingredients: [             
       {type:"1 vaso de bebida de soya sin azúcar", 
       calories_kcal:Math.random() * 300,
@@ -96,44 +99,38 @@ class ButtonPopup extends Component {
     this.setState({ [prop]: event.target.value });
   };
 
-  fileSelectedHandler = event => {
-   this.setState ({
-     selectedFile: event.target.files[0]
-   })
-  }
   
-  fileUploadHandler = () => {
-      let formData = new FormData();
-      let file = this.state.selectedFile
-      let { currentUserId } = this.props
-      formData.append("display", file)
-      const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }}
-      console.log(formData)
-      apiCall("post", `/api/experts/${currentUserId}/recipes/`,{
-        display: formData,
-        recipeName: 'hola'
-      },config
-      
-      )
-      .then(res => {
-        console.log(res)
-  });
+  uploadFile = (files) => {
+    const file = files[0]
+    console.log(file.name)
+    const reader = new FileReader()
+    reader.addEventListener("load", () =>{
+      console.log(reader.result)
+      this.setState({
+        displayimg: reader.result
+      })
+    }, false)
     
+    reader.readAsDataURL(file)
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     let { currentUserId } = this.props
-    const {recipeName, category, duration} = this.state;
+    const {recipeName, category, duration, description, displayimg, portions} = this.state;
+    
+    
   
-       
     apiCall("post", `/api/experts/${currentUserId}/recipes/`,{
+      
+    
       recipeName:recipeName,
       category:category,
-      duration:duration
+      duration:duration,
+      description:description,
+      displaymg:displayimg,
+      portions:portions
+      
     })
     .then(res => {
       console.log(res)
@@ -178,21 +175,27 @@ class ButtonPopup extends Component {
     });
   };
   handleChangeArray = name => event => {
+    const instructionsprev = this.state.instructions
+    const  instructionsUpdated = instructionsprev.push(
+      {[name]: event.target.value}
+      )
     this.setState({
-      ...this.state.instructions,[name]: event.target.value,
+     
     });
   };
 
   render() {
     const {currentUserId}=this.props
     const { classes } = this.props;
+    let {displayimg} = this.state
 
     
     return (
       <div>
-        <Button variant="outlined" color="secondary" onClick={this.handleClickOpen}>
+        <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
           <Add/> Agregar nueva receta
-        </Button> 
+        </Button > 
+        
         <Dialog
           classes={{paper:classes.dialogPaper}}
           open={this.state.open}
@@ -294,23 +297,26 @@ class ButtonPopup extends Component {
                   <Grid item md={6} xs={12} align="center">
                      <Card className={classes.card}>
                       <CardActionArea>
-                        <CardMedia 
-                        
-                          className={classes.media}
-                          image= {tacutacu}
-                          title="Tacu Tacu a la Norteña"
-                        />
+                          {displayimg !== null? 
+                            <div>
+                              <img src={displayimg} height="200" width="200"/>
+                            </div>: ''}
+                            
                         <CardContent>
-                        <Button variant="contained" size="small" color="primary" className={classes.margin} onClick = {this.fileUploadHandler}>
-                          Subir imagen
-                        </Button>
-                        <Button variant="contained" size="small" color="secondary" className={classes.margin}>
-                          Eliminar receta
-                        </Button>
+                          <Dropzone onDrop={this.uploadFile}>
+                            {({getRootProps}) => (
+                              <div {...getRootProps()}>
+                              {displayimg !== null? 
+                            <div>
+                              
+                            </div>: <h4>Arrastra la imagen aqui</h4>}
+                              </div>
+                            )}
+                          </Dropzone>
                         </CardContent>
                       </CardActionArea>
                       <CardActions>
-                        <input type="file" name="display" onChange={this.fileSelectedHandler}/>
+                        
                       </CardActions>
                     </Card>
                   

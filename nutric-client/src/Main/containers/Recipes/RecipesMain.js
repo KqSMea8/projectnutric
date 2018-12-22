@@ -9,11 +9,13 @@ import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from "@material-ui/core/styles";
 
+
 const styles = theme => ({
   margin: {
     margin: theme.spacing.unit
   }
 });
+
 
 
 class RecipesMain extends Component {
@@ -24,6 +26,7 @@ class RecipesMain extends Component {
     componentWillMount(){
     const { currentUserId } = this.props;
     this.props.fetchRecipes(currentUserId, console.log('recipes fetched'));}
+    
 
   render(){
     const { classes } = this.props;
@@ -47,7 +50,10 @@ class RecipesMain extends Component {
           <RecipeList data={RecipesList} numRows={numRows} />
         </Grid>
       </Grid>
+      
+ 
       </div>
+      
     )
 
   }

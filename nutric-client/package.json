@@ -22,6 +22,7 @@
     "react-chartjs-2": "^2.7.4",
     "react-datetime-picker": "^2.1.1",
     "react-dom": "^16.6.3",
+    "react-dropzone": "^8.0.2",
     "react-glide": "^2.0.0",
     "react-moment": "^0.8.4",
     "react-plotly.js": "^2.2.0",

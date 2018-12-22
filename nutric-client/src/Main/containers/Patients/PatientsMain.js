@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography'
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import moment from 'moment'
+import 'moment/locale/es';
 
 import '../../../App.css'
 import PatientsList from '../../components/Patients/PatientsList.js';
-// import Patients2SliderShow from '../../components/Patients/Patients2SliderShow.js';
 import {fetchPatients} from '../../store/actions/patients';
 
 
@@ -34,7 +36,7 @@ class PatientsMain extends Component {
         [`${firstName} ${lastName}`, mail, '3era col', '4ta col']
       )
     });
-    
+
     // if(patientsList.length < 7){
     //   let fillArray = [];
     //   for(let i = numRows; i > patientsList.length; i--){
@@ -65,7 +67,24 @@ class PatientsMain extends Component {
     // console.log(x.allergies)
     // no se pq no puedo acceder a activePatients[0].mealPlans
     // ahi se hace el sort a traves de endDate y ya
-    const activePatients=patients.filter(patient=> patient.mealPlans.length >0)
+    
+    let orderedWithMealPlan = [];
+    patients.filter(patient=> {
+       if( patient.mealPlans[0] !== undefined){
+         orderedWithMealPlan.push(patient)
+       }
+      return orderedWithMealPlan; 
+    })
+    
+    orderedWithMealPlan.sort(function(a,b){
+      return new Date(a.endDate) - new Date(b.endDate);
+    });
+    
+    //pacientes con meal plan, sorteado de meal plan mas proximo a mas lejano
+    // console.log(withMealPlan)
+    let top3Renewals = orderedWithMealPlan.slice(0,3)
+    console.log(top3Renewals);
+      
     return (
       <Grid container>
         
@@ -75,14 +94,31 @@ class PatientsMain extends Component {
 
         <Grid container direction={'column'} justify={'space-between'} style={{flex: 1}}>
         
-          <Paper style={{height: '45%'}}>
-            {/*<SnackbarContent message={'Pacientes por vencer'} style={{width: '80%', margin: '-15px auto 0', alignSelf: 'center', backgroundColor: '#3f51b5'}} />*/}
-            <Grid container direction={'column'} justify={'center'} style={{height: '80%'}}>
-              <Grid item>
-                {activePatients.map((patient,key) => 
-                    <Grid key={key} item style={{flex: 1}}>{patient.mealPlans[0]._id.toString()}</Grid>
-                )}
+          <Paper justify='center' style={{height: '45%'}}>
+            <SnackbarContent message={'Pacientes por renovar'} style={{width: '80%', margin: '-15px auto 0', textAlign: 'center', backgroundColor: '#3f51b5'}} />
+            <Grid container style={{height: '86%'}}>
+              <Grid container style={{padding: '16px 30px 0 30px', borderBottom: '1px solid black'}} >
+                <Grid item xs={5}>Nombre</Grid>
+                <Grid item style={{textAlign: 'center'}} xs={3}>Días</Grid>
+                <Grid item style={{textAlign: 'end'}} xs={4}>Fecha fin</Grid>
               </Grid>
+              {top3Renewals.map((renewal, i) => {
+                const formattedEndDate = moment.utc(renewal.mealPlans[0].endDate).format('L');
+                const remainingDays = moment().diff(renewal.mealPlans[0].endDate, 'days');
+                let alpha = 1/(3.14*(i+1))
+                return(
+                  <Grid key={renewal._id} style={{padding: '8px 30px', backgroundColor: `rgba(255, 0, 0, ${alpha})`}} container alignItems='center' xs={12}>
+                    <Grid item xs={5} >
+                      <Typography>{renewal.firstName} {renewal.lastName}</Typography>  {/*nombre*/}
+                    </Grid>
+                    <Grid item xs={3} style={{textAlign: 'center'}}>
+                      <Typography>{remainingDays}</Typography> {/*dias restantes. OK, pero endDate de mealPlan solo pueden ser en el futuro*/}                 
+                    </Grid>
+                    <Grid item xs={4} style={{textAlign: 'end'}} >
+                      <Typography>{formattedEndDate}</Typography> {/*fecha fin*/}                 
+                    </Grid>
+                  </Grid>
+              )})}
             </Grid>
             
           </Paper>  

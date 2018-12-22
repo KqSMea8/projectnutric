@@ -11,6 +11,7 @@ import plantilla_default from '../../images/plantilla_default.jpg';
 
 
 
+
 class MealPlanMain extends Component {
   constructor(props){
     super(props);
@@ -28,6 +29,18 @@ class MealPlanMain extends Component {
   
   render(){
     const {match, currentUser, mealPlanTemplates, removeMealPlanTemplate, mealPlans} = this.props;
+    console.log(mealPlans);
+    
+    
+    const mealPlansList = mealPlans.map(mealPlan => {
+      const {patient, createdAt, objective, progress} = mealPlan;
+      return (
+        [`${patient.firstName} ${patient.lastName}`, createdAt, objective, progress]
+      );
+    })
+    
+    
+    
     return (
       <div style={{height: '100%'}}>
         <Link to={`${match.url}/crear`} >Click para ir a /dietas/crear</Link>
@@ -59,9 +72,11 @@ class MealPlanMain extends Component {
     
             <Grid container spacing={40} style={{height: 'auto', margin: '0'}} > {/*spacing para los child*/}
               <Grid item xs={8} >
-                <MealPlanPendingTable 
+                {/*<MealPlanPendingTable 
                   mealPlans={mealPlans} //transformar a dietas pendientes en este componente
-                /> {/*bug: con tabla,cuando scrolleo de costado navbar no es fixed*/}
+                /> 
+                */}
+                <MealPlanPendingTable mealPlansList={mealPlansList} numRows={7} />
               </Grid>
               
               <Grid item xs={4} >

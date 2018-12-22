@@ -129,7 +129,7 @@ class Header extends Component {
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, theme } = this.props;
-    const headerTitle= "No se pudo"
+    const headerTitle= "Matayuca"
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const renderMenu = (

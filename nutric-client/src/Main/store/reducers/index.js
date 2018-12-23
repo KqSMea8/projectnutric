@@ -7,6 +7,7 @@ import foods from './foodsReducer';
 import recipes from './recipesReducer';
 import mealPlanTemplates from './mealPlanTemplatesReducer';
 import mealPlans from './mealPlansReducer';
+import billingPlans from './BillingPlansReducer';
 
 const rootReducer = combineReducers({
   currentUser,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   foods,
   recipes,
   mealPlanTemplates,
-  mealPlans
+  mealPlans,
+  billingPlans
 });
 
 export default rootReducer;

@@ -5,11 +5,12 @@ const {createScheduledAppointment, getScheduledAppointments, getOneScheduledAppo
 //Middleware for authet and authorization
 const {loginRequired, ensureCorrectUser} = require("../middleware/auth")
 
-// prefix: /api/experts/:expert_id/scheduledappointments'
-
+// prefix: /api/experts/:expert_id/scheduledAppointments'
 router
   .get("/", loginRequired, ensureCorrectUser, getScheduledAppointments) //mostrar todas las consultas agendadas de un nutri
   .post("/", loginRequired, ensureCorrectUser, createScheduledAppointment)
+  
+  // .get("/:scheduledAppointment_id", loginRequired, ensureCorrectUser, getOneScheduledAppointment) //mostrar todas las consultas agendadas de un nutri
   .put("/:scheduledAppointment_id", loginRequired, ensureCorrectUser, editScheduledAppointment)
   .delete("/:scheduledAppointment_id", loginRequired, ensureCorrectUser, deleteScheduledAppointment);
 

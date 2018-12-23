@@ -34,7 +34,7 @@ function MealPlanTemplateCard(props) {
       
       {/* ========= BOTONES DE DELETE E INFO ==========*/}
         <Grid container className='mptCardButtons' justify='center' alignItems='center' >
-            <PopupMealPlanTemplate popupRemove={popupRemove}/>
+          <PopupMealPlanTemplate popupRemove={popupRemove}/>
           <IconButton disableRipple onClick={show}> {/*redirigir a edicion de dieta o ver detalles en popup?*/}
             <InfoIcon style={{ color: "blue" }} />
           </IconButton>

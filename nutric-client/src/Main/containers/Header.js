@@ -129,7 +129,7 @@ class Header extends Component {
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, theme } = this.props;
-    const headerTitle= "Matayuca"
+    const headerTitle= this.props.titulo
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const renderMenu = (
@@ -189,6 +189,64 @@ class Header extends Component {
         </MenuItem>
       </Menu>
     );
+    const renderMobileMenu = (
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMobileMenuOpen}
+        onClose={this.handleMobileMenuClose}
+      >
+        <NavLink to="/perfil">
+          <MenuItem onClick={this.handleMenuClose}>
+            <ListItemIcon>
+              <Person />
+            </ListItemIcon>
+            Perfil
+          </MenuItem>
+        </NavLink>
+        <MenuItem
+          onClick={this.handleMenuClose}
+          style={{ "border-top": "1px solid #8b8b8b2e" }}
+        >
+          <ListItemIcon>
+            <Settings />
+          </ListItemIcon>
+          Configuración
+        </MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>
+          <ListItemIcon>
+            <AttachMoney />
+          </ListItemIcon>
+          Invitar a amigos
+        </MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>
+          <ListItemIcon>
+            <HelpOutline />
+          </ListItemIcon>
+          Ayuda
+        </MenuItem>
+        <MenuItem
+          onClick={this.handleMenuClose}
+          style={{ "border-top": "1px solid #8b8b8b2e" }}
+        >
+          <ListItemIcon>
+            <Check />
+          </ListItemIcon>
+          Activar notificaciones
+        </MenuItem>
+        <MenuItem
+          onClick={this.handleLogout}
+          style={{ "border-top": "1px solid #8b8b8b2e" }}
+        >
+          <ListItemIcon>
+            <ExitToApp />
+          </ListItemIcon>
+          Cerrar sesión
+        </MenuItem>
+      </Menu>
+    );
+    
     return (
       <div>
         <AppBar
@@ -262,6 +320,7 @@ class Header extends Component {
           </Toolbar>
         </AppBar>
         {renderMenu}
+        {renderMobileMenu}
       </div>
     );
   }

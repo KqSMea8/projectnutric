@@ -4,26 +4,17 @@ const Schema = mongoose.Schema;
 // se crea en el momento que se pone el boton de consulta del sidebar, o "Empezar consulta" en la agenda
 const appointmentSchema = new mongoose.Schema(
     {
-      startTime: String,
-      duration: Number,
-      // en caso no tengamos el model de scheduledAppointment
+      realStartTime: Date,
+      realDuration: Number,
+      realTimeEnd: Date,
       scheduledInfo: {
-        wasScheduled: {
+        wasScheduled: { //no es un input
           type: Boolean,
           default: false
         },
-        scheduledTimeStart: { 
-          type: Date,
-          required:true
-        },
-        scheduledTimeEnd: { 
-          type: Date,
-          required:true
-        },
-        scheduledTimeDuration: { 
-          type: Number,
-          required:true
-        },
+        scheduledStartTime: Date,
+        scheduledDuration:Number,
+        scheduledTimeEnd: Date,
         notes: String
       },
       patientInfo:{
@@ -93,11 +84,13 @@ const appointmentSchema = new mongoose.Schema(
       },
       patient: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Patient"
+          ref: "Patient",
+          required:true
       },
       expert: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Expert"
+          ref: "Expert",
+          required:true
       }
   }, 
   {

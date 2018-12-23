@@ -12,7 +12,11 @@ const mealPlanSchema = new mongoose.Schema(
       avgDailyProtein: Number,
       avgDailyCarbs: Number,
       avgDailyFat: Number,
-      endDate: Date, //para determinar paciente activo
+      endDate: {
+        type: Date, 
+        required: true
+      }, //para determinar paciente activo
+      progress: Number, //en %, para determinar pending mealPlan
       days:[{
         dayName: String,
         dailyCalories: Number,

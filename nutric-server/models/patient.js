@@ -9,7 +9,7 @@ const patientSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-      required: false,
+      required: true,
     },
     mail: {
       type: String,
@@ -17,8 +17,8 @@ const patientSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: false,
-    }, 
+      required: true,
+    },
     password: String, 
     phone: String,
     country: String, 

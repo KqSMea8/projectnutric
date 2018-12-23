@@ -33,6 +33,34 @@ import {Pie} from 'react-chartjs-2'
 import Sticky from '@wicked_query/react-sticky';
 import { Alert } from 'antd';
 
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+
+// Create styles
+const pdfstyles = StyleSheet.create({
+  page: {
+    flexDirection: 'row',
+    backgroundColor: '#E4E4E4'
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1
+  }
+});
+
+// Create Document Component
+const MyDocument = () => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text>Section #1</Text>
+      </View>
+      <View style={styles.section}>
+        <Text>Section #2</Text>
+      </View>
+    </Page>
+  </Document>
+);
 
 const styles = theme => ({
   root: {
@@ -203,52 +231,22 @@ class MealPlanCreate extends Component{
           ]
         },{
           dayName:"Martes",
-          meals:[{
-            mealName:"Desayuno",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[]
-          },
-          ]
+          meals:[]
         },{
           dayName:"Miércoles",
-          meals:[{
-            mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[]
-          },
-          ]
+          meals:[]
         },{
           dayName:"Jueves",
-          meals:[{
-            mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[]
-          },
-          ]
+          meals:[]
         },{
           dayName:"Viernes",
-          meals:[{
-            mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[]
-          },
-          ]
+          meals:[]
         },{
           dayName:"Sábado",
-          meals:[{
-            mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[]
-          },
-          ]
+          meals:[]
         },{
           dayName:"Domingo",
-          meals:[{
-            mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[]
-          },
-          ]
+          meals:[]
         }]
       },
       selectedFood:"",
@@ -278,6 +276,19 @@ class MealPlanCreate extends Component{
       mealPlan:copy
     })
   })
+  
+  handleMealTitle=(event, identifier)=>{
+    const copy=this.state.mealPlan;
+    copy.days[identifier[0]].meals[identifier[1]].mealName=event.target.value
+    this.setState({mealPlan:copy})
+  }
+  
+  handleMealPlanTitle=(event)=>{
+    const copy=this.state.mealPlan;
+    copy.mealPlanName=event.target.value
+    this.setState({mealPlan:copy})
+  }
+  
   
   addNewRecipeButton = (selected,identifier) => {
     const copy=this.state.mealPlan;
@@ -310,7 +321,7 @@ class MealPlanCreate extends Component{
       mealPlan:copy
     })
 }
-  
+
   //funciones para el stepper
   totalSteps = () => {
     return getSteps().length;
@@ -381,6 +392,7 @@ class MealPlanCreate extends Component{
       }) 
       return Math.round(totalCalories*100)/100
   }
+  
   pieData(array){
     function totalNutrients(){
       var [totalProt, totalFat, totalCarbs]=[0,0,0];
@@ -472,14 +484,11 @@ class MealPlanCreate extends Component{
       const targetMacro=[this.state.mealPlan.days[dayIdx].dailyCalories, this.state.mealPlan.days[dayIdx].dailyProtein, this.state.mealPlan.days[dayIdx].dailyFat, this.state.mealPlan.days[dayIdx].dailyCarbs]
     //get actual
       const total=this.totalNutrients(dayIdx)
-    
     //get difference
-    const dataList = macros.map(function(macro, macroIndex){
-      return {key: macroIndex, macro: macro, actual:total[macroIndex] , target:targetMacro[macroIndex], remain:Math.round((targetMacro[macroIndex]-total[macroIndex])*100)/100}
-    })
+      const dataList = macros.map(function(macro, macroIndex){
+        return {key: macroIndex, macro: macro, actual:total[macroIndex] , target:targetMacro[macroIndex], remain:Math.round((targetMacro[macroIndex]-total[macroIndex])*100)/100}
+      })
     return dataList
-  
-    
   }
   
   render(){
@@ -490,23 +499,23 @@ class MealPlanCreate extends Component{
       [classes.buttonSuccess]: this.state.success,
     });
     
-const columns = [{
-  title: 'Macros del día',
-  dataIndex: 'macro',
-  width:120
-}, {
-  title: 'Actual',
-  dataIndex: 'actual',
-  width:60
-}, {
-  title: 'Objetivo',
-  dataIndex: 'target',
-  width:75
-},{
-  title: 'Restante',
-  dataIndex: 'remain',
-  width:78
-}];
+  const columns = [{
+    title: `${getSteps()[dayIndex]}`,
+    dataIndex: 'macro',
+    width:120
+  }, {
+    title: 'Actual',
+    dataIndex: 'actual',
+    width:60
+  }, {
+    title: 'Objetivo',
+    dataIndex: 'target',
+    width:75
+  },{
+    title: 'Restante',
+    dataIndex: 'remain',
+    width:78
+  }];
 
     return (
       <div>
@@ -517,14 +526,14 @@ const columns = [{
             <Grid container alignItems="center">
               <Grid item>
                   <Alert
-                    message="Has completado satisfactoriamente el plan alimenticio"
-                    description="O matayuca, mándale su plan alimenticio a su meil pe, kchera"
+                    message="Has completado satisfactoriamente el plan alimenticio para Juan O'leary"
+                    description="Previsualízalo aquí."
                     type="success"
                     showIcon
                   />
                 <Typography>
-                  RESUMEN DE HUEVADAS:
-                  {this.state.mealPlan.toString()}
+                  RESUMEN DEL MEALPLAN:
+                  {JSON.stringify(this.state.mealPlan)}
                 </Typography>
               </Grid>
             </Grid>
@@ -533,8 +542,9 @@ const columns = [{
           ) : (
           <Grid container alignItems="center" justify="space-between">
             <Grid item md={5} xs={12} style={{textAlign:"center"}}>
-              <TextField inputProps={{style:{padding:"10px 20px",textAlign:"center"}}} style={{margin:"20px 20px"}} id="outlined-bare" variant="filled" value={this.state.mealPlan.mealPlanName}/>
-              <Stepper nonLinear activeStep={dayIndex} alternativeLabel style={{padding:"0"}}>
+              <div>Paciente: Juan O'leary</div>
+              <TextField inputProps={{style:{padding:"10px 20px",textAlign:"center"}}} style={{margin:"20px 20px"}} id="outlined-bare" variant="filled" value={this.state.mealPlan.mealPlanName} onChange={this.handleMealPlanTitle}/>
+              <Stepper nonLinear activeStep={dayIndex} alternativeLabel style={{padding:"0", backgroundColor:"#fafafa"}}>
                 {steps.map((label, index) => {
                   return (
                     <Step key={label}>
@@ -574,7 +584,7 @@ const columns = [{
                             <hr/>
                             <Grid container direction="row" justify="space-between" alignItems="center">
                               <Grid item md={12} xs={12} style={{textAlign:"center", margin:"5px"}}>
-                                <TextField inputProps={{style:{padding:"10px 5px",textAlign:"center", fontSize:"0.9rem"}}} style={{margin:"0px 20px"}} id="outlined-bare" variant="outlined" value={meal.mealName=="" ? "Comida "+(mealIndex+1) : meal.mealName}/>
+                                <TextField inputProps={{style:{padding:"10px 5px",textAlign:"center", fontSize:"0.9rem"}}} style={{margin:"0px 20px"}} id="outlined-bare" variant="outlined" value={meal.mealName=="" ? "Comida "+(mealIndex+1) : meal.mealName} onChange={e=>{this.handleMealTitle(e,[dayIndex,mealIndex])}}/>
                               </Grid>
                               <Grid item md={12} xs={12}>
                                 <Grid container>
@@ -632,17 +642,18 @@ const columns = [{
                       }
                   </div>
                 </div>
-                <Grid container direction="row" style={{marginTop:"20px"}}>
+                <Grid container direction="row" alignItems="center" justify="center" style={{margin:"20px 0px"}}>
                   <Grid item md={5} style={{ textAlign:"center" }}>
                     <MuiThemeProvider theme={theme}>
-                      <Button variant="contained" color="primary" className={classes.margin} onClick={e=>{this.addNewMealButton(dayIndex)}}>
+                      <Button variant="outlined" color="primary" className={classes.margin} onClick={e=>{this.addNewMealButton(dayIndex)}}>
                         <AddIcon/><Typography>Agregar comida</Typography>
                       </Button>
                     </MuiThemeProvider>
                   </Grid>
                 </Grid>
-                <Grid container direction="row" justify="space-between" alignItems="flex-end" style={{marginTop:"10px", height:"100%"}}>
+                <Grid container direction="row" justify="space-between" alignItems="flex-end" style={{margin:"20px 0px", height:"100%"}}>
                   <Grid item md={2} style={{ textAlign:"center" }}>
+                    {dayIndex==0 ? null : (
                     <Button
                       variant="outlined"
                       color="secondary"
@@ -652,6 +663,7 @@ const columns = [{
                     >
                       Anterior día
                     </Button>
+                    )}
                   </Grid>
                   <Grid item md={2} style={{ textAlign:"center" }}>
                     {dayIndex !== steps.length &&
@@ -674,14 +686,16 @@ const columns = [{
                       )))}
                   </Grid>
                   <Grid item md={2} style={{ textAlign:"center" }}>
+                    {dayIndex==6 ? null :(
                     <Button
                       variant="contained"
                       color="primary"
                       onClick={this.handleNext}
                       className={classes.button}
                     >
-                      Siguiente día
+                      {"Ir a "+getSteps()[dayIndex+1]}
                     </Button>
+                    )}
                   </Grid>
                 </Grid>
               </div>

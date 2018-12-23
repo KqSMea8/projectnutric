@@ -17,6 +17,7 @@
     "faker": "^4.1.0",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.22.2",
-    "mongoose": "^5.3.14"
+    "mongoose": "^5.3.14",
+    "react-country-region-selector": "^1.4.3"
   }
 }

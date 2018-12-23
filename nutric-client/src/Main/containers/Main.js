@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {authUser} from '../store/actions/auth';
 import {removeError} from '../store/actions/errors';
-import Header from './Header';
 import Dashboard from './Dashboard';
 import Sidebar from './Sidebar';
 

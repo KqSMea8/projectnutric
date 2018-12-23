@@ -10,17 +10,21 @@ exports.getRecipes = async function(req,res,next){
 };
 
 exports.createRecipe = async function(req,res,next){
+    
+
     try{
         let newRecipe = await database.Recipe.create({
             recipeName: req.body.recipeName,
             portions: req.body.portions,
             category: req.body.category,
             duration: req.body.duration,
+            displayimg:  req.body.displayimg,
             expert:req.params.expert_id,
-            display: req.body.display,
+            
+            description: req.body.description,
              
         })
-        return res.status(200).json(newRecipe);
+        return res.status(200).json(newRecipe.displayimg);
     } catch(e){
         return next(e);
     }

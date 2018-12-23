@@ -92,7 +92,7 @@ class ButtonPopup extends Component {
       carbs_g:Math.random() * 50,
       fat_g:Math.random() * 30
               }],
-    instructions :["hola"]        
+    instructions :[]        
   };
 
   handleChange = prop => event => {
@@ -160,6 +160,13 @@ class ButtonPopup extends Component {
     console.log(this.state.ingredients)
   }
       
+  AddNewInstruction = () => {
+  const instructions = this.state.instructions.concat(
+  <TextField placeholder="Primer instrucción"/>)
+  
+  this.setState({instructions})
+console.log(this.state.instructions)
+  }
   
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -175,19 +182,21 @@ class ButtonPopup extends Component {
     });
   };
   handleChangeArray = name => event => {
-    const instructionsprev = this.state.instructions
-    const  instructionsUpdated = instructionsprev.push(
-      {[name]: event.target.value}
-      )
+    
     this.setState({
-     
+      [name]: event.target.value,
     });
+  
+    console.log(this.state.instructions)
   };
 
   render() {
     const {currentUserId}=this.props
     const { classes } = this.props;
     let {displayimg} = this.state
+    const instructionsArray = this.state.instructions.map((Element, index) => {
+      return <Element key={ index } index={ index } />
+    });
 
     
     return (
@@ -325,6 +334,7 @@ class ButtonPopup extends Component {
                 </Grid>
 {/* //////////////////////////// ESPACITO ENTRE LA PRIMERA MTIAD Y LA SEGUNDA (no funcionaba el puto margin-top y tenia que solucionar) //////////////////////////////////////////////////////////////////////////*/}
                 <Grid container xs={12} > <br/> </Grid>
+{/* //////////////////////////// INGREIDENTES//////////////////////////////////////////////////////////////////////////*/}
                 <Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={40} styles={{marginTop:'20'}}>
                   <Grid item md={6} xs={12}>  
                   
@@ -334,21 +344,19 @@ class ButtonPopup extends Component {
               
                     
                   </Grid>  
+{/* //////////////////////////// INSTRUCCIONES //////////////////////////////////////////////////////////////////////////*/}                  
                   <Grid item md={6} xs={12}>  
                  
                       <ol>Instrucciones:
                             <li><TextField
-                              
-                              id="standard-name"
                               className={classes.textField}
-                              value={this.state.instructions}
                               placeholder="Primer instrucción"
-                              onChange={this.handleChangeArray('instructions')}
                             />
                             </li>
+                            {instructionsArray}
                       </ol>
-                      
-                    { console.log(this.state.instructions)}
+                      <button onClick={this.AddNewInstruction}> Añadir nueva instrucción</button>
+                   
                   </Grid>
 
                   
@@ -356,7 +364,9 @@ class ButtonPopup extends Component {
               </Grid>
             </form>
           </DialogContent>
+{/* //////////////////////////// BOTONES//////////////////////////////////////////////////////////////////////////*/}
           <DialogActions>
+          
             <Button onClick={this.handleSubmit} variant="contained" color="primary">
               Guardar Receta
             </Button>

@@ -16,7 +16,6 @@ exports.createScheduledAppointment = async function(req,res,next){
             //¡Llegue! Y no fue necesario mandarlo como hidden input (16-diciembre)
         });
         //Hacer referencia del scheduledAppointment en la BD del experto
-        // try catch doble 
         let foundExpert = await database.Expert.findById(req.params.expert_id);
         foundExpert.appointments.push(newScheduledAppointment._id);
         await foundExpert.save();
@@ -33,7 +32,7 @@ exports.createScheduledAppointment = async function(req,res,next){
 
 exports.getScheduledAppointments = async function(req,res,next){
     try {
-        let scheduledAppointments = await database.Appointment.find({expert:req.params.expert_id},'scheduledInfo patient').populate("patient", "firstName");
+        let scheduledAppointments = await database.Appointment.find({expert:req.params.expert_id},'scheduledInfo patient').populate("patient", "firstName", "lastName");
         return res.status(200).json(scheduledAppointments);
     } catch(error){
         return next(error);
@@ -44,14 +43,17 @@ exports.deleteScheduledAppointment = async function(req,res,next){
     try{
         //Buscamomos la consulta agendada de la base de datoas ScheduledAppointment
         let foundScheduledAppointment = await database.Appointment.findById(req.params.scheduledAppointment_id);
+        
         //Aqui se borra el scheduledAppointment del schema del experto
         let foundExpert = await database.Expert.findById(req.params.expert_id);
         foundExpert.appointments.splice(foundExpert.appointments.indexOf(req.params.scheduledAppointment_id),1);
         await foundExpert.save();
+        
         //Aqui se borra el scheduledAppointment del schema del paciente        
         let foundPatient = await database.Patient.findById(foundScheduledAppointment.patient);
         foundPatient.appointments.splice(foundPatient.appointments.indexOf(req.params.scheduledAppointment_id),1);
         await foundPatient.save();
+        
         //Finalmente, borramos la consulta agendada de la base de datos ScheduledAppointment
         let deleteScheduledAppointment = await database.Appointment.findByIdAndRemove(req.params.scheduledAppointment_id);
 
@@ -63,8 +65,9 @@ exports.deleteScheduledAppointment = async function(req,res,next){
 exports.editScheduledAppointment = async function(req,res,next){
     try{
         let foundScheduledAppointment = await database.Appointment.findByIdAndUpdate(req.params.scheduledAppointment_id, {scheduledInfo:{
-                scheduledTime: req.body.scheduledTime,
-                scheduledDuration: req.body.scheduledDuration,
+                scheduledTimeStart: req.body.scheduledTimeStart,
+                scheduledTimeEnd: req.body.scheduledTimeEnd,
+                scheduledTimeDuration: req.body.scheduledTimeDuration,
                 notes: req.body.notes
             }}, {new:true});
         return res.status(200).json(foundScheduledAppointment);

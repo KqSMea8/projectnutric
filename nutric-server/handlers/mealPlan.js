@@ -19,6 +19,7 @@ exports.createMealPlan = async function(req, res, next){
       avgDailyCarbs:    req.body.avgDailyCarbs,
       avgDailyFat:      req.body.avgDailyFat,
       endDate:          req.body.endDate,
+      progress:         req.body.progress,
       days:             req.body.days,
       
       // REFERENCES
@@ -39,7 +40,7 @@ exports.createMealPlan = async function(req, res, next){
     return res.status(200).json(newMealPlan);
   }
   catch(e){
-    next(e);
+    return next(e);
   }
 };
 

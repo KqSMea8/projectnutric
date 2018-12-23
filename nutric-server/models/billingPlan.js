@@ -5,23 +5,23 @@ const billingPlanSchema = new mongoose.Schema(
     {
         planName: {
             type: String,
-            required: true,
+            required: false,
         }, 
         planDescription: {
             type: String,
-            required: true,
+            required: false,
         }, 
         planFrequency: {
             type: String,
-            required: true,
+            required: false,
         }, 
         price: {
-            type: String,
-            required: true,
+            type: Number,
+            required: false,
         }, 
         currency: {
             type: String,
-            required: true,
+            required: false,
         }, 
         expert: [{
             type: mongoose.Schema.Types.ObjectId,

@@ -9,13 +9,19 @@ import Add from '@material-ui/icons/Add'
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import Input from '@material-ui/core/Input';
+import Typography from '@material-ui/core/Typography';
 import {apiCall} from '../../services/api'
 import SearchDropdown from './SearchDropdown'
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 
 
 import moment from 'moment';
@@ -24,6 +30,54 @@ import 'moment/locale/es';
 import "antd/dist/antd.css";
 import { TimePicker } from "antd";
 import { DatePicker } from "antd";
+
+
+//styling popup
+const DialogTitle = withStyles(theme => ({
+  root: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    margin: 0,
+    padding: theme.spacing.unit * 2,
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit,
+    top: theme.spacing.unit,
+    color: theme.palette.grey[500],
+  },
+}))(props => {
+  const { children, classes, onClose } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles(theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing.unit * 2,
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles(theme => ({
+  root: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    margin: 0,
+    padding: theme.spacing.unit,
+  },
+}))(MuiDialogActions);
+
+
+
+//end styling popup
+
 
 const styles = {
     dialogPaper: {
@@ -167,11 +221,13 @@ class Popup extends Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Agendar nueva cita</DialogTitle>
+          <DialogTitle id="form-dialog-title" onClose={this.handleClose}>
+            Agendar nueva cita
+          </DialogTitle>
           <DialogContent>
             <form onSubmit={this.handleSubmit}>
               <Grid container direction="row" justify="space-between" alignItems="baseline">
-                <Grid container direction="row" justify="space-between" alignItems="flex-start">
+                <Grid container direction="row" justify="space-between" alignItems="center">
                   <Grid item md={8} xs={12}>  
                     <Grid container justify="space-between" alignItems="center">
                       <Grid item md={3} xs={4}>Paciente:</Grid>
@@ -190,7 +246,7 @@ class Popup extends Component {
                     </NavLink>
                   </Grid>
                 </Grid>
-                <Grid container direction="row" justify="center" alignItems="baseline" spacing={40}>
+                <Grid container direction="row" justify="flex-start" alignItems="center" spacing={16}>
                   <Grid item md={2} xs={4}>Fecha:</Grid>
                   <Grid item md={10} xs={8}>
                     <DatePicker
@@ -232,14 +288,14 @@ class Popup extends Component {
                     />
                   </Grid>
                   <Grid item md={2} xs={4}>Duración:</Grid>
-                  <Grid item md={5} xs={8}>
+                  <Grid item md={1} xs={8}>
                         <Input
                           type="number"
                           disabled
                           placeholder="tiempo (minutos)"
                           value={moment(this.state.endTime).diff(this.state.startTime, "minutes")}
                           onChange={this.handleChange('scheduledTimeDuration')}
-                        /><span> minutos</span>
+                        /><div> minutos</div>
                   </Grid>
                   <Grid item xs={12}>
                     <TextField

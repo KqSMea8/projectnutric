@@ -199,10 +199,9 @@ const styles = theme => ({
       backgroundColor: theme.palette.background.default,
     },
    '&:hover': {
-      textDecoration:"underline",
-        '& $button':{
-          visibility:"visible !important"
-        }
+      '& $button':{
+        visibility:"visible !important"
+      }
     }, 
 
   }

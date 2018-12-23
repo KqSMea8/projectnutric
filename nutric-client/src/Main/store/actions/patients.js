@@ -7,6 +7,8 @@ export const loadPatients = (patients) => ({
   patients: patients
 });
 
+
+
 export const fetchPatients = (expert_id) => {
   return (dispatch) => {
     return apiCall("get", `/api/experts/${expert_id}/patients`)
@@ -18,4 +20,10 @@ export const fetchPatients = (expert_id) => {
       });
     
   };
+};
+
+export const addPatient = (expert_id, firstName, lastName, address, mail, gender) => (dispatch, getState) => {
+  return apiCall("post", `/api/expert/${expert_id}/patients`, { firstName, lastName, mail, gender })
+    .then(res => {})
+    .catch(err => addError(err.message));
 };

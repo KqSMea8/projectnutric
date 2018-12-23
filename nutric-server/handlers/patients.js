@@ -8,6 +8,8 @@ exports.createPatient = async function(req,res,next){
             firstName:req.body.firstName,
             lastName: req.body.lastName,
             mail:req.body.mail,
+            gender: req.body.gender,
+            phone: req.body.phone,
             expert:req.params.expert_id
         })
         

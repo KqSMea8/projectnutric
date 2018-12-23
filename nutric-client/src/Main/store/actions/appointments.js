@@ -10,7 +10,7 @@ export const loadAppointments = (appointments) => ({
 // sacar expert_id del componente donde se llame fetchAppointments
 export const fetchAppointments = (expert_id) => { 
   return (dispatch) => {
-    return apiCall("get", `/api/experts/${expert_id}/scheduledappointments`)
+    return apiCall("get", `/api/experts/${expert_id}/appointments`)
       .then(res => {
         dispatch(loadAppointments(res));
       })

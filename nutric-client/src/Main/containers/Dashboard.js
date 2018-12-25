@@ -21,6 +21,7 @@ import StatsMain from './Estadísticas/EstadísticasMain';
 import ProfileMain from "./Profile/ProfileMain";
 import SuscriptionDetails from "../components/BillingPlan/BillingPlanSuscription";
 import ExpertPasswordReset from "../components/Expert/ExpertPasswordReset";
+import ExpertPasswordUpdate from "../components/Expert/ExpertPasswordUpdate";
 
 import Header from './Header';
 
@@ -156,6 +157,16 @@ class Dashboard extends Component {
               render={() => {
                 return(
                   <ExpertPasswordReset headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
+                  
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/reset/:token" 
+              render={(props) => {
+                return(
+                  <ExpertPasswordUpdate {...props} headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
                   
                 );
               }}

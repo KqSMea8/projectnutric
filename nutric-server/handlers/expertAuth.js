@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const bcrypt = require('bcrypt')
 
 // poner deleteExpert aqui?
 
@@ -107,7 +108,7 @@ exports.forgotPassword = async function(req, res, next) {
             subject: `Link To Reset Password`,
             text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
                 `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n` +
-                `http://localhost:3031/reset/${token}\n\n` +
+                `https://nutric-svenbm.c9users.io/reset/${token}\n\n` +
                 `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
         };
 
@@ -135,11 +136,37 @@ exports.resetToken = async function(req, res, next) {
     }
     else {
         res.status(200).send({
-            username: foundExpert.firstName,
+            firstName: foundExpert.firstName,
             message: 'password reset link a-ok',
         });
     }
 
 
 
+}
+const BCRYPT_SALT_ROUNDS = 12
+exports.updatePassword = async function(req, res, next) {
+
+    let foundExpert = await database.Expert.find({ firstName: req.body.firstName })
+
+    if (foundExpert != null) {
+        console.log('user exists in db');
+        bcrypt
+            .hash(req.body.password, BCRYPT_SALT_ROUNDS)
+            .then(hashedPassword => {
+                foundExpert.update({
+                    password: hashedPassword,
+                    resetPasswordToken: null,
+                    resetPasswordExpires: null,
+                });
+            })
+            .then(() => {
+                console.log('password updated');
+                res.status(200).send({ message: 'password updated' });
+            });
+    }
+    else {
+        console.log('no user exists in db to update');
+        res.status(404).json('no user exists in db to update');
+    }
 }

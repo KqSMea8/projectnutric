@@ -23,9 +23,12 @@ class PatientsList extends Component {
   
   
   render(){
-    const {data, numRows, addPatient, currentUser} = this.props;
+    const {completeData, numRows, addPatient, deletePatient, currentUserId, history} = this.props;
     const columns = ["Nombre", "Edad", "Email", "Activo"]; //ojo con PatientsMain y numcolumnas
-  
+    // console.log(completeData);
+    let dataArr = completeData.map(el => el.data);
+    // console.log(dataArr);
+    
     const options = {
       filterType: 'dropdown',
       rowsPerPage: numRows,
@@ -33,10 +36,17 @@ class PatientsList extends Component {
       textLabels: { body: '' },     //estp pa q cuando esten fetcheando los mensajes, aparezca en blanco el table
       filterType: 'dropdown',
       responsive: 'scroll',
+      onRowsDelete: (e) => {
+        // solo importa dataIndex
+        console.log(e.data[0].dataIndex)
+        let selectedIdx = e.data[0].dataIndex;
+        let selectedPatient = completeData[selectedIdx];
+        deletePatient(currentUserId, selectedPatient._id);
+      }
     }
     
     const action = (
-      <PopupAddPatient addPatient={addPatient} currentUser={currentUser} />
+      <PopupAddPatient history={history} addPatient={addPatient} currentUserId={currentUserId} />
     );
   
   return(
@@ -45,12 +55,11 @@ class PatientsList extends Component {
       <SnackbarContent  
         message={'Mis pacientes'} 
         action={action} 
-        
         style={{position: 'absolute', width: '80%', margin: '-15px auto 0', justifyContent: 'center', backgroundColor: '#3f51b5'}} 
       />
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable
-          data={data}
+          data={dataArr}
           columns={columns}
           options={options}
           style={{paddingTop: '30px'}}

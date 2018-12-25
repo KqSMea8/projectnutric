@@ -8,8 +8,12 @@ exports.createPatient = async function(req,res,next){
             firstName:req.body.firstName,
             lastName: req.body.lastName,
             mail:req.body.mail,
-            gender: req.body.gender,
             phone: req.body.phone,
+            gender: req.body.gender,
+            birthDate: req.body.birthDate,
+            nationality: req.body.nationality,
+            idNumber: req.body.idNumber,
+            address: req.body.address,
             expert:req.params.expert_id
         })
         
@@ -37,9 +41,16 @@ exports.getPatients = async function(req,res,next){
 exports.deletePatient = async function(req,res,next){
     try{
         let foundPatient = await database.Patient.findByIdAndRemove(req.params.patient_id);
+        
         let foundExpert = await database.Expert.findById(req.params.expert_id);
         foundExpert.patients.splice(foundExpert.patients.indexOf(req.params.patient_id),1);
         await foundExpert.save();
+        
+        if(foundPatient.mealPlans.length > 0){
+            let foundMealPlan = await database.MealPlan.findById() 
+        }
+        // USAR PRE REMOVE HOOKS
+
         return res.status(200).json(foundPatient);
     } catch(e){
         return next(e)

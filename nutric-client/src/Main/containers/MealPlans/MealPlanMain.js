@@ -23,20 +23,23 @@ class MealPlanMain extends Component {
   componentDidMount(){
     this.props.fetchMealPlanTemplates(this.props.currentUser);
     this.props.fetchMealPlans(this.props.currentUser); 
+    this.props.changeHeaderTitle("Plan alimenticio");
   }
   
-  
-  
+
   render(){
     const {match, currentUser, mealPlanTemplates, removeMealPlanTemplate, mealPlans} = this.props;
-    console.log(mealPlans);
-    
+
     
     const mealPlansList = mealPlans.map(mealPlan => {
-      const {patient, createdAt, objective, progress} = mealPlan;
-      return (
-        [`${patient.firstName} ${patient.lastName}`, createdAt, objective, progress]
-      );
+      if(mealPlan.patient==null){
+        return null
+      } else {
+        const {patient, createdAt, objective, progress} = mealPlan;
+        return (
+          [`${patient.firstName} ${patient.lastName}`, createdAt, objective, progress]
+        );
+      }
     })
     
     

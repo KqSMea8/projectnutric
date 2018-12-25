@@ -7,6 +7,7 @@ const appointmentSchema = new mongoose.Schema(
       realStartTime: Date,
       realDuration: Number,
       realTimeEnd: Date,
+      reason: String,
       scheduledInfo: {
         wasScheduled: { //no es un input
           type: Boolean,

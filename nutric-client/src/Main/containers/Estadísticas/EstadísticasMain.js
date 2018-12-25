@@ -39,6 +39,10 @@ class StatsMain extends Component {
     this.state = {};
   }
   
+  componentDidMount(){
+    this.props.changeHeaderTitle("Estadísticas")
+  }
+  
   render(){
     
      const { classes } = this.props;
@@ -50,7 +54,7 @@ class StatsMain extends Component {
     
 
     <Grid container >
-      <Grid container sm={7} >
+      <Grid container>
         <Grid item sm={7} styles={{ marginBottom: 30}}>
       <Plot
         data={[
@@ -69,7 +73,7 @@ class StatsMain extends Component {
       />
         </Grid>
        </Grid> 
-       <Grid container sm={5} >
+       <Grid container>
         <Grid item sm={2}  > </Grid>
         <Grid item sm={10}  >
          
@@ -117,8 +121,8 @@ class StatsMain extends Component {
       </Grid>
      
         
-        <Grid container sm={12} >
-          <Grid container sm={12}>
+        <Grid container>
+          <Grid container>
             <Grid item sm ={3}>
                 <Card className={classes.card}>
                   <CardContent>
@@ -188,7 +192,7 @@ class StatsMain extends Component {
               </Card>
             </Grid>
           </Grid>
-          <Grid container sm={12}>
+          <Grid container>
             <Grid item sm ={4}>
                 <Card className={classes.card}>
                   <CardContent>
@@ -241,7 +245,7 @@ class StatsMain extends Component {
               </Card>
             </Grid>
           </Grid>
-          <Grid container sm={12}>
+          <Grid container>
             <Grid item sm ={4}>
                 <Card className={classes.card}>
                   <CardContent>

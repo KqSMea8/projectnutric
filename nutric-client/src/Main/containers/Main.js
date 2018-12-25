@@ -26,11 +26,8 @@ class Main extends Component{
       // el unico problema es q div Dashboard se va a atras del sidebar
       <div style={{display: 'flex', height:"100%"}}>
         {!currentUser.isAuthenticated &&  <Redirect to="/login"/> }
-          
             <Sidebar open={this.state.open} />
             <Dashboard open={this.state.open} handleDrawerToggle={this.handleDrawerToggle}/> 
-        
-  
       </div>
     )
   }

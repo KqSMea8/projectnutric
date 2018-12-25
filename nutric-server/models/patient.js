@@ -21,7 +21,7 @@ const patientSchema = new mongoose.Schema(
     },
     password: String, 
     phone: String,
-    country: String, 
+    nationality: String, 
     birthDate: Date,
     age: Number, //calculado automaticamente en el front cuando da su fecha de nacimiento
     idType: String,
@@ -60,10 +60,6 @@ const patientSchema = new mongoose.Schema(
     mealPlans:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "MealPlan"
-    }],
-    measurements:[{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Measurement"
     }],
     appointments:[{
       type: mongoose.Schema.Types.ObjectId,

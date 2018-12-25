@@ -42,6 +42,11 @@ class ScheduleMain extends Component{
   }
   
   componentDidMount(){
+    this.props.changeHeaderTitle("Agenda")
+  }
+  
+  
+  componentDidMount(){
     const { currentUserId } = this.props;
     this.props.fetchAppointments(currentUserId);
     this.props.fetchPatients(currentUserId);
@@ -102,10 +107,9 @@ class ScheduleMain extends Component{
     })
   }
   render(){
-    const {headerTitle}=this.props
     const {appointments}=this.props
     const appointmentsList = appointments.map(function(appointment){
-      return {id: appointment._id, title: "Consulta con "+appointment.patient.firstName, start: moment(appointment.scheduledInfo.scheduledTimeStart).toDate(), end: moment(appointment.scheduledInfo.scheduledTimeEnd).toDate()}
+      return {id: appointment._id, title: "Consulta con "+appointment.patient.firstName+" "+appointment.patient.lastName, start: moment(appointment.scheduledInfo.scheduledTimeStart).toDate(), end: moment(appointment.scheduledInfo.scheduledTimeEnd).toDate()}
     })
     return(
       <div>

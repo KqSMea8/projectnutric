@@ -333,7 +333,7 @@ console.log(this.state.instructions)
 
                 </Grid>
 {/* //////////////////////////// ESPACITO ENTRE LA PRIMERA MTIAD Y LA SEGUNDA (no funcionaba el puto margin-top y tenia que solucionar) //////////////////////////////////////////////////////////////////////////*/}
-                <Grid container xs={12} > <br/> </Grid>
+                <Grid container > <br/> </Grid>
 {/* //////////////////////////// INGREIDENTES//////////////////////////////////////////////////////////////////////////*/}
                 <Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={40} styles={{marginTop:'20'}}>
                   <Grid item md={6} xs={12}>  

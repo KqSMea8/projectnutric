@@ -17,9 +17,11 @@ const PendingMealPlans = ({mealPlansList, numRows}) => {
 
   // es pending si mealPlan.progess < 100%
   const pendingMealPlansList = mealPlansList.filter(m => {
+    if(m==null){
+      return null
+    }
    let progress = m[3]
    return progress < 100
-  
   })
 
   return(

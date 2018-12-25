@@ -90,7 +90,7 @@ class EnhancedTableHead extends React.Component {
                 sortDirection={orderBy === row.id ? order : false}
               >
                 <Tooltip
-                  title="Ordenar"
+                  title={"Ordenar"}
                   placement={row.numeric ? "bottom-end" : "bottom-start"}
                   enterDelay={300}
                 >

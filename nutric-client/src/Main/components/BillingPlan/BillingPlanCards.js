@@ -54,7 +54,6 @@ class BillingPlansCards extends Component{
     {billingPlans.map(bp => {
     return(
     <div>
-      
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="h5" component="h2">

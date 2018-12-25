@@ -8,12 +8,14 @@ class HomeMain extends Component{
     this.state = {}
   }
   
+  componentDidMount(){
+    this.props.changeHeaderTitle("Inicio")
+  }
   
   render(){
-    const {headerTitle}=this.props
     return(
       <div>
-        <div>{headerTitle}</div>
+        <div>{this.state.headerTitle}</div>
       </div>
     )
   }

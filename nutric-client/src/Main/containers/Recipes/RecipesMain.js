@@ -23,9 +23,12 @@ class RecipesMain extends Component {
     super(props);
     this.state = {};
   }
-    componentWillMount(){
+  
+  componentWillMount(){
     const { currentUserId } = this.props;
-    this.props.fetchRecipes(currentUserId, console.log('recipes fetched'));}
+    this.props.fetchRecipes(currentUserId, console.log('recipes fetched'));
+    this.props.changeHeaderTitle("Recetas")
+  }
     
 
   render(){

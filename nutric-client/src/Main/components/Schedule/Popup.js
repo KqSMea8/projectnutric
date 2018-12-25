@@ -74,10 +74,7 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions);
 
-
-
 //end styling popup
-
 
 const styles = {
     dialogPaper: {
@@ -110,11 +107,11 @@ class Popup extends Component {
     const duration=this.state.endTime.diff(this.state.startTime, "minutes")
        
     apiCall("post", `/api/experts/${currentUserId}/scheduledappointments/`,{
-      scheduledTimeStart:scheduledTimeStart,
-      scheduledTimeEnd:scheduledTimeEnd,
-      scheduledTimeDuration:duration,
-      notes:this.state.notes,
-      patient_id:this.state.patient,
+      scheduledTimeStart: scheduledTimeStart,
+      scheduledTimeEnd: scheduledTimeEnd,
+      scheduledTimeDuration: duration,
+      notes: this.state.notes,
+      patient_id: this.state.patient,
     })
     .then(res => {
       console.log(res);
@@ -312,6 +309,8 @@ class Popup extends Component {
                   </Grid>
                 </Grid>
               </Grid>
+              
+              
             </form>
           </DialogContent>
           <DialogActions>

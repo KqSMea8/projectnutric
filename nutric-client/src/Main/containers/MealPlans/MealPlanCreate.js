@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
-import {fetchFoods} from '../../store/actions/foods'
+import { Link } from 'react-router-dom';
+import { fetchFoods } from '../../store/actions/foods'
 import SearchBar from '../../components/MealPlans/SearchBar'
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -29,38 +29,11 @@ import classNames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
 
-import {Pie} from 'react-chartjs-2'
+import { Pie } from 'react-chartjs-2'
 import Sticky from '@wicked_query/react-sticky';
 import { Alert } from 'antd';
 
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-
-// Create styles
-const pdfstyles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
-  }
-});
-
-// Create Document Component
-const MyDocument = () => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>Section #1</Text>
-      </View>
-      <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View>
-    </Page>
-  </Document>
-);
+import PDF from '../../components/MealPlans/MealPlanPDF'
 
 const styles = theme => ({
   root: {
@@ -113,221 +86,228 @@ const theme = createMuiTheme({
 
 
 function getSteps() {
-  return ['Lunes', 'Martes','Miércoles', 'Jueves','Viernes','Sábado','Domingo'];
+  return ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 }
 
 
 
-class MealPlanCreate extends Component{
-  constructor(props){
+class MealPlanCreate extends Component {
+  constructor(props) {
     super(props);
-    this.state = { 
-      mealPlan:{
-        mealPlanName:"Dieta Tonificación",
-        days:[{
-          dayName:"Lunes",
+    this.state = {
+      mealPlan: {
+        mealPlanName: "Dieta Tonificación",
+        days: [{
+          dayName: "Lunes",
           dailyCalories: 3000,
           dailyProtein: 200,
           dailyCarbs: 400,
           dailyFat: 250,
-          meals:[{
-            mealName:"Desayuno",
-            mealTime:moment().set({ hour: 7, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[
-              {type:"1 vaso de bebida de soya sin azúcar", 
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+          meals: [{
+            mealName: "Desayuno",
+            mealTime: moment().set({ hour: 7, minute: 30, second: 0, millisecond: 0 }).toDate(),
+            recipes: [{
+                type: "1 vaso de bebida de soya sin azúcar",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"1 pan pita integral con 6 aceitunas",          
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "1 pan pita integral con 6 aceitunas",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"40g de queso light",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "40g de queso light",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              ]
-          },{
-            mealName:"Post-Entreno",
+            ]
+          }, {
+            mealName: "Post-Entreno",
             mealTime: moment().set({ hour: 10, minute: 45, second: 0, millisecond: 0 }).toDate(),
-            recipes:[
-              {type:"2 scoops de proteína vegana",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+            recipes: [{
+                type: "2 scoops de proteína vegana",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"1 plátano de seda",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "1 plátano de seda",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              ]
-          },{
-            mealName:"Almuerzo",
+            ]
+          }, {
+            mealName: "Almuerzo",
             mealTime: moment().set({ hour: 13, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[
-              {type:"Ensalada de pepinillos, pimientos, espinaca y brócoli",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+            recipes: [{
+                type: "Ensalada de pepinillos, pimientos, espinaca y brócoli",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"2 tazas de carne de soya aderezada",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "2 tazas de carne de soya aderezada",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"1 camote grande al horno",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "1 camote grande al horno",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              ]
-          },{
-            mealName:"Media Tarde",
+            ]
+          }, {
+            mealName: "Media Tarde",
             mealTime: moment().set({ hour: 17, minute: 0, second: 0, millisecond: 0 }).toDate(),
-            recipes:[
-              {type:"1 naranja",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+            recipes: [{
+                type: "1 naranja",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"1 taza de té verde",
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "1 taza de té verde",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              ]
-          },{
-            mealName:"Cena",
+            ]
+          }, {
+            mealName: "Cena",
             mealTime: moment().set({ hour: 20, minute: 30, second: 0, millisecond: 0 }).toDate(),
-            recipes:[
-              {type:"2 scoops de proteína vegana",              
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+            recipes: [{
+                type: "2 scoops de proteína vegana",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              {type:"1/2 almuerzo",
-              calories_kcal:Math.random() * 300,
-              protein_g:Math.random() * 25,
-              carbs_g:Math.random() * 50,
-              fat_g:Math.random() * 30
+              {
+                type: "1/2 almuerzo",
+                calories_kcal: Math.random() * 300,
+                protein_g: Math.random() * 25,
+                carbs_g: Math.random() * 50,
+                fat_g: Math.random() * 30
               },
-              ]
-          }
-          ]
-        },{
-          dayName:"Martes",
-          meals:[]
-        },{
-          dayName:"Miércoles",
-          meals:[]
-        },{
-          dayName:"Jueves",
-          meals:[]
-        },{
-          dayName:"Viernes",
-          meals:[]
-        },{
-          dayName:"Sábado",
-          meals:[]
-        },{
-          dayName:"Domingo",
-          meals:[]
+            ]
+          }]
+        }, {
+          dayName: "Martes",
+          meals: []
+        }, {
+          dayName: "Miércoles",
+          meals: []
+        }, {
+          dayName: "Jueves",
+          meals: []
+        }, {
+          dayName: "Viernes",
+          meals: []
+        }, {
+          dayName: "Sábado",
+          meals: []
+        }, {
+          dayName: "Domingo",
+          meals: []
         }]
       },
-      selectedFood:"",
-      selectedInputRef:"",
-      dayIndex:0,
-      completed:{},
-      dayIndex:0,
-      loading:false,
-      success:false
+      selectedFood: "",
+      selectedInputRef: "",
+      dayIndex: 0,
+      completed: {},
+      dayIndex: 0,
+      loading: false,
+      success: false
     }
   };
-  
+
+  componentDidMount() {
+    this.props.changeHeaderTitle("Crear plan alimenticio")
+  }
+
+
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
-  
+
   addNewMealButton = (daySelected => {
-    const copy=this.state.mealPlan;
-    const updated=copy.days[daySelected].meals.push(
-          {
-            mealName:"",
-            mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
-            recipes:[]
-          }
-      )
+    const copy = this.state.mealPlan;
+    const updated = copy.days[daySelected].meals.push({
+      mealName: "",
+      mealTime: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
+      recipes: []
+    })
     this.setState({
-      mealPlan:copy
+      mealPlan: copy
     })
   })
-  
-  handleMealTitle=(event, identifier)=>{
-    const copy=this.state.mealPlan;
-    copy.days[identifier[0]].meals[identifier[1]].mealName=event.target.value
-    this.setState({mealPlan:copy})
+
+  handleMealTitle = (event, identifier) => {
+    const copy = this.state.mealPlan;
+    copy.days[identifier[0]].meals[identifier[1]].mealName = event.target.value
+    this.setState({ mealPlan: copy })
   }
-  
-  handleMealPlanTitle=(event)=>{
-    const copy=this.state.mealPlan;
-    copy.mealPlanName=event.target.value
-    this.setState({mealPlan:copy})
+
+  handleMealPlanTitle = (event) => {
+    const copy = this.state.mealPlan;
+    copy.mealPlanName = event.target.value
+    this.setState({ mealPlan: copy })
   }
-  
-  
-  addNewRecipeButton = (selected,identifier) => {
-    const copy=this.state.mealPlan;
-    const updated=copy.days[identifier[0]].meals[identifier[1]].recipes.push(
-      {
-        type: selected.foodName,
-        calories_kcal:selected.calories_kcal,
-        protein_g:selected.protein_g,
-        carbs_g:selected.carbs_g,
-        fat_g:selected.fat_g
-      }
-      )
+
+
+  addNewRecipeButton = (selected, identifier) => {
+    const copy = this.state.mealPlan;
+    const updated = copy.days[identifier[0]].meals[identifier[1]].recipes.push({
+      type: selected.foodName,
+      calories_kcal: selected.calories_kcal,
+      protein_g: selected.protein_g,
+      carbs_g: selected.carbs_g,
+      fat_g: selected.fat_g
+    })
     this.setState({
-      mealPlan:copy
+      mealPlan: copy
     })
   }
-  
+
   deleteRecipeButton = (identifier) => {
-    const copy=this.state.mealPlan;
-    const updated=copy.days[identifier[0]].meals[identifier[1]].recipes.splice(identifier[2],1);
+    const copy = this.state.mealPlan;
+    const updated = copy.days[identifier[0]].meals[identifier[1]].recipes.splice(identifier[2], 1);
     this.setState({
-      mealPlan:copy
+      mealPlan: copy
     })
-}
+  }
 
   deleteMealButton = (identifier) => {
-    const copy=this.state.mealPlan;
-    const updated=copy.days[identifier[0]].meals.splice(identifier[1],1);
+    const copy = this.state.mealPlan;
+    const updated = copy.days[identifier[0]].meals.splice(identifier[1], 1);
     this.setState({
-      mealPlan:copy
+      mealPlan: copy
     })
-}
+  }
 
   //funciones para el stepper
   totalSteps = () => {
     return getSteps().length;
   };
 
-  
+
   handleNext = () => {
     let dayIndex;
 
@@ -336,7 +316,8 @@ class MealPlanCreate extends Component{
       // find the first step that has been completed
       const steps = getSteps();
       dayIndex = steps.findIndex((step, i) => !(i in this.state.completed));
-    } else {
+    }
+    else {
       dayIndex = this.state.dayIndex + 1;
     }
     this.setState({
@@ -382,56 +363,55 @@ class MealPlanCreate extends Component{
 
   allStepsCompleted() {
     return this.completedSteps() === this.totalSteps();
-  }  
+  }
 
   //Pie chart
-  mealCalories=(array)=>{
-      var totalCalories=0;
-      var totalNutrient=array.recipes.map(meal=>{
-        totalCalories+=meal.calories_kcal;
-      }) 
-      return Math.round(totalCalories*100)/100
+  mealCalories = (array) => {
+    var totalCalories = 0;
+    var totalNutrient = array.recipes.map(meal => {
+      totalCalories += meal.calories_kcal;
+    })
+    return Math.round(totalCalories * 100) / 100
   }
-  
-  pieData(array){
-    function totalNutrients(){
-      var [totalProt, totalFat, totalCarbs]=[0,0,0];
-      var totalNutrient=array.recipes.map(meal=>{
-        totalProt+=meal.protein_g;
-        totalFat+=meal.fat_g;
-        totalCarbs+=meal.carbs_g;
+
+  pieData(array) {
+    function totalNutrients() {
+      var [totalProt, totalFat, totalCarbs] = [0, 0, 0];
+      var totalNutrient = array.recipes.map(meal => {
+        totalProt += meal.protein_g;
+        totalFat += meal.fat_g;
+        totalCarbs += meal.carbs_g;
       })
-      return [Math.round(totalProt*100)/100,Math.round(totalFat*100)/100, Math.round(totalCarbs*100)/100]
+      return [Math.round(totalProt * 100) / 100, Math.round(totalFat * 100) / 100, Math.round(totalCarbs * 100) / 100]
     };
 
     const data = {
-  	labels: [
-  		'Proteína (g)',
-  		'Grasa (g)',
-  		'Carbohidratos (g)'
-  	],
-  	datasets: [{
-  		data: totalNutrients(),
-  		backgroundColor: [
-  		'#FF6384',
-  		'#36A2EB',
-  		'#FFCE56'
-  		],
-  		hoverBackgroundColor: [
-  		'#FF6384',
-  		'#36A2EB',
-  		'#FFCE56'
-  		]
-  	}]
-      
+      labels: [
+        'Proteína (g)',
+        'Grasa (g)',
+        'Carbohidratos (g)'
+      ],
+      datasets: [{
+        data: totalNutrients(),
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56'
+        ],
+        hoverBackgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56'
+        ]
+      }]
+
     };
     return data
-    }
-    
+  }
+
   handleFinishButton = () => {
     if (!this.state.loading) {
-      this.setState(
-        {
+      this.setState({
           success: false,
           loading: true,
         },
@@ -452,70 +432,70 @@ class MealPlanCreate extends Component{
       );
     }
   };
-  
-  totalNutrients =(dayIdx)=>{
-        var totalCalories=0
-        var totalProt=0
-        var totalCarbs=0
-        var totalFat=0;
-        this.state.mealPlan.days[dayIdx].meals.map(meal=>{
-        var mealCalories=0
-        var mealProt=0
-        var mealCarbs=0
-        var mealFat=0;
-        meal.recipes.map(food=>{
-          mealCalories+=food.calories_kcal;
-          mealProt+=food.protein_g;
-          mealCarbs+=food.carbs_g;
-          mealFat+=food.fat_g;
-        })
-          totalCalories+=mealCalories;
-          totalProt+=mealProt;
-          totalCarbs+=mealCarbs;
-          totalFat+=mealFat;
+
+  totalNutrients = (dayIdx) => {
+    var totalCalories = 0
+    var totalProt = 0
+    var totalCarbs = 0
+    var totalFat = 0;
+    this.state.mealPlan.days[dayIdx].meals.map(meal => {
+      var mealCalories = 0
+      var mealProt = 0
+      var mealCarbs = 0
+      var mealFat = 0;
+      meal.recipes.map(food => {
+        mealCalories += food.calories_kcal;
+        mealProt += food.protein_g;
+        mealCarbs += food.carbs_g;
+        mealFat += food.fat_g;
       })
-      return [Math.round(totalCalories*100)/100, Math.round(totalProt*100)/100,Math.round(totalCarbs*100)/100,Math.round(totalFat*100)/100]
-    };
+      totalCalories += mealCalories;
+      totalProt += mealProt;
+      totalCarbs += mealCarbs;
+      totalFat += mealFat;
+    })
+    return [Math.round(totalCalories * 100) / 100, Math.round(totalProt * 100) / 100, Math.round(totalCarbs * 100) / 100, Math.round(totalFat * 100) / 100]
+  };
 
   //summaryTable functions
-  getSummaryTable=(dayIdx)=> {
-    const macros=["Calorías (kcal)", "Proteína (g)", "Grasa (g)", "Carbohidratos (g)"]
+  getSummaryTable = (dayIdx) => {
+    const macros = ["Calorías (kcal)", "Proteína (g)", "Grasa (g)", "Carbohidratos (g)"]
     //get target
-      const targetMacro=[this.state.mealPlan.days[dayIdx].dailyCalories, this.state.mealPlan.days[dayIdx].dailyProtein, this.state.mealPlan.days[dayIdx].dailyFat, this.state.mealPlan.days[dayIdx].dailyCarbs]
+    const targetMacro = [this.state.mealPlan.days[dayIdx].dailyCalories, this.state.mealPlan.days[dayIdx].dailyProtein, this.state.mealPlan.days[dayIdx].dailyFat, this.state.mealPlan.days[dayIdx].dailyCarbs]
     //get actual
-      const total=this.totalNutrients(dayIdx)
+    const total = this.totalNutrients(dayIdx)
     //get difference
-      const dataList = macros.map(function(macro, macroIndex){
-        return {key: macroIndex, macro: macro, actual:total[macroIndex] , target:targetMacro[macroIndex], remain:Math.round((targetMacro[macroIndex]-total[macroIndex])*100)/100}
-      })
+    const dataList = macros.map(function(macro, macroIndex) {
+      return { key: macroIndex, macro: macro, actual: total[macroIndex], target: targetMacro[macroIndex], remain: Math.round((targetMacro[macroIndex] - total[macroIndex]) * 100) / 100 }
+    })
     return dataList
   }
-  
-  render(){
+
+  render() {
     const { classes } = this.props;
     const steps = getSteps();
     const { dayIndex } = this.state;
     const buttonClassname = classNames({
       [classes.buttonSuccess]: this.state.success,
     });
-    
-  const columns = [{
-    title: `${getSteps()[dayIndex]}`,
-    dataIndex: 'macro',
-    width:120
-  }, {
-    title: 'Actual',
-    dataIndex: 'actual',
-    width:60
-  }, {
-    title: 'Objetivo',
-    dataIndex: 'target',
-    width:75
-  },{
-    title: 'Restante',
-    dataIndex: 'remain',
-    width:78
-  }];
+
+    const columns = [{
+      title: `${getSteps()[dayIndex]}`,
+      dataIndex: 'macro',
+      width: 120
+    }, {
+      title: 'Actual',
+      dataIndex: 'actual',
+      width: 60
+    }, {
+      title: 'Objetivo',
+      dataIndex: 'target',
+      width: 75
+    }, {
+      title: 'Restante',
+      dataIndex: 'remain',
+      width: 78
+    }];
 
     return (
       <div>
@@ -533,8 +513,9 @@ class MealPlanCreate extends Component{
                   />
                 <Typography>
                   RESUMEN DEL MEALPLAN:
-                  {JSON.stringify(this.state.mealPlan)}
+                  {/*JSON.stringify(this.state.mealPlan)*/}
                 </Typography>
+                <PDF plan={this.state.mealPlan} hola={"si, hola"}/>
               </Grid>
             </Grid>
             <Button variant="outlined" color="secondary" onClick={this.handleReset}>Resetear</Button>
@@ -562,7 +543,7 @@ class MealPlanCreate extends Component{
             </Grid>
             <Grid item md={2} xs={12} style={{textAlign:"center"}}>
             </Grid>
-            {!this.allStepsCompleted() && 
+            {this.allStepsCompleted() && 
             <Grid item md={5} xs={12} style={{textAlign:"right"}}>
               <Sticky>
                 <div style={{backgroundColor:"white"}}>
@@ -704,20 +685,21 @@ class MealPlanCreate extends Component{
         </div>
       </div>
     );
-  }}
-  
-  
+  }
+}
+
+
 MealPlanCreate.propTypes = {
   classes: PropTypes.object,
 };
-  
-  
-function mapStateToProps(state){
-  return{
+
+
+function mapStateToProps(state) {
+  return {
     foods: state.foods,
     currentUserId: state.currentUser.user.id
   };
 };
 
-  
-export default connect(mapStateToProps, {fetchFoods})(withStyles(styles)(MealPlanCreate));
+
+export default connect(mapStateToProps, { fetchFoods })(withStyles(styles)(MealPlanCreate));

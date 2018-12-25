@@ -8,7 +8,7 @@ const {loginRequired, ensureCorrectUser} = require("../middleware/auth");
 // prefix: /api/experts/:expert_id/appointments'
 router
   .get('/', loginRequired, ensureCorrectUser, getAppointments) //en el perfil del paciente mapear para ver progreso
-  .post("/", loginRequired, ensureCorrectUser, createAppointment)
+  .post("/:patient_id", loginRequired, ensureCorrectUser, createAppointment)
   
   .get('/:appointment_id', loginRequired, ensureCorrectUser, getOneAppointment)
   .put('/:appointment_id', loginRequired, ensureCorrectUser, editAppointment)

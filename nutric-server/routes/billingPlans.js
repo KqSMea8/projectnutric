@@ -10,7 +10,7 @@ const {loginRequired, ensureCorrectUser} = require("../middleware/auth");
 
 
 router.get("/", loginRequired, ensureCorrectUser, getBillingPlans);
-router.post("/create", loginRequired, ensureCorrectUser, createBillingPlan);
+router.post("/", loginRequired, ensureCorrectUser, createBillingPlan);
 
 
 module.exports = router;

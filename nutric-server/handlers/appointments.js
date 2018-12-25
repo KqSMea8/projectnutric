@@ -4,6 +4,9 @@ exports.createAppointment = async function(req,res,next){
   try {
     let newAppointment = await database.Appointment.create({
       realStartTime: req.body.realStartTime,
+      realDuration: req.body.realDuration,
+      realTimeEnd: req.body.realTimeEnd,
+      reason: req.body.reason,
       // mandar realDuration como put con tiempo del timer
       scheduledInfo: {
         wasScheduled: false,

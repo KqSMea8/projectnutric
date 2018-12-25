@@ -1,20 +1,21 @@
 require("dotenv").config();
-const   express                       = require("express"),
-        app                           = express(),
-        mongoose                      = require('mongoose'),
-        bodyParser                    = require('body-parser'),
-        cors                          = require('cors'),
-        errorHandler                  = require("./handlers/error");
-      
-const   expertAuthRoutes              = require("./routes/expertAuth"),
-        patientRoutes                 = require("./routes/patients"),
-        scheduledAppointmentsRoutes   = require("./routes/scheduledAppointments"),
-        appointmentsRoutes            = require("./routes/appointments"),
-        mealPlanRoutes                = require("./routes/mealPlan"),
-        mealPlanTemplateRoutes        = require("./routes/mealPlanTemplate"),
-        recipesRoutes                 = require("./routes/recipes"),
-        foodsRoutes                   = require("./routes/foods"),
-        billingPlansRoutes            = require("./routes/billingPlans")
+const express = require("express"),
+        app = express(),
+        mongoose = require('mongoose'),
+        bodyParser = require('body-parser'),
+        cors = require('cors'),
+        errorHandler = require("./handlers/error");
+
+const expertAuthRoutes = require("./routes/expertAuth"),
+        patientRoutes = require("./routes/patients"),
+        scheduledAppointmentsRoutes = require("./routes/scheduledAppointments"),
+        appointmentsRoutes = require("./routes/appointments"),
+        mealPlanRoutes = require("./routes/mealPlan"),
+        mealPlanTemplateRoutes = require("./routes/mealPlanTemplate"),
+        recipesRoutes = require("./routes/recipes"),
+        foodsRoutes = require("./routes/foods"),
+        billingPlansRoutes = require("./routes/billingPlans")
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -35,6 +36,7 @@ app.use("/api/experts/:expert_id/billingPlans", billingPlansRoutes);
 
 
 
+
 // RECIPES
 // app.use('/api/recipes', recipesRoutes);
 
@@ -42,6 +44,6 @@ app.use("/api/experts/:expert_id/billingPlans", billingPlansRoutes);
 app.use(errorHandler);
 
 //SERVER LISTENING - process.env.PORT = 8080 por default en c9
-app.listen(8081, function(){
-  console.log('Server started on port ' + 8081);
+app.listen(8081, function() {
+        console.log('Server started on port ' + 8081);
 });

@@ -25,6 +25,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
+import TimeDisplay from './TimeDisplay'
 
 import {logout} from '../store/actions/auth';
 const drawerWidth = 240;
@@ -81,22 +82,7 @@ class Header extends Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
-    currentTime: new Date()
   };
-
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  tick() {
-    this.setState({
-      currentTime: new Date()
-    });
-  }
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -124,12 +110,12 @@ class Header extends Component {
     this.handleMenuClose();
     this.props.logout();
   }
-
+  
 
   render() {
+    
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes, theme } = this.props;
-    const headerTitle= this.props.titulo
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const renderMenu = (
@@ -270,23 +256,9 @@ class Header extends Component {
               color="inherit"
               noWrap
             >
-              {headerTitle}
+              {this.props.headerTitle}
             </Typography>
-            <Typography
-              color="inherit"
-              style={{ width: "100%", textAlign: "center" }}
-            >
-              {this.state.currentTime.toLocaleDateString("es-ES", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                hour12: true
-              })}
-            </Typography>
+            <TimeDisplay/>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <Link to="/inicio">  

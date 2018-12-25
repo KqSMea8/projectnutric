@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
 import { connect } from 'react-redux'
-import {Switch, Route, withRouter, Redirect} from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
 // ACTIONS
 import { removeError } from '../store/actions/errors'
@@ -19,36 +19,39 @@ import MealPlanCreate from "./MealPlans/MealPlanCreate";
 import NoMatch from '../components/NoMatch';
 import StatsMain from './Estadísticas/EstadísticasMain';
 import ProfileMain from "./Profile/ProfileMain";
+import SuscriptionDetails from "../components/BillingPlan/BillingPlanSuscription";
+import ExpertPasswordReset from "../components/Expert/ExpertPasswordReset";
 
 import Header from './Header';
 
 //Para que todas las Routes entren en el grid.
 const styles = theme => {
-  return (
-    {
-      toolbar: {
-        flexGrow: 1, //pa q contenido de dashboard ocupe height y width disponible. No ocupa toodo el height
-        margin: '25px',
-        height:"100%"
-      }
+  return ({
+    toolbar: {
+      flexGrow: 1, //pa q contenido de dashboard ocupe height y width disponible. No ocupa toodo el height
+      margin: '25px',
+      height: "100%"
+    }
   })
-}  
+}
 
 class Dashboard extends Component {
-  state={
-    title:"sventroya"
+  state = {
+    headerTitle: "Nutric.io"
   }
-  
-  changeTitle=(name)=>{
-    this.setState({title:name})
+
+  changeHeaderTitle = (newTitle) => {
+    this.setState({
+      headerTitle: newTitle
+    })
   }
-  
-  render(){
+
+  render() {
     const { classes, theme } = this.props;
-    
-    return(
+
+    return (
       <div style={{width:"100%"}}>
-        <Header titulo={this.state.title} open={this.props.open} handleDrawerToggle={this.props.handleDrawerToggle} />
+        <Header headerTitle={this.state.headerTitle} open={this.props.open} handleDrawerToggle={this.props.handleDrawerToggle} />
         <div className={classes.toolbar}>
           <Switch>
             <Route 
@@ -63,10 +66,9 @@ class Dashboard extends Component {
             <Route 
               exact 
               path="/inicio" 
-              onEnter={()=>this.changeTitle("Inicio")}
               render={() => {
                 return (
-                  <HomeMain headerTitle={this.state.title} />
+                  <HomeMain headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle}/>
                 );
               }}
             />
@@ -75,7 +77,7 @@ class Dashboard extends Component {
               path="/pacientes" 
               render={() => {
                 return(
-                  <PatientsMain headerTitle={"Pacientes"} />
+                  <PatientsMain {...this.props} headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
                 );
               }}
             />
@@ -84,7 +86,7 @@ class Dashboard extends Component {
               path="/agenda" 
               render={() => {
                 return(
-                  <ScheduleMain headerTitle={"Agenda"}/>
+                  <ScheduleMain headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle}/>
                 );
               }}
             />
@@ -92,9 +94,9 @@ class Dashboard extends Component {
             <Route
               exact
               path="/dietas" 
-              render={() => {
+              render={(props) => {
                 return(
-                  <MealPlanMain />
+                  <MealPlanMain {...props} headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
                 );
               }}
             />
@@ -103,7 +105,7 @@ class Dashboard extends Component {
               path="/dietas/crear" 
               render={() => {
                 return(
-                  <MealPlanCreate />
+                  <MealPlanCreate headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle}/>
                 );
               }}
             />
@@ -113,7 +115,7 @@ class Dashboard extends Component {
               path="/recetas" 
               render={() => {
                 return(
-                  <RecipesMain />
+                  <RecipesMain headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
                 );
               }}
             />
@@ -122,7 +124,7 @@ class Dashboard extends Component {
               path="/estadisticas" 
               render={() => {
                 return(
-                  <StatsMain/>
+                  <StatsMain headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
                   
                 );
               }}
@@ -133,7 +135,27 @@ class Dashboard extends Component {
               path="/perfil" 
               render={() => {
                 return(
-                  <ProfileMain/>
+                  <ProfileMain headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle}/>
+                  
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/perfil/suscripcion" 
+              render={() => {
+                return(
+                  <SuscriptionDetails headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
+                  
+                );
+              }}
+            />
+            <Route 
+              exact 
+              path="/reestablecer-contraseña" 
+              render={() => {
+                return(
+                  <ExpertPasswordReset headerTitle={this.state.headerTitle} changeHeaderTitle={this.changeHeaderTitle} />
                   
                 );
               }}
@@ -142,9 +164,9 @@ class Dashboard extends Component {
           </Switch>
         </div>
       </div>
-      )
+    )
   }
-}  
+}
 
 function mapStateToProps(state) {
   return {
@@ -158,4 +180,4 @@ Dashboard.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(mapStateToProps,{ removeError })(withStyles(styles, {withTheme: true})(Dashboard)))
+export default withRouter(connect(mapStateToProps, { removeError })(withStyles(styles, { withTheme: true })(Dashboard)))

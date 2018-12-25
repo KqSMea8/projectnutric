@@ -3,6 +3,7 @@ const database = require("../models");
 exports.createScheduledAppointment = async function(req,res,next){
     try{
         let newScheduledAppointment = await database.Appointment.create({
+            reason: req.body.reason,
             scheduledInfo:{
                 wasScheduled:true,
                 scheduledTimeStart: req.body.scheduledTimeStart,
